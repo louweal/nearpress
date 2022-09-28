@@ -1,0 +1,50 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "@/node_modules/bootstrap/scss/functions";
+
+$primary: #3b153d;
+$secondary: #8e3c69; // rgba(0, 0, 0, 0.5); // #b185d6;
+$light: #ae7f85;
+
+$body-bg: #efefef;
+$link-decoration: none;
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "@/node_modules/bootstrap/scss/variables";
+@import "@/node_modules/bootstrap/scss/mixins";
+@import "@/node_modules/bootstrap/scss/maps";
+@import "@/node_modules/bootstrap/scss/utilities";
+
+// 4. Include any optional Bootstrap components as you like
+@import "@/node_modules/bootstrap/scss/root";
+@import "@/node_modules/bootstrap/scss/reboot";
+@import "@/node_modules/bootstrap/scss/images";
+@import "@/node_modules/bootstrap/scss/containers";
+@import "@/node_modules/bootstrap/scss/grid";
+@import "@/node_modules/bootstrap/scss/navbar";
+@import "@/node_modules/bootstrap/scss/nav";
+@import "@/node_modules/bootstrap/scss/buttons";
+@import "@/node_modules/bootstrap/scss/dropdown";
+
+// @import "@/node_modules/bootstrap/scss/card"; // stupid !!!
+
+// Helpers
+@import "@/node_modules/bootstrap/scss/helpers/position";
+@import "@/node_modules/bootstrap/scss/helpers/stacks";
+@import "@/node_modules/bootstrap/scss/helpers/ratio";
+
+// Utilities
+@import "@/node_modules/bootstrap/scss/utilities/api";
+
+// $grid-gutter-width: 3rem;
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s cubic-bezier(0.2, 0, 0.1, 1);
+}
+.page-enter,
+.page-leave-active {
+  opacity: 0.1;
+  transform: translateY(60px);
+}

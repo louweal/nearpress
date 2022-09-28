@@ -1,0 +1,33 @@
+{
+  "name": "n3ws",
+  "version": "1.0.0",
+  "description": "N3WS is a decentralized news platform on NEAR",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nuxt --port 8000",
+    "build": "nuxt build",
+    "start": "nuxt start --port 8001",
+    "generate": "nuxt generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louweal/n3ws.git"
+  },
+  "author": "Anneloes Louwe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/louweal/n3ws/issues"
+  },
+  "homepage": "https://github.com/louweal/n3ws#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.1",
+    "core-js": "^3.25.2",
+    "nuxt": "^2.15.8",
+    "webpack": "^4.46.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/style-resources": "^1.2.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^10.1.1"
+  }
+}
