@@ -3,8 +3,8 @@
     <div id="page">
       <characters />
 
-      <navbar />
-      <div class="pushdown"></div>
+      <navbar ref="header" />
+      <div id="pushdown"></div>
 
       <Nuxt />
 
@@ -16,7 +16,20 @@
 </template>
 
 <script>
+import { randomArticles } from "@/utils/randomArticles.js";
+
 export default {
+  created() {
+    this.$store.commit("SET_ARTICLES", randomArticles(30));
+  },
+
+  mounted() {
+    let headerHeight = document.querySelector("#header").offsetHeight;
+    let pushdown = document.querySelector("#pushdown");
+    pushdown.style.height = headerHeight + 24 + "px";
+    // console.log(document.querySelector("#header").offsetHeight);
+  },
+
   watch: {
     "$store.state.showModal": function (show) {
       if (show === true) {
@@ -50,8 +63,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pushdown {
+#pushdown {
   width: 100%;
-  height: calc(70px + 3rem);
+  // height: calc(70px + 3rem);
 }
 </style>

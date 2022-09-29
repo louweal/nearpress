@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="container">
-      <div class="row g-3 g-md-5">
+      <div class="row gx-3 gx-md-5">
         <div
           class="col-12 col-md-6"
           v-for="(article, i) in articles.slice(0, 2)"
@@ -16,7 +16,7 @@
 
       <!-- shown on mobile only: -->
 
-      <div class="row g-3 g-md-5 d-sm-none">
+      <div class="row g-3 d-sm-none mt-2">
         <div
           class="col-6"
           v-for="(article, i) in articles.slice(1, 3)"
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="row g-5 mt-1 mt-md-4">
+      <div class="row gx-5 gy-3 mt-3">
         <div class="col-12 col-md-9">
           <div class="row">
             <div
@@ -44,28 +44,28 @@
         </div>
 
         <div class="col-12 col-md-3 d-none d-sm-block">
-          <sticky>
-            <div class="border xxxbg-white shadow-sm rounded py-3 pe-0 px-3">
-              <h2 class="fs-5">Recently published</h2>
+          <!-- <sticky> -->
+          <div class="border bg-white shadow-sm rounded py-3 xxxpe-0 px-3">
+            <h2 class="fs-3">Recently published</h2>
 
-              <div
-                class=""
-                v-for="(article, i) in articles.slice(2, 12)"
-                :key="i"
+            <div
+              class=""
+              v-for="(article, i) in articles.slice(2, 12)"
+              :key="i"
+            >
+              <nuxt-link
+                :to="article.slug"
+                class="d-block w-100"
+                :class="i !== 9 ? 'border-bottom' : false"
               >
-                <nuxt-link
-                  :to="article.slug"
-                  class="d-block w-100"
-                  :class="i !== 9 ? 'border-bottom' : false"
-                >
-                  <small class="text-muted fw-bold"
-                    >{{ article.date.H }}:{{ article.date.m }}
-                  </small>
-                  <h3 class="fs-6 fw-light">{{ article.title }}</h3>
-                </nuxt-link>
-              </div>
+                <small class="text-muted fw-bold"
+                  >{{ article.date.H }}:{{ article.date.m }}
+                </small>
+                <h3 class="fs-6 fw-light">{{ article.title }}</h3>
+              </nuxt-link>
             </div>
-          </sticky>
+          </div>
+          <!-- </sticky> -->
         </div>
       </div>
 
@@ -109,21 +109,15 @@
 </template>
 
 <script>
-import { randomArticles } from "@/utils/randomArticles.js";
-
 export default {
   name: "Main",
 
-  data() {
-    return {
-      articles: () => [],
-    };
-  },
-
   transition: "page",
 
-  async created() {
-    this.articles = randomArticles(30);
+  computed: {
+    articles() {
+      return this.$store.state.articles;
+    },
   },
 };
 </script>

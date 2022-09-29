@@ -1,5 +1,7 @@
 <template>
-  <div>hello im news detail page</div>
+  <div class="container">
+    <div>hello im channel overview page</div>
+  </div>
 </template>
 
 <script>

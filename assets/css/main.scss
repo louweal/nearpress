@@ -9,7 +9,7 @@ $primary: #000; // #3b153d;
 $secondary: #955eae; // #8e3c69; // rgba(0, 0, 0, 0.5); // #b185d6;
 $light: #ddd;
 
-$body-bg: #fff;
+$body-bg: #f4f4f4;
 $link-decoration: none;
 
 $border-color: #ddd;
@@ -23,12 +23,14 @@ $line-height-base: 1.54;
 $headings-font-weight: 700;
 $headings-line-height: 1.4;
 
+// $h2-font-size: 1rem;
+
 $font-sizes: (
-  1: 1rem,
-  2: 1rem,
-  3: 1rem,
-  4: 1rem,
-  5: 1rem,
+  1: 1.75rem,
+  2: 1.375rem,
+  3: 1.25rem,
+  4: 1.125rem,
+  5: 1.05rem,
   6: 1rem,
 );
 
@@ -101,12 +103,15 @@ body {
     rgba(117, 93, 241, 1) 0%,
     rgba(149, 94, 174, 1) 81%
   );
-  transition: transform 0.24s linear !important;
+  opacity: 1;
+  transition: filter 0.24s linear !important;
 
   &:hover,
   &:active:hover,
   &:focus {
-    transform: scaleX(101%) scaleY(105%);
+    // transform: scaleX(101%) scaleY(105%);
+    opacity: 1;
+    filter: hue-rotate(77deg);
   }
 }
 

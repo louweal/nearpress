@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="'/' + data.slug"
+    :to="'/article/' + data.slug"
     class="card ratio ratio-16x9 position-relative"
   >
     <div
@@ -10,7 +10,7 @@
       }"
     ></div>
     <div class="card-img-overlay rounded">
-      <h2 class="card-title text-white h2">{{ data.title }}</h2>
+      <h2 class="text-white fs-1">{{ data.title }}</h2>
     </div>
     <!-- <div class="card-overlay" /> -->
   </nuxt-link>

@@ -28,10 +28,10 @@
   top: 0;
   left: 0;
   z-index: -1;
-  background: rgb(232, 232, 232);
+  background: #f4f4f4; // rgb(232, 232, 232);
   background: linear-gradient(
-    0deg,
-    rgba(#755df1, 0.03) 0%,
+    180deg,
+    rgba(#f4f4f4, 1) 0%,
     rgba(255, 255, 255, 1) 47%
   );
 }

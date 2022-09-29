@@ -32,7 +32,8 @@ export default {
   computed: {
     randomCharacter() {
       let chars =
-        "eeeeeeeeeeettttttttttoooooooooaaaaaaaaiiiiiiiinnnnnnnsssssshhhhhhrrrrrrllllluuuuddddyyymmmwwwgggffccbbppkkvjxzq".toUpperCase();
+        "eeeeeeeeeeettttttttttoooooooooaaaaaaaaiiiiiiiinnnnnnnsssssshhhhhhrrrrrrllllluuuuddddyyymmmwwwgggffccbbppkkvjxzq";
+      chars = chars + chars.toUpperCase();
       let i = Math.ceil(Math.random() * chars.length);
       return chars.charAt(i);
     },

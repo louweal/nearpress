@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="'/' + data.slug" class="card">
+  <nuxt-link :to="'/article/' + data.slug" class="card">
     <div v-if="borderTop" class="w-100 border-top d-sm-none pt-2"></div>
     <div class="row g-2 w-100">
       <div class="col-sm-12" :class="flex ? 'col-4' : 'col-12'">
@@ -11,7 +11,7 @@
         ></div>
       </div>
       <div class="col-8 col-sm-12 d-none d-sm-block">
-        <h2 class="card-title fs-5">{{ data.title }}</h2>
+        <h2 class="card-title fs-4">{{ data.title }}</h2>
 
         <p v-if="showIntro" class="d-none d-sm-block">{{ data.intro }}</p>
       </div>
@@ -20,7 +20,9 @@
         class="d-sm-none align-self-center"
         :class="flex ? 'col-8' : 'col-12'"
       >
-        <h2 class="card-title fs-5 fw-light">{{ data.title }}</h2>
+        <h2 class="card-title fs-4" :class="flex ? 'fw-light' : false">
+          {{ data.title }}
+        </h2>
       </div>
     </div>
   </nuxt-link>

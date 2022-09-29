@@ -2,6 +2,7 @@
   <nav
     class="shadow-sm navbar border-bottom navbar-expand-lg bg-white fixed-top p-md-3 px-lg-5"
     ref="header"
+    id="header"
   >
     <div class="container">
       <nuxt-link to="/" class="me-4 navbar-logo">
