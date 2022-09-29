@@ -26,7 +26,10 @@ export default {
 
   css: ["@/assets/css/main.scss"],
 
-  styleResources: {},
+  // styleResources: {},
+  // styleResources: {
+  //   scss: ["@/node_modules/bootstrap/scss/mixins.scss"],
+  // },
   components: true,
   buildModules: [],
   // modules: ["@nuxtjs/style-resources"],

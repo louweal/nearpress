@@ -1,14 +1,49 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+// @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&family=Open+Sans:wght@300;500;700&display=swap");
 
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "@/node_modules/bootstrap/scss/functions";
 
-$primary: #3b153d;
-$secondary: #8e3c69; // rgba(0, 0, 0, 0.5); // #b185d6;
-$light: #ae7f85;
+$primary: #000; // #3b153d;
+$secondary: #955eae; // #8e3c69; // rgba(0, 0, 0, 0.5); // #b185d6;
+$light: #ddd;
 
-$body-bg: #efefef;
+$body-bg: #fff;
 $link-decoration: none;
+
+$border-color: #ddd;
+
+//typography
+$font-family-base: "Open Sans", sans-serif;
+$font-weight-base: 300;
+// $font-size-base: 1rem;
+$line-height-base: 1.54;
+
+$headings-font-weight: 700;
+$headings-line-height: 1.4;
+
+$font-sizes: (
+  1: 1rem,
+  2: 1rem,
+  3: 1rem,
+  4: 1rem,
+  5: 1rem,
+  6: 1rem,
+);
+
+// buttons
+$btn-active-box-shadow: 0;
+$btn-focus-width: 0;
+$btn-padding-y: 0.5rem;
+$btn-padding-x: 1.2rem;
+$btn-border-width: 3;
+$btn-border-color: transparent;
+$btn-border-radius: 12px;
+$btn-font-weight: 500;
+
+// grid
+$grid-gutter-width: 1.9rem;
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "@/node_modules/bootstrap/scss/variables";
@@ -26,6 +61,9 @@ $link-decoration: none;
 @import "@/node_modules/bootstrap/scss/nav";
 @import "@/node_modules/bootstrap/scss/buttons";
 @import "@/node_modules/bootstrap/scss/dropdown";
+@import "@/node_modules/bootstrap/scss/modal";
+@import "@/node_modules/bootstrap/scss/close"; // = close button
+@import "@/node_modules/bootstrap/scss/list-group";
 
 // @import "@/node_modules/bootstrap/scss/card"; // stupid !!!
 
@@ -34,10 +72,43 @@ $link-decoration: none;
 @import "@/node_modules/bootstrap/scss/helpers/stacks";
 @import "@/node_modules/bootstrap/scss/helpers/ratio";
 
+// Mixins
+
+@import "@/node_modules/bootstrap/scss/mixins/breakpoints";
+
 // Utilities
 @import "@/node_modules/bootstrap/scss/utilities/api";
 
-// $grid-gutter-width: 3rem;
+body {
+  width: 100%;
+
+  &.modal-open {
+    overflow-y: hidden;
+    position: fixed;
+  }
+}
+
+.is-blurred {
+  filter: blur(4px);
+  -webkit-filter: blur(4px);
+  transition: filter 0.3s linear;
+}
+
+.btn {
+  background: rgb(117, 93, 241);
+  background: linear-gradient(
+    141deg,
+    rgba(117, 93, 241, 1) 0%,
+    rgba(149, 94, 174, 1) 81%
+  );
+  transition: transform 0.24s linear !important;
+
+  &:hover,
+  &:active:hover,
+  &:focus {
+    transform: scaleX(101%) scaleY(105%);
+  }
+}
 
 .page-enter-active,
 .page-leave-active {

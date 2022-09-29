@@ -1,13 +1,14 @@
 <template>
   <nav
-    class="xxxshadow-sm navbar navbar-expand-lg bg-white fixed-top p-md-3 px-lg-5"
+    class="shadow-sm navbar border-bottom navbar-expand-lg bg-white fixed-top p-md-3 px-lg-5"
+    ref="header"
   >
-    <div class="container-fluid">
-      <nuxt-link to="/" class="me-4">
+    <div class="container">
+      <nuxt-link to="/" class="me-4 navbar-logo">
         <img src="@/images/logo.svg" alt="" width="203" height="45" />
       </nuxt-link>
 
-      <div class="dropdown">
+      <div class="dropdown d-none d-sm-inline">
         <div class="dropdown-toggle" @click="toggleDropdown">Channel</div>
         <div class="dropdown-menu" ref="dropdown-menu">
           <a class="dropdown-item" href="#">Politics</a>
@@ -15,7 +16,9 @@
           <a class="dropdown-item" href="#">Web development</a>
         </div>
       </div>
-      <div
+      <!--
+
+      <div>
         @click="$route.path === '/nav' ? $router.back() : $router.push('/nav')"
         class="navbar-toggler"
         aria-label="toggle pushmenu"
@@ -25,21 +28,12 @@
           :class="$route.path === '/nav' ? 'navbar-toggler-icon-close' : false"
         ></span>
       </div>
+      -->
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item px-lg-2" v-for="(l, i) in $options.menu" :key="i">
-            <nuxt-link :to="l.url" class="nav-link">
-              {{ l.title }}
-            </nuxt-link>
-          </li>
-
-          <li class="ms-lg-4 mt-4 mt-lg-0">
-            <div class="btn btn-secondary" xxxclick="togglePopup">
-              Connect wallet
-            </div>
-          </li>
-        </ul>
+      <div class="xxxnavbar-nav ms-auto">
+        <div class="btn btn-primary" @click="toggleModal">
+          Connect <span class="d-none d-md-inline">wallet</span>
+        </div>
       </div>
     </div>
   </nav>
@@ -52,7 +46,35 @@ export default {
       dropdownActive: false,
     };
   },
+
+  mounted() {
+    window.addEventListener("scroll", this.aosHeader);
+  },
+
   methods: {
+    aosHeader() {
+      let header = this.$refs["header"];
+      let scrollY = window.pageYOffset;
+      let direction = scrollY > this.prevPosY ? "down" : "up";
+
+      if (
+        direction === "down" &&
+        scrollY > 0 &&
+        !header.classList.contains("move-up")
+      ) {
+        header.classList.remove("move-down");
+        header.classList.add("move-up");
+      }
+
+      if (direction === "up" && !header.classList.contains("move-down")) {
+        header.classList.remove("move-up");
+        header.classList.add("move-down");
+      }
+
+      // update previous scroll positon
+      this.prevPosY = window.scrollY;
+    },
+
     toggleDropdown(e) {
       let menu = this.$refs["dropdown-menu"];
       // console.log(e.target);
@@ -63,22 +85,36 @@ export default {
       }
       this.dropdownActive = !this.dropdownActive;
     },
+
+    toggleModal() {
+      this.$store.commit("toggleModal");
+
+      // console.log(this.$store.state.showModal);
+
+      if (this.$store.state.showModal === true) {
+        document.getElementById("page").classList.add("is-blurred");
+      } else {
+        document.getElementById("page").classList.remove("is-blurred");
+      }
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
-// .navbar-toggler {
-//   border: none;
-//   box-shadow: none;
-//   padding: 0;
-// }
+.move-up {
+  transform: translateY(-100%);
+}
 
-// $btn-close-color: #fff;
-// $btn-close-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/></svg>");
+.move-down {
+  transform: translateY(0);
+}
 
-// .navbar-toggler-icon-close {
-//   width: 1.3rem;
-//   height: 1.3rem;
-//   background-image: $btn-close-bg;
-// }
+.navbar {
+  transition: transform 0.4s ease-in-out;
+  will-change: transform;
+
+  &-logo img {
+    max-width: 36vw !important;
+  }
+}
 </style>
