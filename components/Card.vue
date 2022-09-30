@@ -11,7 +11,7 @@
         ></div>
       </div>
       <div class="col-8 col-sm-12 d-none d-sm-block">
-        <h2 class="card-title fs-4">{{ data.title }}</h2>
+        <h2 class="card-title">{{ data.title }}</h2>
 
         <p v-if="showIntro" class="d-none d-sm-block">{{ data.intro }}</p>
       </div>
@@ -20,7 +20,7 @@
         class="d-sm-none align-self-center"
         :class="flex ? 'col-8' : 'col-12'"
       >
-        <h2 class="card-title fs-4" :class="flex ? 'fw-light' : false">
+        <h2 class="card-title" :class="flex ? 'fw-light' : false">
           {{ data.title }}
         </h2>
       </div>
@@ -51,12 +51,12 @@ export default {
 
   computed: {
     visual() {
-      let img = null;
-      try {
-        img = require("@/images/" + this.data.visual + ".webp");
-      } catch {
-        img = require("@/images/" + this.data.visual + ".jpg");
-      }
+      let img = require("@/images/" +
+        this.data.channel +
+        "/" +
+        this.data.visual +
+        ".jpg");
+
       return `url(${img})`;
     },
   },
@@ -70,12 +70,6 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  // border: 1px solid gold;
-  // border-bottom: 1px solid orange;
-
-  // &:not(:last-of-type) {
-  //   border-bottom: 1px solid orange;
-  // }
 
   &:hover {
     .card-img {

@@ -19,6 +19,9 @@
 import { randomArticles } from "@/utils/randomArticles.js";
 
 export default {
+  // scrollToTop: true,
+  transition: "page",
+
   created() {
     this.$store.commit("SET_ARTICLES", randomArticles(30));
   },
@@ -38,14 +41,13 @@ export default {
         this.enableScroll();
       }
     },
-    "$store.state.showModal": function (show) {
-      if (show === true) {
-        this.disableScroll();
-      } else {
-        this.enableScroll();
-      }
-    },
+    // $route: function (to, from) {
+    //   console.log("route changed!");
+    //   // console.log(to);
+    //   // this.aos();
+    // },
   },
+
   methods: {
     disableScroll() {
       // console.log("lock page");
@@ -58,6 +60,11 @@ export default {
       document.body.classList.remove("modal-open");
       window.scrollTo(0, this.posY);
     },
+    // beforeEnter: function (el) {
+    //   if (this.$route.hash[0] !== "#") {
+    //     // window.scrollTo(0, 0);
+    //   }
+    // },
   },
 };
 </script>

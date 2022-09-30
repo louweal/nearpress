@@ -27,12 +27,12 @@ export default {
 
   computed: {
     visual() {
-      let img = null;
-      try {
-        img = require("@/images/" + this.data.visual + ".webp");
-      } catch {
-        img = require("@/images/" + this.data.visual + ".jpg");
-      }
+      let img = require("@/images/" +
+        this.data.channel +
+        "/" +
+        this.data.visual +
+        ".jpg");
+
       return `url(${img})`;
     },
   },
@@ -67,14 +67,13 @@ export default {
   bottom: 0;
   width: 100%;
   height: 100%;
-  padding: 2rem !important;
+  padding: 1.3rem 2rem; // !important;
   display: flex;
-  // justify-content: flex-end;
   align-items: flex-end;
 
   // border: 3px solid red !important;
   background: rgb(0, 0, 0);
-  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 49%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 59%);
   z-index: 3;
 }
 </style>

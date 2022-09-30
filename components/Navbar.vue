@@ -12,9 +12,10 @@
       <div class="dropdown d-none d-sm-inline">
         <div class="dropdown-toggle" @click="toggleDropdown">Channel</div>
         <div class="dropdown-menu" ref="dropdown-menu">
-          <a class="dropdown-item" href="#">Politics</a>
-          <a class="dropdown-item" href="#">Crypto currencies</a>
-          <a class="dropdown-item" href="#">Web development</a>
+          <a class="dropdown-item" href="/dogs">Dogs</a>
+          <a class="dropdown-item" href="/politics">Politics</a>
+          <a class="dropdown-item" href="/crypto">Crypto currencies</a>
+          <a class="dropdown-item" href="/webdev">Web development</a>
         </div>
       </div>
       <!--
@@ -45,6 +46,7 @@ export default {
   data() {
     return {
       dropdownActive: false,
+      prevPosY: 0,
     };
   },
 
@@ -52,28 +54,37 @@ export default {
     window.addEventListener("scroll", this.aosHeader);
   },
 
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.aosHeader);
+  },
+
   methods: {
     aosHeader() {
       let header = this.$refs["header"];
-      let scrollY = window.pageYOffset;
-      let direction = scrollY > this.prevPosY ? "down" : "up";
 
-      if (
-        direction === "down" &&
-        scrollY > 0 &&
-        !header.classList.contains("move-up")
-      ) {
-        header.classList.remove("move-down");
-        header.classList.add("move-up");
+      if (header) {
+        let scrollY = window.pageYOffset;
+        let direction = scrollY > this.prevPosY ? "down" : "up";
+
+        if (
+          direction === "down" &&
+          scrollY > 0 &&
+          !header.classList.contains("move-up")
+        ) {
+          header.classList.remove("move-down");
+          header.classList.add("move-up");
+        }
+
+        if (direction === "up" && !header.classList.contains("move-down")) {
+          header.classList.remove("move-up");
+          header.classList.add("move-down");
+        }
+
+        // update previous scroll positon
+        this.prevPosY = window.scrollY;
+      } else {
+        console.log("header missing?");
       }
-
-      if (direction === "up" && !header.classList.contains("move-down")) {
-        header.classList.remove("move-up");
-        header.classList.add("move-down");
-      }
-
-      // update previous scroll positon
-      this.prevPosY = window.scrollY;
     },
 
     toggleDropdown(e) {

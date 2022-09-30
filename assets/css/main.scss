@@ -24,15 +24,17 @@ $headings-font-weight: 700;
 $headings-line-height: 1.4;
 
 // $h2-font-size: 1rem;
+// $font-size-base: 0.8rem;
+// $h2-font-size: $font-size-base * 1.1;
 
-$font-sizes: (
-  1: 1.75rem,
-  2: 1.375rem,
-  3: 1.25rem,
-  4: 1.125rem,
-  5: 1.05rem,
-  6: 1rem,
-);
+// $font-sizes: (
+//   1: 1.75rem,
+//   2: 1.375rem,
+//   3: 1.25rem,
+//   4: 1.125rem,
+//   5: 1.05rem,
+//   6: 1rem,
+// );
 
 // buttons
 $btn-active-box-shadow: 0;
@@ -47,6 +49,9 @@ $btn-font-weight: 500;
 // grid
 $grid-gutter-width: 1.9rem;
 
+$enable-smooth-scroll: false;
+// $enable-transitions: false;
+
 // 3. Include remainder of required Bootstrap stylesheets
 @import "@/node_modules/bootstrap/scss/variables";
 @import "@/node_modules/bootstrap/scss/mixins";
@@ -60,12 +65,12 @@ $grid-gutter-width: 1.9rem;
 @import "@/node_modules/bootstrap/scss/containers";
 @import "@/node_modules/bootstrap/scss/grid";
 @import "@/node_modules/bootstrap/scss/navbar";
-@import "@/node_modules/bootstrap/scss/nav";
 @import "@/node_modules/bootstrap/scss/buttons";
 @import "@/node_modules/bootstrap/scss/dropdown";
 @import "@/node_modules/bootstrap/scss/modal";
 @import "@/node_modules/bootstrap/scss/close"; // = close button
-@import "@/node_modules/bootstrap/scss/list-group";
+@import "@/node_modules/bootstrap/scss/breadcrumb"; // also for lists
+@import "@/node_modules/bootstrap/scss/type";
 
 // @import "@/node_modules/bootstrap/scss/card"; // stupid !!!
 
@@ -76,13 +81,14 @@ $grid-gutter-width: 1.9rem;
 
 // Mixins
 
-@import "@/node_modules/bootstrap/scss/mixins/breakpoints";
+// @import "@/node_modules/bootstrap/scss/mixins/breakpoints";
 
 // Utilities
 @import "@/node_modules/bootstrap/scss/utilities/api";
 
 body {
   width: 100%;
+  // scroll-behavior: auto !important;
 
   &.modal-open {
     overflow-y: hidden;
@@ -123,4 +129,65 @@ body {
 .page-leave-active {
   opacity: 0.1;
   transform: translateY(60px);
+}
+
+.list-inline {
+  li {
+    $size: 6px;
+    $padding: 1.7rem;
+
+    display: inline;
+    position: relative;
+    padding-right: $padding;
+
+    &:not(:first-of-type)::before {
+      position: absolute;
+      content: "";
+      z-index: 2;
+      left: calc(($padding / -2) - $size);
+      top: calc(50% - $size/2);
+      width: $size;
+      height: $size;
+      border-radius: 50%;
+      background-color: var(--bs-secondary);
+    }
+  }
+}
+
+.fade-in-up {
+  animation: slide-in 0.7s cubic-bezier(0.2, 0, 0.1, 1) both;
+  will-change: transform, opacity;
+  animation-play-state: paused;
+
+  // @include from(m) {
+  // }
+}
+
+.start-animation {
+  animation-play-state: running !important;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(60px); // scaleY(1.2)
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.7s cubic-bezier(0.2, 0, 0.1, 1) both;
+  will-change: opacity;
+  animation-play-state: paused;
 }

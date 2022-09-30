@@ -26,6 +26,19 @@ export default {
 
   css: ["@/assets/css/main.scss"],
 
+  router: {
+    scrollBehavior(to) {
+      console.log("hlooooo");
+      if (to.hash) {
+        return window.scrollTo({
+          top: document.querySelector(to.hash).offsetTop + window.innerHeight,
+          behavior: "smooth",
+        });
+      }
+      return window.scrollTo({ top: 0, behavior: "auto" }); // to disable smooth scrolling on route change!!
+    },
+  },
+
   // styleResources: {},
   // styleResources: {
   //   scss: ["@/node_modules/bootstrap/scss/mixins.scss"],
