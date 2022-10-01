@@ -1,9 +1,9 @@
 <template>
   <div
-    class="sparkle"
+    class="character"
     :style="{
       color:
-        randomXPos < 55 ? 'rgba(117,93,241,0.11)' : 'rgba(149,94,174,0.11)',
+        randomXPos < 55 ? 'rgba(117,93,241,0.18)' : 'rgba(149,94,174,0.18)',
       left: randomXPos + '%',
       top: randomYPos,
       fontSize: randomSize,
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "sparkle",
+  name: "character",
 
   props: {
     min: {
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sparkle {
+.character {
   position: absolute;
   width: 6px;
   height: 6px;

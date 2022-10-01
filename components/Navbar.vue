@@ -1,38 +1,35 @@
 <template>
   <nav
-    class="shadow-sm navbar border-bottom navbar-expand-lg bg-white fixed-top p-md-3 px-lg-5"
+    class="shadow-sm navbar border-bottom navbar-expand-lg bg-white fixed-top py-md-3"
     ref="header"
     id="header"
   >
-    <div class="container">
+    <div class="container-xl">
       <nuxt-link to="/" class="me-4 navbar-logo">
         <img src="@/images/logo.svg" alt="" width="203" height="45" />
       </nuxt-link>
 
       <div class="dropdown d-none d-sm-inline">
-        <div class="dropdown-toggle" @click="toggleDropdown">Channel</div>
+        <div class="dropdown-toggle pe-3" @click="toggleDropdown">
+          Your channels
+        </div>
         <div class="dropdown-menu" ref="dropdown-menu">
-          <a class="dropdown-item" href="/dogs">Dogs</a>
+          <nuxt-link
+            :to="'/' + c.slug"
+            v-for="(c, i) in $options.channels.filter((c) => c.selected)"
+            :key="i"
+            class="dropdown-item"
+          >
+            {{ c.title }}
+          </nuxt-link>
+          <!-- <a class="dropdown-item" href="/dogs" >Dogs</a>
           <a class="dropdown-item" href="/politics">Politics</a>
           <a class="dropdown-item" href="/crypto">Crypto currencies</a>
-          <a class="dropdown-item" href="/webdev">Web development</a>
+          <a class="dropdown-item" href="/webdev">Web development</a> -->
         </div>
       </div>
-      <!--
 
-      <div>
-        @click="$route.path === '/nav' ? $router.back() : $router.push('/nav')"
-        class="navbar-toggler"
-        aria-label="toggle pushmenu"
-      >
-        <span
-          class="navbar-toggler-icon"
-          :class="$route.path === '/nav' ? 'navbar-toggler-icon-close' : false"
-        ></span>
-      </div>
-      -->
-
-      <div class="xxxnavbar-nav ms-auto">
+      <div class="ms-auto">
         <div class="btn btn-primary" @click="toggleModal">
           Connect <span class="d-none d-md-inline">wallet</span>
         </div>
@@ -42,6 +39,8 @@
 </template>
 
 <script>
+import channels from "@/data/channels.json";
+
 export default {
   data() {
     return {
@@ -49,6 +48,8 @@ export default {
       prevPosY: 0,
     };
   },
+
+  channels,
 
   mounted() {
     window.addEventListener("scroll", this.aosHeader);

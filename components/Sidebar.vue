@@ -1,16 +1,28 @@
 <template>
-  <div class="col-12 col-md-3 d-none d-sm-block">
-    <div class="border bg-white shadow-sm rounded py-3 xxxpe-0 px-3">
-      <h2 class="fs-3">Recently published</h2>
+  <div class="col-md-3 d-none d-md-block">
+    <div class="border bg-white shadow-sm rounded py-3 px-3">
+      <h2 class="fs-4">Recently published</h2>
 
-      <div class="" v-for="(article, i) in articles" :key="i">
+      <div
+        class=""
+        v-for="(article, i) in articles.sort((a, b) =>
+          a.date > b.date ? -1 : 1
+        )"
+        :key="i"
+      >
         <nuxt-link
           :to="'/article/' + article.slug"
           class="d-block w-100"
           :class="i !== 9 ? 'border-bottom' : false"
         >
-          <small class="text-muted fw-bold"
-            >{{ article.date.H }}:{{ article.date.m }}
+          <small class="text-muted fw-bold">
+            {{ formatDate(article.date) }}
+            <!-- {{ article.date }} -->
+            <!-- {{ article.date.getDay() }}
+
+            {{ article.date.getMonth() }}
+            {{ String(article.date.getHours()).padStart(2, "0") }}:
+            {{ String(article.date.getMinutes()).padStart(2, "0") }} -->
           </small>
           <h3 class="fs-6 fw-light">{{ article.title }}</h3>
         </nuxt-link>
@@ -25,6 +37,22 @@ export default {
     articles: {
       type: [Object, Array],
       default: () => {},
+    },
+  },
+
+  methods: {
+    formatDate(date) {
+      return (
+        date.toLocaleDateString("us-EN", {
+          day: "numeric",
+          month: "long",
+        }) +
+        ", " +
+        date.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      );
     },
   },
 };

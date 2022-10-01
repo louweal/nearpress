@@ -1,15 +1,11 @@
 <template>
   <div>
-    <div class="row gx-3 gx-md-5">
-      <div
-        class="col-12 col-md-6"
-        v-for="(article, i) in articles.slice(0, 2)"
-        :key="i"
-      >
-        <display-card
-          :data="article"
-          :class="i > 0 ? 'd-none d-sm-block' : false"
-        />
+    <div class="row gx-3 gx-lg-5">
+      <div class="col-12 col-md-6">
+        <display-card :data="articles[0]" />
+      </div>
+      <div class="col-12 col-md-6">
+        <display-card :data="articles[1]" class="d-none d-md-block" />
       </div>
     </div>
 

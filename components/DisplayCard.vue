@@ -1,16 +1,16 @@
 <template>
   <nuxt-link
     :to="'/article/' + data.slug"
-    class="card ratio ratio-16x9 position-relative"
+    class="card ratio ratio-4x3 position-relative"
   >
     <div
-      class="card-img position-absolute rounded"
+      class="card-img position-absolute rounded bg-light"
       :style="{
         backgroundImage: visual,
       }"
     ></div>
-    <div class="card-img-overlay rounded">
-      <h2 class="text-white fs-1">{{ data.title }}</h2>
+    <div class="card-img-overlay rounded pb-1 px-3 px-lg-4 pb-lg-2">
+      <h2 class="text-white fs-3">{{ data.title }}</h2>
     </div>
     <!-- <div class="card-overlay" /> -->
   </nuxt-link>
@@ -27,13 +27,15 @@ export default {
 
   computed: {
     visual() {
-      let img = require("@/images/" +
-        this.data.channel +
-        "/" +
-        this.data.visual +
-        ".jpg");
-
-      return `url(${img})`;
+      try {
+        return `url(${require("@/images/" +
+          this.data.channel +
+          "/" +
+          this.data.visual +
+          ".jpg")})`;
+      } catch {
+        return "none";
+      }
     },
   },
 };
@@ -41,23 +43,20 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  // overflow: hidden !important;
   position: relative;
 
   &:hover .card-img {
-    background-size: 104%;
+    background-size: 120%;
   }
 }
 
 .card-img {
-  // width: 100%;
   height: 100%;
   overflow: hidden;
-  // transform-origin: bottom right;
   background-position: center;
   transition: background-size 0.4s 0.15s cubic-bezier(0.2, 0, 0.1, 1);
-
-  background-size: 100%;
+  // background-size: 100%;
+  background-size: 115%;
 }
 
 .card-img-overlay {
@@ -67,11 +66,9 @@ export default {
   bottom: 0;
   width: 100%;
   height: 100%;
-  padding: 1.3rem 2rem; // !important;
+  // padding: 1.3rem 2rem;
   display: flex;
   align-items: flex-end;
-
-  // border: 3px solid red !important;
   background: rgb(0, 0, 0);
   background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 59%);
   z-index: 3;

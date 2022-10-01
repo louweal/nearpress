@@ -1,4 +1,5 @@
 import loremIpsum from "~/data/lorem-ipsum.json";
+import channels from "~/data/channels.json";
 
 function shuffledLorem() {
   return loremIpsum.text
@@ -30,34 +31,47 @@ function makeParagraphs(n) {
 }
 
 export function randomArticles(n) {
+  let numChannels = channels.length;
+
+  let channelSlugs = channels.map((c) => c.slug);
+
   let a = [];
   for (let i = 0; i < n; i++) {
-    let title = getWords(Math.floor(Math.random() * 7) + 7);
+    let title = getWords(Math.floor(Math.random() * 4) + 7);
     let content = makeParagraphs(7 + Math.ceil(Math.random() * 5));
+    let channel = channelSlugs[Math.floor(Math.random() * numChannels)];
+
+    // console.log(channel);
+    let numImages = channels.find((c) => c.slug === channel).images;
+    // console.log("numImages :>> ", numImages);
+
     a.push({
       author: getWords(2)
         .toLowerCase()
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
         .join(" "),
+      id: i,
       title: title,
       intro: getWords(14),
       slug: title.toLowerCase().replaceAll(" ", "-"),
-      visual: Math.ceil(Math.random() * 33),
-      channel: "dogs",
+      visual: Math.ceil(Math.random() * numImages),
+      channel: channel,
       content: content,
       count: content
         .map((p) => p.count)
         .reduce((partialSum, a) => partialSum + a, 0),
-      date: {
-        Y: Math.ceil(Math.random() * 3) + 2019,
-        M: String(Math.ceil(Math.random() * 12)).padStart(2, "0"),
-        D: String(Math.ceil(Math.random() * 30)).padStart(2, "0"), // quick but imperfect
-        H: String(Math.floor(Math.random() * 23)).padStart(2, "0"),
-        m: String(Math.floor(Math.random() * 60)).padStart(2, "0"),
-      },
+      date: new Date((1662031747 + Math.ceil(Math.random() * 2592000)) * 1000), // 1 sept 2022 + 1 month
     });
   }
+
+  // date: {
+  //   Y: Math.ceil(Math.random() * 3) + 2019,
+  //   M: String(Math.ceil(Math.random() * 12)).padStart(2, "0"),
+  //   D: String(Math.ceil(Math.random() * 30)).padStart(2, "0"), // quick but imperfect
+  //   H: String(Math.floor(Math.random() * 23)).padStart(2, "0"),
+  //   m: String(Math.floor(Math.random() * 60)).padStart(2, "0"),
+  // },
 
   return a;
 }

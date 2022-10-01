@@ -1,25 +1,21 @@
 <template>
   <main>
-    <div class="container">
+    <div class="container-lg" v-if="article">
       <div class="row">
         <div class="col-12 col-md-10 offset-md-1">
           <div
-            class="article-img ratio ratio-16x9 rounded mb-2"
+            class="article-img ratio ratio-16x9 rounded mb-2 bg-light"
             :style="{
               backgroundImage: visual,
             }"
           ></div>
         </div>
 
-        <div class="col-12 col-md-8 offset-md-2">
+        <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
           <ul class="list-inline">
             <li>{{ article.author }}</li>
             <li>
-              {{
-                formatDate(
-                  `${article.date.Y}-${article.date.M}-${article.date.D}`
-                )
-              }}
+              {{ formatDate(article.date) }}
             </li>
             <li>{{ article.count }} t<del>n</del></li>
           </ul>
@@ -45,12 +41,31 @@
         </div>
       </div>
 
+      <h2 class="fs-5">Related</h2>
+
+      <div class="row g-3">
+        <div
+          class="col-12 col-md"
+          v-for="(a, i) in articles
+            .filter((a) => a.channel === article.channel && a.id !== article.id)
+            .slice(0, 5)"
+          :key="i"
+        >
+          <card :data="a" :showIntro="false" />
+        </div>
+      </div>
+
       <div class="progress">
         <div class="bar" ref="bar"></div>
         <div class="progress-label" ref="label">{{ charactersVisible }}</div>
 
         <!-- <div class="end-label">$ {{ article.count }}</div> -->
       </div>
+    </div>
+
+    <div v-else class="text-center min-vh-100">
+      <h2>404</h2>
+      <p>Article not found.</p>
     </div>
   </main>
 </template>
@@ -92,20 +107,21 @@ export default {
     },
 
     visual() {
-      let img = require("@/images/" +
-        this.article.channel +
-        "/" +
-        this.article.visual +
-        ".jpg");
-
-      return `url(${img})`;
+      try {
+        return `url(${require("@/images/" +
+          this.article.channel +
+          "/" +
+          this.article.visual +
+          ".jpg")})`;
+      } catch {
+        return "none";
+      }
     },
   },
 
   methods: {
     formatDate(date) {
-      let splitDate = date.split(" ");
-      return new Date(splitDate[0]).toLocaleDateString("us-EN", {
+      return date.toLocaleDateString("us-EN", {
         day: "numeric",
         month: "long",
         year: "numeric",

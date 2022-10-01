@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Dogs",
+    "slug": "dogs",
+    "images": 33,
+    "selected": true
+  },
+  {
+    "title": "Chess",
+    "slug": "chess",
+    "images": 20,
+    "selected": true
+  },
+  {
+    "title": "UX design",
+    "slug": "ux-design",
+    "images": 22,
+    "selected": true
+  },
+  {
+    "title": "Hiking",
+    "slug": "hiking",
+    "images": 0,
+    "selected": true
+  },
+  {
+    "title": "Soccer",
+    "slug": "soccer",
+    "images": 0,
+    "selected": false
+  }
+]

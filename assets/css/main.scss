@@ -46,11 +46,9 @@ $btn-border-color: transparent;
 $btn-border-radius: 12px;
 $btn-font-weight: 500;
 
-// grid
-$grid-gutter-width: 1.9rem;
-
 $enable-smooth-scroll: false;
-// $enable-transitions: false;
+
+$breadcrumb-active-color: $secondary;
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "@/node_modules/bootstrap/scss/variables";
@@ -70,7 +68,7 @@ $enable-smooth-scroll: false;
 @import "@/node_modules/bootstrap/scss/modal";
 @import "@/node_modules/bootstrap/scss/close"; // = close button
 @import "@/node_modules/bootstrap/scss/breadcrumb"; // also for lists
-@import "@/node_modules/bootstrap/scss/type";
+// @import "@/node_modules/bootstrap/scss/type";
 
 // @import "@/node_modules/bootstrap/scss/card"; // stupid !!!
 
@@ -109,14 +107,11 @@ body {
     rgba(117, 93, 241, 1) 0%,
     rgba(149, 94, 174, 1) 81%
   );
-  opacity: 1;
   transition: filter 0.24s linear !important;
 
   &:hover,
   &:active:hover,
   &:focus {
-    // transform: scaleX(101%) scaleY(105%);
-    opacity: 1;
     filter: hue-rotate(77deg);
   }
 }
@@ -132,6 +127,8 @@ body {
 }
 
 .list-inline {
+  padding-left: 0;
+
   li {
     $size: 6px;
     $padding: 1.7rem;
@@ -191,3 +188,21 @@ body {
   will-change: opacity;
   animation-play-state: paused;
 }
+
+// card
+
+.card {
+  h2 {
+    font-size: 1rem;
+
+    @include media-breakpoint-up(lg) {
+      font-size: 1.125rem;
+    }
+  }
+}
+
+// .display-card {
+//   h2 {
+
+//   }
+// }

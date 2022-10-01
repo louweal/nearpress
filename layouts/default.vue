@@ -4,7 +4,7 @@
       <characters />
 
       <navbar ref="header" />
-      <div id="pushdown"></div>
+      <div id="pushdown" class="mb-3 mb-lg-4"></div>
 
       <Nuxt />
 
@@ -23,13 +23,13 @@ export default {
   transition: "page",
 
   created() {
-    this.$store.commit("SET_ARTICLES", randomArticles(30));
+    this.$store.commit("SET_ARTICLES", randomArticles(60));
   },
 
   mounted() {
     let headerHeight = document.querySelector("#header").offsetHeight;
     let pushdown = document.querySelector("#pushdown");
-    pushdown.style.height = headerHeight + 24 + "px";
+    pushdown.style.height = headerHeight + "px";
     // console.log(document.querySelector("#header").offsetHeight);
   },
 

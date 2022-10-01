@@ -42,3 +42,21 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.bi {
+  //test special gradient
+
+  background: -webkit-linear-gradient(45deg, #755df1, #955eae);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: filter 0.24s linear !important;
+
+  &:hover,
+  &:active:hover,
+  &:focus {
+    filter: hue-rotate(77deg);
+  }
+}
+</style>

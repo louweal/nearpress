@@ -1,24 +1,27 @@
 <template>
   <nuxt-link :to="'/article/' + data.slug" class="card">
-    <div v-if="borderTop" class="w-100 border-top d-sm-none pt-2"></div>
-    <div class="row g-2 w-100">
-      <div class="col-sm-12" :class="flex ? 'col-4' : 'col-12'">
+    <div v-if="borderTop" class="w-100 border-top d-sm-none"></div>
+    <div class="row g-md-0 w-100" :class="flex ? 'gx-2' : 'gx-0'">
+      <div
+        class="col-md-12"
+        :class="flex ? 'col-3 col-sm-2 col-md-2' : 'col-12'"
+      >
         <div
-          class="card-img ratio ratio-4x3 rounded mb-2"
+          class="card-img ratio ratio-4x3 rounded mb-xl-2 w-100 bg-light"
           :style="{
             backgroundImage: visual,
           }"
         ></div>
       </div>
-      <div class="col-8 col-sm-12 d-none d-sm-block">
+      <div class="col-8 col-md-12 d-none d-md-block">
         <h2 class="card-title">{{ data.title }}</h2>
 
-        <p v-if="showIntro" class="d-none d-sm-block">{{ data.intro }}</p>
+        <p v-if="showIntro" class="d-none d-md-block">{{ data.intro }}</p>
       </div>
 
       <div
-        class="d-sm-none align-self-center"
-        :class="flex ? 'col-8' : 'col-12'"
+        class="d-md-none align-self-center"
+        :class="flex ? 'col-9' : 'col-12'"
       >
         <h2 class="card-title" :class="flex ? 'fw-light' : false">
           {{ data.title }}
@@ -51,13 +54,15 @@ export default {
 
   computed: {
     visual() {
-      let img = require("@/images/" +
-        this.data.channel +
-        "/" +
-        this.data.visual +
-        ".jpg");
-
-      return `url(${img})`;
+      try {
+        return `url(${require("@/images/" +
+          this.data.channel +
+          "/" +
+          this.data.visual +
+          ".jpg")})`;
+      } catch {
+        return "none";
+      }
     },
   },
 };
@@ -70,6 +75,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  // border: 1px solid plum;
 
   &:hover {
     .card-img {
@@ -87,7 +93,7 @@ export default {
 }
 
 .card-img {
-  width: 100%;
+  // width: 100%;
   height: auto;
   overflow: hidden;
   background-repeat: no-repeat;
