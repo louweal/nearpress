@@ -1,18 +1,24 @@
 <template>
-  <nuxt-link
-    :to="'/article/' + data.slug"
-    class="card ratio ratio-4x3 position-relative"
-  >
-    <div
-      class="card-img position-absolute rounded bg-light"
-      :style="{
-        backgroundImage: visual,
-      }"
-    ></div>
-    <div class="card-img-overlay rounded pb-1 px-3 px-lg-4 pb-lg-2">
-      <h2 class="text-white fs-3">{{ data.title }}</h2>
+  <nuxt-link :to="'/a/' + data.slug" class="card position-relative">
+    <div class="ratio ratio-4x3">
+      <div
+        class="card-img position-absolute rounded bg-light"
+        :style="{
+          backgroundImage: visual,
+        }"
+      ></div>
+
+      <div class="card-img-overlay rounded pb-1 px-3 px-lg-4 pb-lg-2">
+        <h2 class="text-white fs-3">{{ data.title }}</h2>
+      </div>
     </div>
-    <!-- <div class="card-overlay" /> -->
+    <span
+      class="badge bg-secondary position-absolute m-1 top-0 end-0 lh-1"
+      v-if="data.progress"
+    >
+      {{ data.progress }} %
+      <!-- <i class="bi bi-eyeglasses fs-4 lh-1"></i> -->
+    </span>
   </nuxt-link>
 </template>
 
@@ -55,7 +61,6 @@ export default {
   overflow: hidden;
   background-position: center;
   transition: background-size 0.4s 0.15s cubic-bezier(0.2, 0, 0.1, 1);
-  // background-size: 100%;
   background-size: 115%;
 }
 

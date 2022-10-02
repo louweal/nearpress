@@ -9,28 +9,26 @@
         <img src="@/images/logo.svg" alt="" width="203" height="45" />
       </nuxt-link>
 
-      <div class="dropdown d-none d-sm-inline">
+      <div class="dropdown d-none d-sm-inline cursor-pointer">
         <div class="dropdown-toggle pe-3" @click="toggleDropdown">
           Your channels
         </div>
         <div class="dropdown-menu" ref="dropdown-menu">
           <nuxt-link
-            :to="'/' + c.slug"
+            :to="'/c/' + c.slug"
+            event=""
+            @click.native="closeAndClick('/c/' + c.slug)"
             v-for="(c, i) in $options.channels.filter((c) => c.selected)"
             :key="i"
             class="dropdown-item"
           >
             {{ c.title }}
           </nuxt-link>
-          <!-- <a class="dropdown-item" href="/dogs" >Dogs</a>
-          <a class="dropdown-item" href="/politics">Politics</a>
-          <a class="dropdown-item" href="/crypto">Crypto currencies</a>
-          <a class="dropdown-item" href="/webdev">Web development</a> -->
         </div>
       </div>
 
       <div class="ms-auto">
-        <div class="btn btn-primary" @click="toggleModal">
+        <div class="btn btn-secondary" @click="toggleModal">
           Connect <span class="d-none d-md-inline">wallet</span>
         </div>
       </div>
@@ -60,6 +58,11 @@ export default {
   },
 
   methods: {
+    closeAndClick(path) {
+      this.toggleDropdown();
+      this.$router.push(path);
+    },
+
     aosHeader() {
       let header = this.$refs["header"];
 

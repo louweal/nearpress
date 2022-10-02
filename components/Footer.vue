@@ -68,6 +68,7 @@ export default {};
   &-logo {
     img {
       width: min(50vw, 150px);
+      filter: grayscale(1);
     }
   }
 }

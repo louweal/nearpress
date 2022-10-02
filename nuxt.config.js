@@ -26,9 +26,12 @@ export default {
 
   css: ["@/assets/css/main.scss"],
 
+  messages: {
+    error_404: "Page not found",
+  },
+
   router: {
     scrollBehavior(to) {
-      console.log("hlooooo");
       if (to.hash) {
         return window.scrollTo({
           top: document.querySelector(to.hash).offsetTop + window.innerHeight,

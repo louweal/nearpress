@@ -20,7 +20,7 @@
         </div>
         <div class="modal-body px-4">
           <div class="d-grid gap-2 mb-3">
-            <button type="button" class="btn btn-primary">MetaMask</button>
+            <button type="button" class="btn btn-secondary">MetaMask</button>
           </div>
 
           <p class="text-center">

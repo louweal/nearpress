@@ -58,6 +58,10 @@ export default {
   transition: "page",
   channels,
 
+  async mounted() {
+    await this.validatePage();
+  },
+
   computed: {
     articles() {
       return this.$store.state.articles;
@@ -73,6 +77,17 @@ export default {
       return this.$options.channels.find(
         (c) => c.slug === this.$route.params.slug
       );
+    },
+  },
+
+  methods: {
+    validatePage() {
+      if (!this.channel) {
+        this.$nuxt.error({
+          statusCode: 404,
+          message: "Channel not found",
+        });
+      }
     },
   },
 };

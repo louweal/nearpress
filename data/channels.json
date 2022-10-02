@@ -2,31 +2,26 @@
   {
     "title": "Dogs",
     "slug": "dogs",
-    "images": 33,
-    "selected": true
+    "images": 33
   },
   {
     "title": "Chess",
     "slug": "chess",
-    "images": 20,
-    "selected": true
+    "images": 20
   },
   {
     "title": "UX design",
     "slug": "ux-design",
-    "images": 22,
-    "selected": true
+    "images": 22
   },
   {
     "title": "Hiking",
     "slug": "hiking",
-    "images": 0,
-    "selected": true
+    "images": 32
   },
   {
     "title": "Soccer",
     "slug": "soccer",
-    "images": 0,
-    "selected": false
+    "images": 0
   }
 ]

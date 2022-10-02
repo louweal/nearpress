@@ -56,7 +56,9 @@ export default {
 
   computed: {
     articles() {
-      return this.$store.state.articles;
+      return this.$store.state.articles.filter((a) =>
+        this.$store.state.user.channels.includes(a.channel)
+      );
     },
   },
 };

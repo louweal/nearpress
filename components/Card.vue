@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="'/article/' + data.slug" class="card">
+  <nuxt-link :to="'/a/' + data.slug" class="card">
     <div v-if="borderTop" class="w-100 border-top d-sm-none"></div>
     <div class="row g-md-0 w-100" :class="flex ? 'gx-2' : 'gx-0'">
       <div
@@ -12,6 +12,13 @@
             backgroundImage: visual,
           }"
         ></div>
+
+        <span
+          class="badge bg-secondary position-absolute m-1 top-0 end-0"
+          v-if="data.progress"
+        >
+          {{ data.progress }} %
+        </span>
       </div>
       <div class="col-8 col-md-12 d-none d-md-block">
         <h2 class="card-title">{{ data.title }}</h2>
@@ -93,7 +100,6 @@ export default {
 }
 
 .card-img {
-  // width: 100%;
   height: auto;
   overflow: hidden;
   background-repeat: no-repeat;

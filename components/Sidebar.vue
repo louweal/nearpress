@@ -11,20 +11,19 @@
         :key="i"
       >
         <nuxt-link
-          :to="'/article/' + article.slug"
+          :to="'/a/' + article.slug"
           class="d-block w-100"
           :class="i !== 9 ? 'border-bottom' : false"
         >
           <small class="text-muted fw-bold">
             {{ formatDate(article.date) }}
-            <!-- {{ article.date }} -->
-            <!-- {{ article.date.getDay() }}
-
-            {{ article.date.getMonth() }}
-            {{ String(article.date.getHours()).padStart(2, "0") }}:
-            {{ String(article.date.getMinutes()).padStart(2, "0") }} -->
           </small>
-          <h3 class="fs-6 fw-light">{{ article.title }}</h3>
+          <h3 class="fs-6 fw-light">
+            {{ article.title }}
+            <span class="badge bg-secondary" v-if="article.progress">
+              {{ article.progress }} %
+            </span>
+          </h3>
         </nuxt-link>
       </div>
     </div>

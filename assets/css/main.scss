@@ -6,7 +6,7 @@
 @import "@/node_modules/bootstrap/scss/functions";
 
 $primary: #000; // #3b153d;
-$secondary: #955eae; // #8e3c69; // rgba(0, 0, 0, 0.5); // #b185d6;
+$secondary: #755df1; // #8e3c69; // rgba(0, 0, 0, 0.5); // #b185d6;
 $light: #ddd;
 
 $body-bg: #f4f4f4;
@@ -50,6 +50,13 @@ $enable-smooth-scroll: false;
 
 $breadcrumb-active-color: $secondary;
 
+// badges
+$badge-font-size: 0.7em;
+$badge-font-weight: 500;
+// $badge-color: $white;
+$badge-padding-x: 0.7em;
+$badge-padding-y: 0.35em;
+
 // 3. Include remainder of required Bootstrap stylesheets
 @import "@/node_modules/bootstrap/scss/variables";
 @import "@/node_modules/bootstrap/scss/mixins";
@@ -67,22 +74,20 @@ $breadcrumb-active-color: $secondary;
 @import "@/node_modules/bootstrap/scss/dropdown";
 @import "@/node_modules/bootstrap/scss/modal";
 @import "@/node_modules/bootstrap/scss/close"; // = close button
-@import "@/node_modules/bootstrap/scss/breadcrumb"; // also for lists
-// @import "@/node_modules/bootstrap/scss/type";
-
-// @import "@/node_modules/bootstrap/scss/card"; // stupid !!!
+@import "@/node_modules/bootstrap/scss/breadcrumb";
+@import "@/node_modules/bootstrap/scss/badge";
 
 // Helpers
 @import "@/node_modules/bootstrap/scss/helpers/position";
 @import "@/node_modules/bootstrap/scss/helpers/stacks";
 @import "@/node_modules/bootstrap/scss/helpers/ratio";
 
-// Mixins
-
-// @import "@/node_modules/bootstrap/scss/mixins/breakpoints";
-
 // Utilities
 @import "@/node_modules/bootstrap/scss/utilities/api";
+
+.cursor-pointer {
+  cursor: pointer;
+}
 
 body {
   width: 100%;
@@ -100,13 +105,15 @@ body {
   transition: filter 0.3s linear;
 }
 
-.btn {
+.bg-secondary,
+.btn-secondary {
   background: rgb(117, 93, 241);
   background: linear-gradient(
     141deg,
     rgba(117, 93, 241, 1) 0%,
     rgba(149, 94, 174, 1) 81%
   );
+  color: #fff;
   transition: filter 0.24s linear !important;
 
   &:hover,
@@ -130,8 +137,9 @@ body {
   padding-left: 0;
 
   li {
-    $size: 6px;
+    $size: 6px; // bullet size
     $padding: 1.7rem;
+    $line-height: 24.64px; // 16 * $line-height-base
 
     display: inline;
     position: relative;
@@ -142,7 +150,7 @@ body {
       content: "";
       z-index: 2;
       left: calc(($padding / -2) - $size);
-      top: calc(50% - $size/2);
+      top: calc($line-height/2 - $size/2 - 1px);
       width: $size;
       height: $size;
       border-radius: 50%;

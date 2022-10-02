@@ -4,11 +4,13 @@
       <characters />
 
       <navbar ref="header" />
-      <div id="pushdown" class="mb-3 mb-lg-4"></div>
+      <div class="min-vh-100 d-flex flex-column justify-content-between">
+        <div id="pushdown" class="mb-3 mb-lg-4"></div>
 
-      <Nuxt />
+        <Nuxt />
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
 
     <modal />
@@ -17,13 +19,19 @@
 
 <script>
 import { randomArticles } from "@/utils/randomArticles.js";
+import channels from "@/data/channels.json";
 
 export default {
   // scrollToTop: true,
   transition: "page",
 
+  channels,
+
   created() {
-    this.$store.commit("SET_ARTICLES", randomArticles(60));
+    this.$store.commit("SET_ARTICLES", randomArticles(90));
+    this.$store.commit("SET_CHANNELS", this.$options.channels);
+
+    this.$store.commit("setSelectedChannels"); //
   },
 
   mounted() {
@@ -41,11 +49,6 @@ export default {
         this.enableScroll();
       }
     },
-    // $route: function (to, from) {
-    //   console.log("route changed!");
-    //   // console.log(to);
-    //   // this.aos();
-    // },
   },
 
   methods: {

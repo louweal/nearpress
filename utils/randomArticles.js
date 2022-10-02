@@ -17,14 +17,17 @@ function getWords(x) {
 function makeParagraphs(n) {
   let a = [];
   for (let i = 0; i < n; i++) {
-    let p = {};
+    let p = {
+      count: 0,
+    };
 
     if (i > 0 && Math.ceil(Math.random() * 3) == 3) {
       // add section title above paragraph (1/3 prob)
       p["title"] = getWords(Math.ceil(Math.random() * 3));
+      p["count"] += p.title.length;
     }
     p["content"] = getWords(30 + Math.floor(Math.random() * 55));
-    p["count"] = p.content.length; // character count
+    p["count"] += p.content.length; // character count
     a.push(p);
   }
   return a;
@@ -64,14 +67,6 @@ export function randomArticles(n) {
       date: new Date((1662031747 + Math.ceil(Math.random() * 2592000)) * 1000), // 1 sept 2022 + 1 month
     });
   }
-
-  // date: {
-  //   Y: Math.ceil(Math.random() * 3) + 2019,
-  //   M: String(Math.ceil(Math.random() * 12)).padStart(2, "0"),
-  //   D: String(Math.ceil(Math.random() * 30)).padStart(2, "0"), // quick but imperfect
-  //   H: String(Math.floor(Math.random() * 23)).padStart(2, "0"),
-  //   m: String(Math.floor(Math.random() * 60)).padStart(2, "0"),
-  // },
 
   return a;
 }

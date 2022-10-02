@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="container-lg" v-if="article">
+    <div class="container-lg">
       <div class="row">
         <div class="col-12 col-md-10 offset-md-1">
           <div
@@ -8,7 +8,9 @@
             :style="{
               backgroundImage: visual,
             }"
-          ></div>
+          >
+            {{ visual === "none" ? article.visual : "" }}
+          </div>
         </div>
 
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
@@ -28,6 +30,7 @@
               v-if="p.title"
               class="fs-2 fade-in-up"
               data-aos="70"
+              :data-chars="p.title.length"
             >
               {{ p.title }}
             </h2>
@@ -36,6 +39,12 @@
               {{ p.content }}
             </p>
           </template>
+
+          <p class="text-secondary fade-in" data-aos="68">
+            Thank you for reading this article and supporting
+            <b>{{ article.author }}</b
+            >!
+          </p>
 
           <social-share :title="article.title" />
         </div>
@@ -54,18 +63,10 @@
           <card :data="a" :showIntro="false" />
         </div>
       </div>
-
       <div class="progress">
-        <div class="bar" ref="bar"></div>
+        <div class="bar bg-secondary" ref="bar"></div>
         <div class="progress-label" ref="label">{{ charactersVisible }}</div>
-
-        <!-- <div class="end-label">$ {{ article.count }}</div> -->
       </div>
-    </div>
-
-    <div v-else class="text-center min-vh-100">
-      <h2>404</h2>
-      <p>Article not found.</p>
     </div>
   </main>
 </template>
@@ -80,32 +81,39 @@ export default {
       scrollY: 0,
       prevPosY: 0,
       charactersVisible: 0,
+      articles: () => {},
+      article: () => {},
     };
   },
 
-  mounted() {
-    this.scrollHeight = document.body.scrollHeight;
-    this.getScrollPos();
-    window.addEventListener("scroll", this.getScrollPos);
+  created() {
+    this.articles = this.$store.state.articles;
+    console.log(this.$route.params.slug);
+    this.article = this.articles.find(
+      (a) => a.slug === this.$route.params.slug
+    );
+  },
 
-    // this.aos();
+  async mounted() {
+    await this.validatePage();
+    this.scrollHeight = document.body.scrollHeight;
     window.addEventListener("scroll", this.aos);
   },
 
   beforeDestroy() {
-    // console.log("beforeDestroy");
-    window.removeEventListener("scroll", this.getScrollPos);
+    let progress = Math.ceil(
+      (this.charactersVisible * 100) / this.article.count
+    );
+    console.log("progress :>> ", progress);
+    this.$store.commit("setProgress", {
+      id: this.article.id,
+      progress: progress,
+    });
+    console.log("setProgress!");
     window.removeEventListener("scroll", this.aos);
   },
 
   computed: {
-    articles() {
-      return this.$store.state.articles;
-    },
-    article() {
-      return this.articles.find((a) => a.slug === this.$route.params.slug);
-    },
-
     visual() {
       try {
         return `url(${require("@/images/" +
@@ -120,6 +128,15 @@ export default {
   },
 
   methods: {
+    validatePage() {
+      if (!this.article) {
+        this.$nuxt.error({
+          statusCode: 404,
+          message: "Article not found",
+        });
+      }
+    },
+
     formatDate(date) {
       return date.toLocaleDateString("us-EN", {
         day: "numeric",
@@ -128,30 +145,7 @@ export default {
       });
     },
 
-    getScrollPos() {
-      let clientCenter = document.documentElement.clientHeight / 2;
-      let centerY = window.scrollY + clientCenter;
-      let direction = centerY > this.prevPosY ? "down" : "up";
-
-      if (direction === "down") {
-        // total = this.article.count
-        // this.charactersVis
-
-        // let p = (100 * centerY) / (this.scrollHeight - clientCenter);
-        // let label = this.$refs["label"];
-
-        // if (label) {
-        //   label.style.left = p + "%";
-        //   // label.innerHTML = "$ " + (p / 100).toFixed(2);
-        // }
-
-        this.prevPosY = centerY;
-      }
-    },
-
     aos() {
-      // console.log("aos");
-
       let animTargets = document.querySelectorAll("[data-aos]");
       [].forEach.call(animTargets, (target) => {
         let startAt = parseInt(target.dataset.aos);
@@ -171,9 +165,9 @@ export default {
             target.classList.add("start-animation");
             if (target.dataset.chars) {
               this.charactersVisible += parseInt(target.dataset.chars);
+              console.log("here: " + this.charactersVisible);
 
               let p = (100 * this.charactersVisible) / this.article.count;
-              console.log(p);
               let bar = this.$refs["bar"];
               let label = this.$refs["label"];
 
@@ -217,12 +211,12 @@ $fontsize: 8px;
     top: 0;
     bottom: 0;
     width: 0;
-    background: rgb(117, 93, 241);
-    background: linear-gradient(
-      141deg,
-      rgba(117, 93, 241, 1) 0%,
-      rgba(149, 94, 174, 1) 81%
-    );
+    // background: rgb(117, 93, 241);
+    // background: linear-gradient(
+    //   141deg,
+    //   rgba(117, 93, 241, 1) 0%,
+    //   rgba(149, 94, 174, 1) 81%
+    // );
 
     transition: width 0.3s ease-out;
   }
