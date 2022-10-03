@@ -57,6 +57,9 @@ $badge-font-weight: 500;
 $badge-padding-x: 0.7em;
 $badge-padding-y: 0.35em;
 
+// form
+$form-label-font-weight: 700;
+
 // 3. Include remainder of required Bootstrap stylesheets
 @import "@/node_modules/bootstrap/scss/variables";
 @import "@/node_modules/bootstrap/scss/mixins";
@@ -76,6 +79,7 @@ $badge-padding-y: 0.35em;
 @import "@/node_modules/bootstrap/scss/close"; // = close button
 @import "@/node_modules/bootstrap/scss/breadcrumb";
 @import "@/node_modules/bootstrap/scss/badge";
+@import "@/node_modules/bootstrap/scss/forms";
 
 // Helpers
 @import "@/node_modules/bootstrap/scss/helpers/position";
@@ -209,8 +213,20 @@ body {
   }
 }
 
-// .display-card {
-//   h2 {
+.bi.color-secondary {
+  background: -webkit-linear-gradient(45deg, #755df1, #955eae);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: filter 0.24s linear !important;
 
-//   }
-// }
+  &:hover,
+  &:active:hover,
+  &:focus {
+    filter: hue-rotate(77deg);
+  }
+}
+
+.bi--active {
+  filter: hue-rotate(77deg);
+}

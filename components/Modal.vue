@@ -7,8 +7,8 @@
     <div class="modal__bg" @click="toggleModal"></div>
     <div class="modal__inner">
       <div class="modal__content modal-content rounded">
-        <div class="modal-header d-flex align-center">
-          <h5 class="modal-title">Connect wallet</h5>
+        <div class="modal-header d-flex">
+          <h5 class="modal-title fs-5 align-self-center">Connect wallet</h5>
 
           <button
             type="button"
@@ -20,7 +20,9 @@
         </div>
         <div class="modal-body px-4">
           <div class="d-grid gap-2 mb-3">
-            <button type="button" class="btn btn-secondary">MetaMask</button>
+            <div class="btn btn-secondary cursor-pointer" @click="signIn">
+              MetaMask
+            </div>
           </div>
 
           <p class="text-center">
@@ -38,11 +40,28 @@ export default {
   methods: {
     toggleModal() {
       this.$store.commit("toggleModal");
-      if (this.$store.state.showModal === true) {
-        document.getElementById("page").classList.add("is-blurred");
-      } else {
-        document.getElementById("page").classList.remove("is-blurred");
-      }
+      document.getElementById("page").classList.toggle("is-blurred");
+    },
+
+    closeAndClick() {
+      this.toggleModal();
+      this.$router.push(path);
+    },
+    signIn() {
+      this.toggleModal();
+      this.$store.commit("setUser", {
+        id: 1,
+        name: "Anneloes",
+        channels: ["dogs", "hiking", "chess"],
+      });
+
+      let goto = this.$store.state.clickedArticle
+        ? this.$store.state.clickedArticle
+        : "/";
+      this.$router.push(goto);
+      this.$store.commit("setClickedArticle", undefined);
+
+      console.log("signed in!");
     },
   },
 };

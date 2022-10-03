@@ -9,16 +9,26 @@
         <img src="@/images/logo.svg" alt="" width="203" height="45" />
       </nuxt-link>
 
-      <div class="dropdown d-none d-sm-inline cursor-pointer">
+      <div
+        class="dropdown d-none d-sm-inline cursor-pointer"
+        v-if="$store.state.user"
+      >
         <div class="dropdown-toggle pe-3" @click="toggleDropdown">
           Your channels
+          <!-- {{ $store.state.user.name }} -->
         </div>
         <div class="dropdown-menu" ref="dropdown-menu">
+          <!-- {{ $store.state.user.channels }} -->
           <nuxt-link
             :to="'/c/' + c.slug"
             event=""
-            @click.native="closeAndClick('/c/' + c.slug)"
-            v-for="(c, i) in $options.channels.filter((c) => c.selected)"
+            @click.native="
+              toggleDropdown();
+              $router.push('/c/' + c.slug);
+            "
+            v-for="(c, i) in $options.channels.filter((c) =>
+              $store.state.user.channels.includes(c.slug)
+            )"
             :key="i"
             class="dropdown-item"
           >
@@ -27,10 +37,22 @@
         </div>
       </div>
 
-      <div class="ms-auto">
-        <div class="btn btn-secondary" @click="toggleModal">
-          Connect <span class="d-none d-md-inline">wallet</span>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <div v-if="$store.state.user" @click="signOut" class="cursor-pointer">
+          Disconnect<span class="d-none d-md-inline"> wallet</span>
         </div>
+
+        <div
+          class="btn btn-secondary"
+          @click="toggleModal"
+          v-if="!$store.state.user"
+        >
+          Connect<span class="d-none d-md-inline"> wallet</span>
+        </div>
+        <nuxt-link v-else to="/write" class="btn btn-secondary">
+          <span class="d-none d-md-inline">Start writing</span>
+          <span class="d-md-none">Write</span>
+        </nuxt-link>
       </div>
     </div>
   </nav>
@@ -58,9 +80,9 @@ export default {
   },
 
   methods: {
-    closeAndClick(path) {
-      this.toggleDropdown();
-      this.$router.push(path);
+    signOut() {
+      this.$store.commit("setUser", undefined);
+      this.$router.push("/");
     },
 
     aosHeader() {
@@ -104,14 +126,7 @@ export default {
 
     toggleModal() {
       this.$store.commit("toggleModal");
-
-      // console.log(this.$store.state.showModal);
-
-      if (this.$store.state.showModal === true) {
-        document.getElementById("page").classList.add("is-blurred");
-      } else {
-        document.getElementById("page").classList.remove("is-blurred");
-      }
+      document.getElementById("page").classList.toggle("is-blurred");
     },
   },
 };

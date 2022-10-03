@@ -1,24 +1,33 @@
 <template>
-  <nuxt-link :to="'/a/' + data.slug" class="card">
-    <div v-if="borderTop" class="w-100 border-top d-sm-none"></div>
-    <div class="row g-md-0 w-100" :class="flex ? 'gx-2' : 'gx-0'">
+  <nuxt-link
+    :to="'/a/' + data.slug"
+    event=""
+    @click.native="
+      $store.state.user ? $router.push('/a/' + data.slug) : paywall()
+    "
+    class="card"
+  >
+    <div v-if="borderTop" class="w-100 border-top d-md-none"></div>
+    <div class="row g-0 w-100 my-3" :class="flex ? 'gx-2 gx-sm-0' : 'gx-0'">
       <div
         class="col-md-12"
-        :class="flex ? 'col-3 col-sm-2 col-md-2' : 'col-12'"
+        :class="flex ? 'col-4 col-sm-3 col-md-2' : 'col-12'"
       >
-        <div
-          class="card-img ratio ratio-4x3 rounded mb-xl-2 w-100 bg-light"
-          :style="{
-            backgroundImage: visual,
-          }"
-        ></div>
+        <div class="position-relative xxmt-2 mt-md-0">
+          <div
+            class="card-img ratio ratio-4x3 rounded mb-md-1 mb-xl-2 w-100 bg-light"
+            :style="{
+              backgroundImage: visual,
+            }"
+          ></div>
 
-        <span
-          class="badge bg-secondary position-absolute m-1 top-0 end-0"
-          v-if="data.progress"
-        >
-          {{ data.progress }} %
-        </span>
+          <span
+            class="badge bg-secondary position-absolute m-1 top-0 end-0"
+            v-if="data.progress"
+          >
+            {{ data.progress }} %
+          </span>
+        </div>
       </div>
       <div class="col-8 col-md-12 d-none d-md-block">
         <h2 class="card-title">{{ data.title }}</h2>
@@ -28,7 +37,7 @@
 
       <div
         class="d-md-none align-self-center"
-        :class="flex ? 'col-9' : 'col-12'"
+        :class="flex ? 'col-8 col-sm-9' : 'col-12'"
       >
         <h2 class="card-title" :class="flex ? 'fw-light' : false">
           {{ data.title }}
@@ -70,6 +79,14 @@ export default {
       } catch {
         return "none";
       }
+    },
+  },
+
+  methods: {
+    paywall() {
+      this.$store.commit("toggleModal");
+      this.$store.commit("setClickedArticle", "/a/" + this.data.slug);
+      document.getElementById("page").classList.toggle("is-blurred");
     },
   },
 };

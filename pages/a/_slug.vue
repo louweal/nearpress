@@ -2,6 +2,24 @@
   <main>
     <div class="container-lg">
       <div class="row">
+        <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <nuxt-link to="/">Home</nuxt-link>
+              </li>
+              <li class="breadcrumb-item">
+                <nuxt-link :to="'/c/' + article.channel">{{
+                  article.channel
+                }}</nuxt-link>
+              </li>
+
+              <li class="breadcrumb-item active" aria-current="page">
+                {{ article.title }}
+              </li>
+            </ol>
+          </nav>
+        </div>
         <div class="col-12 col-md-10 offset-md-1">
           <div
             class="article-img ratio ratio-16x9 rounded mb-2 bg-light"
@@ -52,7 +70,7 @@
 
       <h2 class="fs-5">Related</h2>
 
-      <div class="row g-3">
+      <div class="row g-3 pt-1">
         <div
           class="col-12 col-md"
           v-for="(a, i) in articles
@@ -65,7 +83,7 @@
       </div>
       <div class="progress">
         <div class="bar bg-secondary" ref="bar"></div>
-        <div class="progress-label" ref="label">{{ charactersVisible }}</div>
+        <div class="progress-label" ref="label">{{ article.progress }}</div>
       </div>
     </div>
   </main>
@@ -81,6 +99,7 @@ export default {
       scrollY: 0,
       prevPosY: 0,
       charactersVisible: 0,
+      progress: 0,
       articles: () => {},
       article: () => {},
     };
@@ -88,7 +107,7 @@ export default {
 
   created() {
     this.articles = this.$store.state.articles;
-    console.log(this.$route.params.slug);
+    // console.log(this.$route.params.slug);
     this.article = this.articles.find(
       (a) => a.slug === this.$route.params.slug
     );
@@ -98,18 +117,34 @@ export default {
     await this.validatePage();
     this.scrollHeight = document.body.scrollHeight;
     window.addEventListener("scroll", this.aos);
+
+    if (this.article.progress) {
+      // this.charactersVisible = this.article.progress;
+    } else {
+      this.article.progress = 0;
+    }
+    let bar = this.$refs["bar"];
+    let label = this.$refs["label"];
+    let p = (100 * this.article.progress) / this.article.count;
+
+    if (bar && label) {
+      bar.style.width = p + "%";
+      label.style.left = p + "%";
+    }
   },
 
   beforeDestroy() {
-    let progress = Math.ceil(
-      (this.charactersVisible * 100) / this.article.count
-    );
-    console.log("progress :>> ", progress);
-    this.$store.commit("setProgress", {
-      id: this.article.id,
-      progress: progress,
-    });
-    console.log("setProgress!");
+    if (this.article) {
+      // let progress = Math.floor(
+      //   (this.charactersVisible * 100) / this.article.count
+      // );
+      // console.log("progress :>> ", progress);
+      this.$store.commit("setProgress", {
+        id: this.article.id,
+        progress: this.charactersVisible,
+      });
+    }
+
     window.removeEventListener("scroll", this.aos);
   },
 
@@ -165,7 +200,7 @@ export default {
             target.classList.add("start-animation");
             if (target.dataset.chars) {
               this.charactersVisible += parseInt(target.dataset.chars);
-              console.log("here: " + this.charactersVisible);
+              // console.log("here: " + this.charactersVisible);
 
               let p = (100 * this.charactersVisible) / this.article.count;
               let bar = this.$refs["bar"];
@@ -174,6 +209,10 @@ export default {
               if (bar && label) {
                 bar.style.width = p + "%";
                 label.style.left = p + "%";
+              }
+
+              if (this.charactersVisible > this.article.progress) {
+                console.log("PAY!");
               }
             }
           }

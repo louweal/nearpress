@@ -12,7 +12,13 @@
       >
         <nuxt-link
           :to="'/a/' + article.slug"
-          class="d-block w-100"
+          event=""
+          @click.native="
+            $store.state.user
+              ? $router.push('/a/' + article.slug)
+              : paywall(article)
+          "
+          class="d-block w-100 m-1"
           :class="i !== 9 ? 'border-bottom' : false"
         >
           <small class="text-muted fw-bold">
@@ -52,6 +58,12 @@ export default {
           minute: "2-digit",
         })
       );
+    },
+
+    paywall(article) {
+      this.$store.commit("toggleModal");
+      this.$store.commit("setClickedArticle", "/a/" + article.slug);
+      document.getElementById("page").classList.toggle("is-blurred");
     },
   },
 };

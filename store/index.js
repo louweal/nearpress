@@ -3,12 +3,8 @@ export const state = () => ({
   showDropdown: false,
   articles: [],
   channels: [],
-  user: {
-    id: 1,
-    name: "Anneloes",
-    channels: ["dogs", "hiking", "chess"],
-  },
-  // user: null
+  clickedArticle: undefined,
+  user: undefined,
 });
 
 export const mutations = {
@@ -35,6 +31,11 @@ export const mutations = {
     );
   },
 
+  setUser(state, payload) {
+    state.user = payload;
+    console.log("state.user");
+  },
+
   setSelectedChannels(state) {
     // console.log(state);
     if (state.user) {
@@ -44,5 +45,9 @@ export const mutations = {
     } else {
       return;
     }
+  },
+
+  setClickedArticle(state, payload) {
+    state.clickedArticle = payload;
   },
 };

@@ -11,7 +11,7 @@
 
     <!-- shown on mobile only: -->
 
-    <div class="row g-3 d-sm-none mt-2">
+    <div class="row gy-0 gx-3 d-sm-none mt-2">
       <div class="col-6" v-for="(article, i) in articles.slice(1, 3)" :key="i">
         <card :data="article" :flex="false" :borderTop="false" />
       </div>

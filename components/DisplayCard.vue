@@ -1,5 +1,12 @@
 <template>
-  <nuxt-link :to="'/a/' + data.slug" class="card position-relative">
+  <nuxt-link
+    :to="'/a/' + data.slug"
+    event=""
+    @click.native="
+      $store.state.user ? $router.push('/a/' + data.slug) : paywall()
+    "
+    class="card position-relative"
+  >
     <div class="ratio ratio-4x3">
       <div
         class="card-img position-absolute rounded bg-light"
@@ -42,6 +49,14 @@ export default {
       } catch {
         return "none";
       }
+    },
+  },
+
+  methods: {
+    paywall() {
+      this.$store.commit("toggleModal");
+      this.$store.commit("setClickedArticle", "/a/" + this.data.slug);
+      document.getElementById("page").classList.toggle("is-blurred");
     },
   },
 };
