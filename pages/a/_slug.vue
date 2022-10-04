@@ -90,6 +90,8 @@
 </template>
 
 <script>
+import getImage from "@/utils/getImage.js";
+
 export default {
   transition: "page",
 
@@ -150,15 +152,7 @@ export default {
 
   computed: {
     visual() {
-      try {
-        return `url(${require("@/images/" +
-          this.article.channel +
-          "/" +
-          this.article.visual +
-          ".jpg")})`;
-      } catch {
-        return "none";
-      }
+      return getImage(this.article.channel, this.article.visual);
     },
   },
 

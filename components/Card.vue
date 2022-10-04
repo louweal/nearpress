@@ -8,7 +8,10 @@
     class="card"
   >
     <div v-if="borderTop" class="w-100 border-top d-md-none"></div>
-    <div class="row g-0 w-100 my-3" :class="flex ? 'gx-2 gx-sm-0' : 'gx-0'">
+    <div
+      class="row g-0 w-100 my-3 my-md-0"
+      :class="flex ? 'gx-2 gx-sm-0' : 'gx-0'"
+    >
       <div
         class="col-md-12"
         :class="flex ? 'col-4 col-sm-3 col-md-2' : 'col-12'"
@@ -48,6 +51,8 @@
 </template>
 
 <script>
+import getImage from "@/utils/getImage.js";
+
 export default {
   props: {
     data: {
@@ -70,15 +75,7 @@ export default {
 
   computed: {
     visual() {
-      try {
-        return `url(${require("@/images/" +
-          this.data.channel +
-          "/" +
-          this.data.visual +
-          ".jpg")})`;
-      } catch {
-        return "none";
-      }
+      return getImage(this.data.channel, this.data.visual);
     },
   },
 

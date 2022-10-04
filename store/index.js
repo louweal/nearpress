@@ -47,6 +47,10 @@ export const mutations = {
     }
   },
 
+  addUserChannel(state, payload) {},
+
+  removeUserChannel(state, payload) {},
+
   setClickedArticle(state, payload) {
     state.clickedArticle = payload;
   },

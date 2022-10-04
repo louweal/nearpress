@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="ms-auto d-flex align-items-center gap-2">
+      <div class="ms-auto d-flex align-items-center gap-2 gap-md-4">
         <div v-if="$store.state.user" @click="signOut" class="cursor-pointer">
           Disconnect<span class="d-none d-md-inline"> wallet</span>
         </div>

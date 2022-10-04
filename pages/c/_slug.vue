@@ -5,7 +5,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><nuxt-link to="/">Home</nuxt-link></li>
           <li class="breadcrumb-item active" aria-current="page">
-            {{ channel.title }}
+            <b>{{ channel.title }}</b>
           </li>
         </ol>
       </nav>
@@ -15,18 +15,24 @@
       ></i>
     </div>
 
-    <hero :articles="channelArticles.slice(0, 3)" />
+    <!-- <hero :articles="channelArticles.slice(0, 3)" /> -->
 
-    <div class="row g-0 gx-lg-4 gy-lg-2">
-      <news-grid :articles="channelArticles.slice(2, 14)" />
+    <div class="row gx-3 gx-lg-5 mt-3 mt-lg-5">
+      <news-grid :articles="channelArticles.slice(0, 30)" />
 
-      <sidebar
-        :articles="
-          channelArticles
-            .sort((a, b) => (a.date > b.date ? -1 : 1))
-            .slice(2, 12)
-        "
-      />
+      <div class="col-md-3">
+        <form class="form-inline my-2 my-lg-0">
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+      </div>
     </div>
 
     <h2 class="fs-5">Recently published</h2>

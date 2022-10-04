@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import getImage from "@/utils/getImage.js";
+
 export default {
   props: {
     data: {
@@ -40,15 +42,7 @@ export default {
 
   computed: {
     visual() {
-      try {
-        return `url(${require("@/images/" +
-          this.data.channel +
-          "/" +
-          this.data.visual +
-          ".jpg")})`;
-      } catch {
-        return "none";
-      }
+      return getImage(this.data.channel, this.data.visual);
     },
   },
 

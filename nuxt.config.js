@@ -32,6 +32,7 @@ export default {
 
   router: {
     scrollBehavior(to) {
+      //deprecation warning
       if (to.hash) {
         return window.scrollTo({
           top: document.querySelector(to.hash).offsetTop + window.innerHeight,
@@ -42,12 +43,7 @@ export default {
     },
   },
 
-  // styleResources: {},
-  // styleResources: {
-  //   scss: ["@/node_modules/bootstrap/scss/mixins.scss"],
-  // },
   components: true,
   buildModules: [],
-  // modules: ["@nuxtjs/style-resources"],
   build: {},
 };

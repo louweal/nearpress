@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 col-md-9">
-    <div class="row g-0 gx-lg-4 gy-lg-2">
+    <div class="row g-0 gx-md-2 gx-lg-4 gy-lg-2">
       <div class="col-12 col-md-4" v-for="(article, i) in articles" :key="i">
         <card
           :data="article"
