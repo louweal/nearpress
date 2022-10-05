@@ -3,8 +3,8 @@
     <div class="container-lg">
       <div class="row">
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
-          {{ progress }}
-          <nav aria-label="breadcrumb">
+          <!-- {{ progress }} -->
+          <!-- <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
                 <nuxt-link to="/">Home</nuxt-link>
@@ -19,7 +19,7 @@
                 {{ article.title }}
               </li>
             </ol>
-          </nav>
+          </nav> -->
         </div>
         <div class="col-12 col-md-10 offset-md-1">
           <div
@@ -38,7 +38,11 @@
             <li>
               {{ formatDate(article.date) }}
             </li>
-            <li>{{ article.total }} t<del>n</del></li>
+            <li>
+              <nuxt-link :to="'/c/' + article.channel">
+                {{ article.channel }}
+              </nuxt-link>
+            </li>
           </ul>
 
           <h1>{{ article.title }}</h1>
