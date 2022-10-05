@@ -15,12 +15,21 @@
       ></i>
     </div>
 
-    <!-- <hero :articles="channelArticles.slice(0, 3)" /> -->
-
     <div class="row gx-3 gx-lg-5 mt-3 mt-lg-5">
       <news-grid :articles="channelArticles.slice(0, 30)" />
 
       <div class="col-md-3">
+        Articles
+        <span class="fs-1">
+          {{ channelArticles.length }}
+        </span>
+
+        Authors
+
+        <span class="fs-1">
+          {{ [...new Set(channelArticles.map((a) => a.author))].length }}
+        </span>
+
         <form class="form-inline my-2 my-lg-0">
           <input
             class="form-control mr-sm-2"
@@ -32,32 +41,12 @@
             Search
           </button>
         </form>
-      </div>
-    </div>
 
-    <h2 class="fs-5">Recently published</h2>
+        <h2>Top writers</h2>
 
-    <div class="row gy-0 gx-3 pt-1">
-      <div
-        class="col-12 col-md"
-        v-for="(article, i) in [...articles]
-          .sort((a, b) => (a.date > b.date ? -1 : 1))
-          .slice(0, 5)"
-        :key="i"
-      >
-        <card :data="article" :showIntro="false" />
-      </div>
-    </div>
-
-    <h2 class="fs-5">Most read</h2>
-
-    <div class="row gy-0 gx-3 pt-1">
-      <div
-        class="col-12 col-md"
-        v-for="(article, i) in articles.slice(0, 5)"
-        :key="i"
-      >
-        <card :data="article" :showIntro="false" />
+        <ul>
+          <li>todo</li>
+        </ul>
       </div>
     </div>
   </div>

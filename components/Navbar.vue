@@ -111,6 +111,11 @@ export default {
       } else {
         console.log("header missing?");
       }
+
+      // hide dropdown on scroll
+      let menu = this.$refs["dropdown-menu"];
+      menu.style.display = "none";
+      this.dropdownActive = !this.dropdownActive;
     },
 
     toggleDropdown(e) {

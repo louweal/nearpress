@@ -49,11 +49,8 @@ export default {
     },
     signIn() {
       this.toggleModal();
-      this.$store.commit("setUser", {
-        id: 1,
-        name: "Anneloes",
-        channels: ["dogs", "hiking", "chess"],
-      });
+
+      // setUser was here
 
       let goto = this.$store.state.clickedArticle
         ? this.$store.state.clickedArticle

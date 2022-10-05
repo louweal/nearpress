@@ -1,9 +1,9 @@
 <template>
   <nuxt-link
-    :to="'/a/' + data.slug"
+    :to="'/a/' + article.slug"
     event=""
     @click.native="
-      $store.state.user ? $router.push('/a/' + data.slug) : paywall()
+      $store.state.user ? $router.push('/a/' + article.slug) : paywall()
     "
     class="card position-relative"
   >
@@ -16,15 +16,14 @@
       ></div>
 
       <div class="card-img-overlay rounded pb-1 px-3 px-lg-4 pb-lg-2">
-        <h2 class="text-white fs-3">{{ data.title }}</h2>
+        <h2 class="text-white fs-3">{{ article.title }}</h2>
       </div>
     </div>
     <span
       class="badge bg-secondary position-absolute m-1 top-0 end-0 lh-1"
-      v-if="data.progress"
+      v-if="progress"
     >
-      {{ data.progress }} %
-      <!-- <i class="bi bi-eyeglasses fs-4 lh-1"></i> -->
+      {{ progress }} %
     </span>
   </nuxt-link>
 </template>
@@ -33,23 +32,40 @@
 import getImage from "@/utils/getImage.js";
 
 export default {
+  data() {
+    return {
+      progress: 0,
+    };
+  },
+
   props: {
-    data: {
+    article: {
       type: [Array, Object],
       default: () => [],
     },
   },
 
+  mounted() {
+    if (this.$store.state.user && this.article) {
+      let history = this.$store.state.user.history.find(
+        (a) => a.id === this.article.id
+      );
+      if (history) {
+        this.progress = parseInt((100 * history.progress) / this.article.total);
+      }
+    }
+  },
+
   computed: {
     visual() {
-      return getImage(this.data.channel, this.data.visual);
+      return getImage(this.article.channel, this.article.visual);
     },
   },
 
   methods: {
     paywall() {
       this.$store.commit("toggleModal");
-      this.$store.commit("setClickedArticle", "/a/" + this.data.slug);
+      this.$store.commit("setClickedArticle", "/a/" + this.article.slug);
       document.getElementById("page").classList.toggle("is-blurred");
     },
   },

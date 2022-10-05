@@ -3,6 +3,7 @@
     <div class="container-lg">
       <div class="row">
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
+          {{ progress }}
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
@@ -37,7 +38,7 @@
             <li>
               {{ formatDate(article.date) }}
             </li>
-            <li>{{ article.count }} t<del>n</del></li>
+            <li>{{ article.total }} t<del>n</del></li>
           </ul>
 
           <h1>{{ article.title }}</h1>
@@ -46,14 +47,20 @@
             <h2
               :key="'title' + i"
               v-if="p.title"
-              class="fs-2 fade-in-up"
-              data-aos="70"
-              :data-chars="p.title.length"
+              class="fs-2"
+              :class="historicProgress < p.titleEnd ? 'fade-in-up' : false"
+              :data-aos="historicProgress < p.titleEnd ? 70 : undefined"
+              :data-end="p.titleEnd"
             >
               {{ p.title }}
             </h2>
 
-            <p :key="i" data-aos="70" class="fade-in-up" :data-chars="p.count">
+            <p
+              :key="i"
+              :class="historicProgress < p.end ? 'fade-in-up' : false"
+              :data-aos="historicProgress < p.end ? 70 : undefined"
+              :data-end="p.end"
+            >
               {{ p.content }}
             </p>
           </template>
@@ -78,12 +85,12 @@
             .slice(0, 5)"
           :key="i"
         >
-          <card :data="a" :showIntro="false" />
+          <card :article="a" :showIntro="false" />
         </div>
       </div>
       <div class="progress">
         <div class="bar bg-secondary" ref="bar"></div>
-        <div class="progress-label" ref="label">{{ article.progress }}</div>
+        <div class="progress-label" ref="label">{{ progress }}</div>
       </div>
     </div>
   </main>
@@ -100,8 +107,8 @@ export default {
       scrollHeight: 0,
       scrollY: 0,
       prevPosY: 0,
-      charactersVisible: 0,
       progress: 0,
+      historicProgress: 0,
       articles: () => {},
       article: () => {},
     };
@@ -109,7 +116,6 @@ export default {
 
   created() {
     this.articles = this.$store.state.articles;
-    // console.log(this.$route.params.slug);
     this.article = this.articles.find(
       (a) => a.slug === this.$route.params.slug
     );
@@ -120,30 +126,26 @@ export default {
     this.scrollHeight = document.body.scrollHeight;
     window.addEventListener("scroll", this.aos);
 
-    if (this.article.progress) {
-      // this.charactersVisible = this.article.progress;
-    } else {
-      this.article.progress = 0;
-    }
-    let bar = this.$refs["bar"];
-    let label = this.$refs["label"];
-    let p = (100 * this.article.progress) / this.article.count;
+    let history = this.$store.state.user.history.find(
+      (a) => a.id === this.article.id
+    );
 
-    if (bar && label) {
-      bar.style.width = p + "%";
-      label.style.left = p + "%";
+    if (history) {
+      this.historicProgress = history.progress;
+      this.progress = history.progress;
     }
+
+    console.log("this.progress :>> ", this.progress);
+
+    // this.aos();
+    this.updateBar();
   },
 
   beforeDestroy() {
     if (this.article) {
-      // let progress = Math.floor(
-      //   (this.charactersVisible * 100) / this.article.count
-      // );
-      // console.log("progress :>> ", progress);
       this.$store.commit("setProgress", {
-        id: this.article.id,
-        progress: this.charactersVisible,
+        id: +this.article.id,
+        progress: this.progress,
       });
     }
 
@@ -174,40 +176,38 @@ export default {
       });
     },
 
+    updateBar() {
+      if (this.article) {
+        let p = (100 * this.progress) / this.article.total;
+        let bar = this.$refs["bar"];
+        let label = this.$refs["label"];
+
+        if (bar && label) {
+          bar.style.width = p + "%";
+          label.style.left = p + "%";
+        }
+      }
+    },
+
     aos() {
       let animTargets = document.querySelectorAll("[data-aos]");
       [].forEach.call(animTargets, (target) => {
         let startAt = parseInt(target.dataset.aos);
         let rect = target.getBoundingClientRect();
         let elemTop = rect.top;
-        // let elemBottom = rect.bottom;
 
-        target.style.opacity = "0"; // hide element by default
+        // target.style.opacity = "0"; // hide element by default
 
         let startTrigger =
           elemTop < window.innerHeight * (startAt / 100) && elemTop > 0;
 
-        // console.log(target.classList + " " + elemTop);
-
         if (startTrigger) {
           if (!target.classList.contains("start-animation")) {
             target.classList.add("start-animation");
-            if (target.dataset.chars) {
-              this.charactersVisible += parseInt(target.dataset.chars);
-              // console.log("here: " + this.charactersVisible);
 
-              let p = (100 * this.charactersVisible) / this.article.count;
-              let bar = this.$refs["bar"];
-              let label = this.$refs["label"];
-
-              if (bar && label) {
-                bar.style.width = p + "%";
-                label.style.left = p + "%";
-              }
-
-              if (this.charactersVisible > this.article.progress) {
-                console.log("PAY!");
-              }
+            if (target.dataset.end) {
+              this.progress = parseInt(target.dataset.end);
+              this.updateBar();
             }
           }
         }

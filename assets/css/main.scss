@@ -167,6 +167,7 @@ body {
   animation: slide-in 0.7s cubic-bezier(0.2, 0, 0.1, 1) both;
   will-change: transform, opacity;
   animation-play-state: paused;
+  // opacity: 1;
 
   // @include from(m) {
   // }

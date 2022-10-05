@@ -28,7 +28,7 @@ export default {
   channels,
 
   created() {
-    this.$store.commit("SET_ARTICLES", randomArticles(90));
+    this.$store.commit("SET_ARTICLES", randomArticles(300));
     this.$store.commit("SET_CHANNELS", this.$options.channels);
 
     this.$store.commit("setSelectedChannels"); //
@@ -38,7 +38,13 @@ export default {
     let headerHeight = document.querySelector("#header").offsetHeight;
     let pushdown = document.querySelector("#pushdown");
     pushdown.style.height = headerHeight + "px";
-    // console.log(document.querySelector("#header").offsetHeight);
+
+    this.$store.commit("setUser", {
+      id: 1,
+      name: "Anneloes",
+      channels: ["dogs", "hiking", "chess"],
+      history: [],
+    });
   },
 
   watch: {
@@ -63,11 +69,6 @@ export default {
       document.body.classList.remove("modal-open");
       window.scrollTo(0, this.posY);
     },
-    // beforeEnter: function (el) {
-    //   if (this.$route.hash[0] !== "#") {
-    //     // window.scrollTo(0, 0);
-    //   }
-    // },
   },
 };
 </script>
@@ -75,6 +76,5 @@ export default {
 <style lang="scss" scoped>
 #pushdown {
   width: 100%;
-  // height: calc(70px + 3rem);
 }
 </style>

@@ -10,27 +10,7 @@
         )"
         :key="i"
       >
-        <nuxt-link
-          :to="'/a/' + article.slug"
-          event=""
-          @click.native="
-            $store.state.user
-              ? $router.push('/a/' + article.slug)
-              : paywall(article)
-          "
-          class="d-block w-100 m-1"
-          :class="i !== 9 ? 'border-bottom' : false"
-        >
-          <small class="text-muted fw-bold">
-            {{ formatDate(article.date) }}
-          </small>
-          <h3 class="fs-6 fw-light">
-            {{ article.title }}
-            <span class="badge bg-secondary" v-if="article.progress">
-              {{ article.progress }} %
-            </span>
-          </h3>
-        </nuxt-link>
+        <news-item :article="article" />
       </div>
     </div>
   </div>
@@ -46,25 +26,24 @@ export default {
   },
 
   methods: {
-    formatDate(date) {
-      return (
-        date.toLocaleDateString("us-EN", {
-          day: "numeric",
-          month: "long",
-        }) +
-        ", " +
-        date.toLocaleTimeString("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-      );
-    },
-
-    paywall(article) {
-      this.$store.commit("toggleModal");
-      this.$store.commit("setClickedArticle", "/a/" + article.slug);
-      document.getElementById("page").classList.toggle("is-blurred");
-    },
+    // formatDate(date) {
+    //   return (
+    //     date.toLocaleDateString("us-EN", {
+    //       day: "numeric",
+    //       month: "long",
+    //     }) +
+    //     ", " +
+    //     date.toLocaleTimeString("en-GB", {
+    //       hour: "2-digit",
+    //       minute: "2-digit",
+    //     })
+    //   );
+    // },
+    // paywall(article) {
+    //   this.$store.commit("toggleModal");
+    //   this.$store.commit("setClickedArticle", "/a/" + article.slug);
+    //   document.getElementById("page").classList.toggle("is-blurred");
+    // },
   },
 };
 </script>

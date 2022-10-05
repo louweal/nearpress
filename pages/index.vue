@@ -27,7 +27,7 @@
           v-for="(article, i) in articles.slice(14, 19)"
           :key="i"
         >
-          <card :data="article" :showIntro="false" />
+          <card :article="article" :showIntro="false" />
         </div>
       </div>
 
@@ -46,7 +46,7 @@
               .slice(0, 5)"
             :key="i"
           >
-            <card :data="article" :showIntro="false" />
+            <card :article="article" :showIntro="false" />
           </div>
         </div>
       </template>

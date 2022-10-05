@@ -1,9 +1,9 @@
 <template>
   <nuxt-link
-    :to="'/a/' + data.slug"
+    :to="'/a/' + article.slug"
     event=""
     @click.native="
-      $store.state.user ? $router.push('/a/' + data.slug) : paywall()
+      $store.state.user ? $router.push('/a/' + article.slug) : paywall()
     "
     class="card"
   >
@@ -26,16 +26,16 @@
 
           <span
             class="badge bg-secondary position-absolute m-1 top-0 end-0"
-            v-if="data.progress"
+            v-if="progress"
           >
-            {{ data.progress }} %
+            {{ progress }} %
           </span>
         </div>
       </div>
       <div class="col-8 col-md-12 d-none d-md-block">
-        <h2 class="card-title">{{ data.title }}</h2>
+        <h2 class="card-title">{{ article.title }}</h2>
 
-        <p v-if="showIntro" class="d-none d-md-block">{{ data.intro }}</p>
+        <p v-if="showIntro" class="d-none d-md-block">{{ article.intro }}</p>
       </div>
 
       <div
@@ -43,7 +43,7 @@
         :class="flex ? 'col-8 col-sm-9' : 'col-12'"
       >
         <h2 class="card-title" :class="flex ? 'fw-light' : false">
-          {{ data.title }}
+          {{ article.title }}
         </h2>
       </div>
     </div>
@@ -54,8 +54,13 @@
 import getImage from "@/utils/getImage.js";
 
 export default {
+  data() {
+    return {
+      progress: 0,
+    };
+  },
   props: {
-    data: {
+    article: {
       type: [Array, Object],
       default: () => [],
     },
@@ -73,16 +78,27 @@ export default {
     },
   },
 
+  mounted() {
+    if (this.$store.state.user && this.article) {
+      let history = this.$store.state.user.history.find(
+        (a) => a.id === this.article.id
+      );
+      if (history) {
+        this.progress = parseInt((100 * history.progress) / this.article.total);
+      }
+    }
+  },
+
   computed: {
     visual() {
-      return getImage(this.data.channel, this.data.visual);
+      return getImage(this.article.channel, this.article.visual);
     },
   },
 
   methods: {
     paywall() {
       this.$store.commit("toggleModal");
-      this.$store.commit("setClickedArticle", "/a/" + this.data.slug);
+      this.$store.commit("setClickedArticle", "/a/" + this.article.slug);
       document.getElementById("page").classList.toggle("is-blurred");
     },
   },

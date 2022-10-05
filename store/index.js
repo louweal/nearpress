@@ -1,6 +1,5 @@
 export const state = () => ({
   showModal: false,
-  showDropdown: false,
   articles: [],
   channels: [],
   clickedArticle: undefined,
@@ -25,10 +24,27 @@ export const mutations = {
 
   // id, progress
   setProgress(state, payload) {
-    state.articles.forEach(
-      (a) =>
-        (a["progress"] = a.id === payload.id ? payload.progress : a.progress)
-    );
+    if (state.user) {
+      console.log(state.user.history.map((i) => i.id));
+      if (state.user.history.map((i) => i.id).includes(payload.id)) {
+        //update
+        state.user.history.forEach(
+          (i) =>
+            (i.progress = i.id === payload.id ? payload.progress : i.progress)
+        );
+      } else {
+        // add history item
+        state.user.history.push({
+          id: payload.id,
+          progress: payload.progress,
+        });
+      }
+    }
+
+    // state.user.forEach(
+    //   (a) =>
+    //     (a["progress"] = a.id === payload.id ? payload.progress : a.progress)
+    // );
   },
 
   setUser(state, payload) {
