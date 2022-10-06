@@ -3,7 +3,7 @@
     <div class="container-xl">
       <hero :articles="articles.slice(0, 3)" />
 
-      <div class="row gx-3 gx-lg-5 mt-3 mt-lg-5">
+      <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5">
         <news-grid :articles="articles.slice(2, 14)" />
 
         <sidebar

@@ -33,7 +33,7 @@
         </div>
 
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
-          <ul class="list-inline">
+          <ul class="list-inline mt-2">
             <li>{{ article.author }}</li>
             <li>
               {{ formatDate(article.date) }}
@@ -81,7 +81,7 @@
 
       <h2 class="fs-5">Related</h2>
 
-      <div class="row g-3 pt-1">
+      <div class="row gy-0 g-md-3 pt-1">
         <div
           class="col-12 col-md"
           v-for="(a, i) in articles
@@ -89,12 +89,17 @@
             .slice(0, 5)"
           :key="i"
         >
-          <card :article="a" :showIntro="false" />
+          <card
+            :article="a"
+            :showIntro="false"
+            :borderTop="i === 0 ? false : true"
+          />
         </div>
       </div>
       <div class="progress">
-        <div class="bar bg-secondary" ref="bar"></div>
-        <div class="progress-label" ref="label">{{ progress }}</div>
+        <div class="bar bg-secondary" ref="bar">
+          <div class="progress-label">{{ progress }}</div>
+        </div>
       </div>
     </div>
   </main>
@@ -184,11 +189,9 @@ export default {
       if (this.article) {
         let p = (100 * this.progress) / this.article.total;
         let bar = this.$refs["bar"];
-        let label = this.$refs["label"];
 
-        if (bar && label) {
+        if (bar) {
           bar.style.width = p + "%";
-          label.style.left = p + "%";
         }
       }
     },
@@ -247,41 +250,20 @@ $fontsize: 8px;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 0;
-    // background: rgb(117, 93, 241);
-    // background: linear-gradient(
-    //   141deg,
-    //   rgba(117, 93, 241, 1) 0%,
-    //   rgba(149, 94, 174, 1) 81%
-    // );
-
-    transition: width 0.3s ease-out;
+    width: 0%;
+    transition: width 0.8s ease-out;
+    will-change: width;
   }
 
   .progress-label {
     position: absolute;
-
+    text-align: right;
+    right: 4px;
     top: calc(50% - $fontsize / 2);
-    padding-left: 3px;
-    // color: #fff;
     font-size: $fontsize;
     line-height: 1;
     font-weight: 700;
     z-index: 3;
-    transition: left 0.3s ease-out;
   }
-
-  // .end-label {
-  //   position: absolute;
-  //   bottom: 0;
-  //   right: 0;
-  //   // width: 30px;
-  //   // height: 30px;
-  //   // border-radius: 50%;
-  //   // background-color: var(--bs-secondary);
-  //   // color: #fff;
-  //   font-size: 0.65rem;
-  //   font-weight: 500;
-  // }
 }
 </style>

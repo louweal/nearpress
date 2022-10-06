@@ -1,15 +1,6 @@
 <template>
   <div class="container-lg">
     <div class="d-flex justify-content-between">
-      <!-- <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><nuxt-link to="/">Home</nuxt-link></li>
-          <li class="breadcrumb-item active" aria-current="page">
-            <b>{{ channel.title }}</b>
-          </li>
-        </ol>
-      </nav> -->
-
       <div>
         <h1>{{ channel.title }}</h1>
       </div>

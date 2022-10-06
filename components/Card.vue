@@ -9,14 +9,14 @@
   >
     <div v-if="borderTop" class="w-100 border-top d-md-none"></div>
     <div
-      class="row g-0 w-100 my-3 my-md-0"
-      :class="flex ? 'gx-2 gx-sm-0' : 'gx-0'"
+      class="row g-0 w-100 my-md-0"
+      :class="flex ? 'gx-2 gx-sm-0 my-3' : 'gx-0 my-0 mt-2'"
     >
       <div
         class="col-md-12"
         :class="flex ? 'col-4 col-sm-3 col-md-2' : 'col-12'"
       >
-        <div class="position-relative xxmt-2 mt-md-0">
+        <div class="position-relative mt-md-0">
           <div
             class="card-img ratio ratio-4x3 rounded mb-md-1 mb-xl-2 w-100 bg-light"
             :style="{

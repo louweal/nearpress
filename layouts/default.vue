@@ -5,8 +5,9 @@
 
       <navbar ref="header" />
       <div class="min-vh-100 d-flex flex-column justify-content-between">
-        <div id="pushdown" class="mb-3 mb-lg-4"></div>
+        <div id="pushdown" class="mb-2 mb-md-3 mb-lg-4"></div>
 
+        <ChannelList :channels="$options.channels" />
         <Nuxt />
 
         <Footer />

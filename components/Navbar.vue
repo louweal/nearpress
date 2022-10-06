@@ -15,10 +15,8 @@
       >
         <div class="dropdown-toggle pe-3" @click="toggleDropdown">
           Your channels
-          <!-- {{ $store.state.user.name }} -->
         </div>
         <div class="dropdown-menu" ref="dropdown-menu">
-          <!-- {{ $store.state.user.channels }} -->
           <nuxt-link
             :to="'/c/' + c.slug"
             event=""
