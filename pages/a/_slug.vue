@@ -2,25 +2,6 @@
   <main>
     <div class="container-lg">
       <div class="row">
-        <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
-          <!-- {{ progress }} -->
-          <!-- <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <nuxt-link to="/">Home</nuxt-link>
-              </li>
-              <li class="breadcrumb-item">
-                <nuxt-link :to="'/c/' + article.channel">{{
-                  article.channel
-                }}</nuxt-link>
-              </li>
-
-              <li class="breadcrumb-item active" aria-current="page">
-                {{ article.title }}
-              </li>
-            </ol>
-          </nav> -->
-        </div>
         <div class="col-12 col-md-10 offset-md-1">
           <div
             class="article-img ratio ratio-16x9 rounded mb-2 bg-light"
@@ -33,7 +14,7 @@
         </div>
 
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
-          <ul class="list-inline mt-2">
+          <ul class="bullet-list-inline mt-2">
             <li>{{ article.author }}</li>
             <li>
               {{ formatDate(article.date) }}
@@ -89,11 +70,7 @@
             .slice(0, 5)"
           :key="i"
         >
-          <card
-            :article="a"
-            :showIntro="false"
-            :borderTop="i === 0 ? false : true"
-          />
+          <card :article="a" :showIntro="false" :borderTop="i !== 0" />
         </div>
       </div>
       <div class="progress">
@@ -144,9 +121,6 @@ export default {
       this.progress = history.progress;
     }
 
-    console.log("this.progress :>> ", this.progress);
-
-    // this.aos();
     this.updateBar();
   },
 
@@ -159,6 +133,15 @@ export default {
     }
 
     window.removeEventListener("scroll", this.aos);
+  },
+
+  watch: {
+    progress: function (val) {
+      let p = parseInt((val * 100) / this.article.total);
+      if (p === 100) {
+        this.$store.commit("updateViews", this.article.id);
+      }
+    },
   },
 
   computed: {

@@ -10,7 +10,7 @@
     <div v-if="borderTop" class="w-100 border-top d-md-none"></div>
     <div
       class="row g-0 w-100 my-md-0"
-      :class="flex ? 'gx-2 gx-sm-0 my-3' : 'gx-0 my-0 mt-2'"
+      :class="flex ? 'gx-2 gx-md-0 my-3' : 'gx-0 my-0 mt-2'"
     >
       <div
         class="col-md-12"
@@ -28,7 +28,9 @@
             class="badge bg-secondary position-absolute m-1 top-0 end-0"
             v-if="progress"
           >
-            {{ progress }} %
+            <i v-if="progress === 100" class="bi bi-check"></i>
+
+            <span v-else>{{ progress }} %</span>
           </span>
         </div>
       </div>

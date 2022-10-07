@@ -1,14 +1,15 @@
 [
   {
-    "title": "Dogs",
-    "slug": "dogs",
-    "images": 33
-  },
-  {
     "title": "Chess",
     "slug": "chess",
     "images": 18
   },
+  {
+    "title": "Dogs",
+    "slug": "dogs",
+    "images": 33
+  },
+
   {
     "title": "UX design",
     "slug": "ux-design",
@@ -23,5 +24,10 @@
     "title": "Soccer",
     "slug": "soccer",
     "images": 23
+  },
+  {
+    "title": "Russian invasion",
+    "slug": "russian-invasion",
+    "images": 0
   }
 ]

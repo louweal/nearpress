@@ -25,7 +25,7 @@ export const mutations = {
   // id, progress
   setProgress(state, payload) {
     if (state.user) {
-      console.log(state.user.history.map((i) => i.id));
+      // console.log(state.user.history.map((i) => i.id));
       if (state.user.history.map((i) => i.id).includes(payload.id)) {
         //update
         state.user.history.forEach(
@@ -40,20 +40,13 @@ export const mutations = {
         });
       }
     }
-
-    // state.user.forEach(
-    //   (a) =>
-    //     (a["progress"] = a.id === payload.id ? payload.progress : a.progress)
-    // );
   },
 
   setUser(state, payload) {
     state.user = payload;
-    console.log("state.user");
   },
 
   setSelectedChannels(state) {
-    // console.log(state);
     if (state.user) {
       state.channels.forEach(
         (c) => (c["selected"] = state.user.channels.includes(c.slug))
@@ -63,9 +56,19 @@ export const mutations = {
     }
   },
 
-  addUserChannel(state, payload) {},
+  updateViews(state, id) {
+    state.articles.forEach(
+      (a) => (a.views = a.id === id ? a.views + 1 : a.views)
+    );
+  },
 
-  removeUserChannel(state, payload) {},
+  addUserChannel(state, payload) {
+    state.user.channels.push(payload);
+  },
+
+  removeUserChannel(state, payload) {
+    state.user.channels = state.user.channels.filter((c) => c !== payload);
+  },
 
   setClickedArticle(state, payload) {
     state.clickedArticle = payload;

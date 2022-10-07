@@ -1,35 +1,6 @@
 <template>
   <div class="footer mt-3 mt-xl-5 border-top border-light">
-    <!-- <div class="container-lg py-2">
-      <div class="row footer__inner w-100">
-        <div class="col-12 align-self-center">
-          <div class="row">
-            <div class="col-12 col-md-4">
-              <h3>NearPress</h3>
-
-              <ul>
-                <li>About</li>
-                <li>Getting started</li>
-                <li>Privacy statement</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div class="col-12 col-md-3">
-              <h3>Channels</h3>
-              <ul>
-                <li>Dogs</li>
-                <li>Photography</li>
-                <li>Crypto currency</li>
-              </ul>
-            </div>
-            <div class="col-12 col-md-3">todo</div>
-            <div class="col-12 col-md-2">todo</div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <div class="xxxborder-top py-2">
+    <div class="py-2">
       <div class="container-lg" style="font-size: 0.91rem">
         <div class="row g-0 g-md-3">
           <div

@@ -50,15 +50,19 @@ export default {
     signIn() {
       this.toggleModal();
 
-      // setUser was here
+      // todo
+      this.$store.commit("setUser", {
+        id: 1,
+        name: "Anneloes",
+        channels: ["dogs", "hiking"],
+        history: [],
+      });
 
       let goto = this.$store.state.clickedArticle
         ? this.$store.state.clickedArticle
         : "/";
       this.$router.push(goto);
       this.$store.commit("setClickedArticle", undefined);
-
-      console.log("signed in!");
     },
   },
 };

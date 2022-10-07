@@ -17,21 +17,24 @@
           Your channels
         </div>
         <div class="dropdown-menu" ref="dropdown-menu">
-          <nuxt-link
-            :to="'/c/' + c.slug"
-            event=""
-            @click.native="
-              toggleDropdown();
-              $router.push('/c/' + c.slug);
-            "
-            v-for="(c, i) in $options.channels.filter((c) =>
-              $store.state.user.channels.includes(c.slug)
-            )"
-            :key="i"
-            class="dropdown-item"
+          <template v-if="userChannels.length > 0">
+            <nuxt-link
+              :to="'/c/' + c.slug"
+              event=""
+              @click.native="
+                toggleDropdown();
+                $router.push('/c/' + c.slug);
+              "
+              v-for="(c, i) in userChannels"
+              :key="i"
+              class="dropdown-item"
+            >
+              {{ c.title }}
+            </nuxt-link>
+          </template>
+          <span v-else class="d-block px-3"
+            >You do not follow any channels</span
           >
-            {{ c.title }}
-          </nuxt-link>
         </div>
       </div>
 
@@ -77,6 +80,14 @@ export default {
     window.removeEventListener("scroll", this.aosHeader);
   },
 
+  computed: {
+    userChannels() {
+      return this.$options.channels.filter((c) =>
+        this.$store.state.user.channels.includes(c.slug)
+      );
+    },
+  },
+
   methods: {
     signOut() {
       this.$store.commit("setUser", undefined);
@@ -112,8 +123,11 @@ export default {
 
       // hide dropdown on scroll
       let menu = this.$refs["dropdown-menu"];
-      menu.style.display = "none";
-      this.dropdownActive = !this.dropdownActive;
+
+      if (menu) {
+        menu.style.display = "none";
+        this.dropdownActive = !this.dropdownActive;
+      }
     },
 
     toggleDropdown(e) {

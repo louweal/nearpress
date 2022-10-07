@@ -5,10 +5,14 @@
     @click.native="
       $store.state.user ? $router.push('/a/' + article.slug) : paywall(article)
     "
-    class="d-block w-100 m-1 border-bottom"
+    class="d-block w-100 m-1 pt-1"
   >
     <small class="text-muted fw-bold">
-      {{ formatDate(article.date) }}
+      <ul class="bullet-list-inline mb-0">
+        <li>{{ article.channel }}</li>
+        <li>{{ article.author }}</li>
+      </ul>
+      <!-- {{ formatDate(article.date) }} -->
     </small>
     <h3 class="fs-6 fw-light">
       {{ article.title }}

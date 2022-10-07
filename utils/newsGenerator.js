@@ -39,7 +39,7 @@ function makeParagraphs(n) {
   return { a, end };
 }
 
-export function randomArticles(n) {
+export function news(n) {
   let numChannels = channels.length;
 
   let channelSlugs = channels.map((c) => c.slug);
@@ -85,11 +85,6 @@ export function randomArticles(n) {
     ].map((a) => a.name);
 
     a.push({
-      // author: getWords(2)
-      //   .toLowerCase()
-      //   .split(" ")
-      //   .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-      //   .join(" "),
       author: authors[Math.floor(Math.random() * authors.length)],
       id: i,
       title: title,
@@ -100,6 +95,7 @@ export function randomArticles(n) {
       content: content.a,
       total: content.end,
       date: new Date((1662031747 + Math.ceil(Math.random() * 2592000)) * 1000), // 1 sept 2022 + 1 month
+      views: 0,
     });
   }
 
