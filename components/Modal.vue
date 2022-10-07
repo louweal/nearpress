@@ -54,7 +54,7 @@ export default {
       this.$store.commit("setUser", {
         id: 1,
         name: "Anneloes",
-        channels: ["dogs", "hiking"],
+        channels: ["dogs", "hiking", "chess", "ux-design"],
         history: [],
       });
 

@@ -1,11 +1,12 @@
 <template>
   <div class="channel-list d-sm-none" v-if="$store.state.user">
     <div class="channel-list__inner hstack gap-2 mb-2 text-nowrap">
+      <button class="btn btn-secondary" disabled>All</button>
       <nuxt-link
         :to="'/c/' + c.slug"
         v-for="(c, i) in channels"
         :key="i"
-        class="btn btn-warning"
+        class="btn xxxbtn-warning"
       >
         {{ c.title }}
       </nuxt-link>
