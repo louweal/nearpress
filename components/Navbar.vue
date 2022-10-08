@@ -9,32 +9,39 @@
         <img src="@/images/logo.svg" alt="" width="203" height="45" />
       </nuxt-link>
 
-      <div
-        class="dropdown d-none d-sm-inline cursor-pointer"
-        v-if="$store.state.user"
-      >
+      <div class="dropdown d-none d-sm-inline cursor-pointer">
         <div class="dropdown-toggle pe-3" @click="toggleDropdown">
-          Your channels
+          {{ hasChannels ? "Your channels" : "All channels" }}
         </div>
-        <div class="dropdown-menu" ref="dropdown-menu">
-          <template v-if="userChannels.length > 0">
-            <nuxt-link
-              :to="'/c/' + c.slug"
-              event=""
-              @click.native="
-                toggleDropdown();
-                $router.push('/c/' + c.slug);
-              "
-              v-for="(c, i) in userChannels"
-              :key="i"
-              class="dropdown-item"
-            >
-              {{ c.title }}
-            </nuxt-link>
-          </template>
-          <span v-else class="d-block px-3"
-            >You do not follow any channels</span
+        <div class="dropdown-menu" ref="dropdown-menu" v-if="hasChannels">
+          <nuxt-link
+            :to="'/c/' + c.slug"
+            event=""
+            @click.native="
+              toggleDropdown();
+              $router.push('/c/' + c.slug);
+            "
+            v-for="(c, i) in userChannels"
+            :key="i"
+            class="dropdown-item"
           >
+            {{ c.title }}
+          </nuxt-link>
+        </div>
+        <div class="dropdown-menu" ref="dropdown-menu" v-else>
+          <nuxt-link
+            :to="'/c/' + c.slug"
+            event=""
+            @click.native="
+              toggleDropdown();
+              $router.push('/c/' + c.slug);
+            "
+            v-for="(c, i) in $options.channels"
+            :key="i"
+            class="dropdown-item"
+          >
+            {{ c.title }}
+          </nuxt-link>
         </div>
       </div>
 
@@ -70,7 +77,7 @@ export default {
     };
   },
 
-  channels,
+  channels: [...channels].sort((a, b) => (a.title > b.title ? 1 : -1)),
 
   mounted() {
     window.addEventListener("scroll", this.aosHeader);
@@ -82,9 +89,16 @@ export default {
 
   computed: {
     userChannels() {
-      return this.$options.channels.filter((c) =>
-        this.$store.state.user.channels.includes(c.slug)
-      );
+      if (this.$store.state.user) {
+        return this.$options.channels.filter((c) =>
+          this.$store.state.user.channels.includes(c.slug)
+        );
+      }
+      return [];
+    },
+
+    hasChannels() {
+      return this.userChannels.length > 0;
     },
   },
 

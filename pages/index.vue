@@ -1,7 +1,9 @@
 <template>
   <main>
     <div class="container-xl">
-      <ChannelList :channels="userChannels" />
+      <ChannelList
+        :channels="userChannels.length > 0 ? userChannels : $options.channels"
+      />
 
       <hero :articles="recentArticles.slice(0, 3)" />
 

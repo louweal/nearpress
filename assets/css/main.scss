@@ -79,7 +79,7 @@ $form-label-font-weight: 700;
 @import "@/node_modules/bootstrap/scss/navbar";
 @import "@/node_modules/bootstrap/scss/buttons";
 @import "@/node_modules/bootstrap/scss/dropdown";
-@import "@/node_modules/bootstrap/scss/modal";
+// @import "@/node_modules/bootstrap/scss/modal";
 @import "@/node_modules/bootstrap/scss/close"; // = close button
 @import "@/node_modules/bootstrap/scss/breadcrumb";
 @import "@/node_modules/bootstrap/scss/badge";
@@ -184,7 +184,7 @@ body {
 }
 
 .fade-in-up {
-  animation: slide-in 0.7s cubic-bezier(0.2, 0, 0.1, 1) both;
+  animation: fade-in-up 0.7s cubic-bezier(0.2, 0, 0.1, 1) both;
   will-change: transform, opacity;
   animation-play-state: paused;
   // opacity: 1;
@@ -197,7 +197,7 @@ body {
   animation-play-state: running !important;
 }
 
-@keyframes slide-in {
+@keyframes fade-in-up {
   from {
     transform: translateY(60px); // scaleY(1.2)
     opacity: 0;
@@ -234,7 +234,8 @@ body {
   }
 }
 
-.bi.color-secondary {
+.bi.color-secondary,
+span.color-secondary {
   background: -webkit-linear-gradient(45deg, #755df1, #955eae);
   background-clip: text;
   -webkit-background-clip: text;

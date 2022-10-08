@@ -7,7 +7,7 @@ export const state = () => ({
 });
 
 export const mutations = {
-  toggleModal(state) {
+  toggleModal(state, payload) {
     state.showModal = !state.showModal;
   },
   toggleDropdown(state) {

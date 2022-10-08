@@ -1,5 +1,7 @@
 <template>
   <div>
+    <pre-loader />
+
     <div id="page">
       <characters />
 
@@ -41,7 +43,7 @@ export default {
 
     this.$store.commit("setUser", {
       id: 1,
-      name: "Anneloes",
+      name: "Anneloes Louwe",
       channels: ["dogs", "hiking", "chess", "ux-design"],
       history: [],
     });

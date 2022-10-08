@@ -1,35 +1,46 @@
 <template>
-  <!-- Modal -->
   <div
     class="modal"
     :class="$store.state.showModal ? 'modal--active' : 'modal--inactive'"
   >
     <div class="modal__bg" @click="toggleModal"></div>
     <div class="modal__inner">
-      <div class="modal__content modal-content rounded">
-        <div class="modal-header d-flex">
-          <h5 class="modal-title fs-5 align-self-center">Connect wallet</h5>
+      <div class="modal__content p-2 rounded border">
+        <slot>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="p-3"></div>
+            <h5 class="modal-title fs-5 align-self-center">Connect wallet</h5>
 
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-            @click="toggleModal"
-          ></button>
-        </div>
-        <div class="modal-body px-4">
-          <div class="d-grid gap-2 mb-3">
-            <div class="btn btn-secondary cursor-pointer" @click="signIn">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="toggleModal"
+            ></button>
+          </div>
+          <div class="modal-body px-4">
+            <p class="text-center">
+              Connect your NEAR wallet to read and write articles on NearPress.
+              Reading articles costs 10 microNEAR per character, which is payed
+              directly and fully to the writer of the article.
+            </p>
+            <div class="d-grid gap-2 mb-3">
+              <div class="btn btn-secondary cursor-pointer" @click="signIn">
+                MetaMask
+              </div>
+              <!-- <div class="btn btn-secondary cursor-pointer" @click="signIn">
               MetaMask
             </div>
+            <div class="btn btn-secondary cursor-pointer" @click="signIn">
+              MetaMask
+            </div> -->
+              <nuxt-link to="/getting-started" class="fw-bold text-center mt-1">
+                I need more information
+              </nuxt-link>
+            </div>
           </div>
-
-          <p class="text-center">
-            Ad eveniet enim doloribus at inventore explicabo distinctio unde
-            rerum.
-          </p>
-        </div>
+        </slot>
       </div>
     </div>
   </div>
@@ -53,7 +64,7 @@ export default {
       // todo
       this.$store.commit("setUser", {
         id: 1,
-        name: "Anneloes",
+        name: "Anneloes Louwe",
         channels: ["dogs", "hiking", "chess", "ux-design"],
         history: [],
       });
@@ -68,7 +79,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .modal {
   width: 100%;
   height: 100vh;
@@ -80,11 +91,6 @@ export default {
   bottom: 0;
   display: flex;
   visibility: hidden;
-
-  // &-body {
-  //   width: 100%;
-  //   border: 2px solid red;
-  // }
 
   &__bg {
     position: absolute;
@@ -109,9 +115,7 @@ export default {
   &__content {
     background-color: #fff;
     width: 100%;
-
     transform: translateY(100px);
-    // opacity: 0;
     visibility: hidden;
   }
 
