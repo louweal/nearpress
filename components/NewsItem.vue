@@ -10,7 +10,7 @@
     <small class="text-muted fw-bold">
       <ul class="bullet-list-inline mb-0">
         <li>{{ article.channel }}</li>
-        <li>{{ article.author }}</li>
+        <li>{{ author.name }}</li>
       </ul>
       <!-- {{ formatDate(article.date) }} -->
     </small>
@@ -22,7 +22,11 @@
 </template>
 
 <script>
+// import authors from "@/data/authors.json";
+
 export default {
+  // authors,
+
   data() {
     return {
       progress: 0,
@@ -33,6 +37,14 @@ export default {
     article: {
       type: [Array, Object],
       default: () => [],
+    },
+  },
+
+  computed: {
+    author() {
+      return this.$store.state.authors.find(
+        (a) => a.id === this.article.author
+      );
     },
   },
 
@@ -48,19 +60,19 @@ export default {
   },
 
   methods: {
-    formatDate(date) {
-      return (
-        date.toLocaleDateString("us-EN", {
-          day: "numeric",
-          month: "long",
-        }) +
-        ", " +
-        date.toLocaleTimeString("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-      );
-    },
+    // formatDate(date) {
+    //   return (
+    //     date.toLocaleDateString("us-EN", {
+    //       day: "numeric",
+    //       month: "long",
+    //     }) +
+    //     ", " +
+    //     date.toLocaleTimeString("en-GB", {
+    //       hour: "2-digit",
+    //       minute: "2-digit",
+    //     })
+    //   );
+    // },
     paywall() {
       this.$store.commit("toggleModal");
       this.$store.commit("setClickedArticle", "/a/" + this.article.slug);

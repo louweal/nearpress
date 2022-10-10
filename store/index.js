@@ -2,6 +2,7 @@ export const state = () => ({
   showModal: false,
   articles: [],
   channels: [],
+  authors: [],
   clickedArticle: undefined,
   user: undefined,
 });
@@ -20,6 +21,10 @@ export const mutations = {
 
   SET_CHANNELS(state, payload) {
     state.channels = payload;
+  },
+
+  SET_AUTHORS(state, payload) {
+    state.authors = payload;
   },
 
   addArticle(state, payload) {
@@ -50,15 +55,15 @@ export const mutations = {
     state.user = payload;
   },
 
-  setSelectedChannels(state) {
-    if (state.user) {
-      state.channels.forEach(
-        (c) => (c["selected"] = state.user.channels.includes(c.slug))
-      );
-    } else {
-      return;
-    }
-  },
+  // setSelectedChannels(state) {
+  //   if (state.user) {
+  //     state.channels.forEach(
+  //       (c) => (c["selected"] = state.user.channels.includes(c.slug))
+  //     );
+  //   } else {
+  //     return;
+  //   }
+  // },
 
   updateViews(state, id) {
     state.articles.forEach(
@@ -72,6 +77,14 @@ export const mutations = {
 
   removeUserChannel(state, payload) {
     state.user.channels = state.user.channels.filter((c) => c !== payload);
+  },
+
+  addAuthor(state, payload) {
+    state.user.authors.push(payload);
+  },
+
+  removeAuthor(state, payload) {
+    state.user.authors = state.user.authors.filter((c) => c !== payload);
   },
 
   setClickedArticle(state, payload) {

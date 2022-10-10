@@ -66,6 +66,7 @@ export default {
         id: 1,
         name: "Anneloes Louwe",
         channels: ["dogs", "hiking", "chess", "save-ukraine"],
+        authors: [],
         history: [],
       });
 

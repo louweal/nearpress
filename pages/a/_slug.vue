@@ -15,7 +15,9 @@
 
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
           <ul class="bullet-list-inline mt-2">
-            <li>{{ article.author }}</li>
+            <li>
+              <nuxt-link :to="'/w/' + author.slug">{{ author.name }}</nuxt-link>
+            </li>
             <li>
               {{ formatDate(article.date) }}
             </li>
@@ -24,6 +26,7 @@
                 {{ article.channel }}
               </nuxt-link>
             </li>
+            <li>Views: {{ article.views }}</li>
           </ul>
 
           <h1>{{ article.title }}</h1>
@@ -52,7 +55,7 @@
 
           <p class="text-secondary fade-in" data-aos="68">
             Thank you for reading this article and supporting
-            <b>{{ article.author }}</b
+            <b>{{ author.name }}</b
             >!
           </p>
 
@@ -84,9 +87,12 @@
 
 <script>
 import getImage from "@/utils/getImage.js";
+// import authors from "@/data/authors.json";
 
 export default {
   transition: "page",
+
+  // authors,
 
   data() {
     return {
@@ -150,6 +156,12 @@ export default {
         return getImage(this.article.visual);
       }
       return "none";
+    },
+
+    author() {
+      return this.$store.state.authors.find(
+        (a) => a.id === this.article.author
+      );
     },
   },
 

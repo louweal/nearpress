@@ -1,9 +1,8 @@
 <template>
   <div
-    class="character"
+    class="character display-4"
     :style="{
-      color:
-        randomXPos < 55 ? 'rgba(117,93,241,0.18)' : 'rgba(149,94,174,0.18)',
+      color: randomXPos < 55 ? 'var(--bs-secondary)' : 'var(--my-secondary2)',
       left: randomXPos + '%',
       top: randomYPos,
       fontSize: randomSize,
@@ -62,19 +61,17 @@ export default {
   height: 6px;
   opacity: 0;
   animation: float 6s ease-in-out infinite;
-  // font-size: 1.7rem;
   font-weight: 700;
-  font-family: "Lobster Two", cursive;
 }
 
 @keyframes float {
   0% {
     transform: scale(10%);
-    opacity: 0.3;
+    opacity: calc(0.3 * 0.18);
   }
   66% {
     transform: scale(100%) translate(0px, -50px);
-    opacity: 1;
+    opacity: 0.18;
   }
   100% {
     transform: translateY(-50px);

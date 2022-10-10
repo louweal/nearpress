@@ -8,9 +8,13 @@
       <hero :articles="recentArticles.slice(0, 3)" />
 
       <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5">
-        <news-grid :articles="recentArticles.slice(2, 35)" />
+        <div class="col-12 col-md-9">
+          <news-grid :articles="recentArticles.slice(2, 35)" />
+        </div>
 
-        <sidebar :articles="articles.slice(0, 10)" />
+        <div class="col-md-3 d-none d-md-block">
+          <sidebar :articles="articles.slice(0, 10)" />
+        </div>
       </div>
 
       <div class="d-md-none">

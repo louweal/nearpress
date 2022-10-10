@@ -8,9 +8,35 @@
     </div>
 
     <div class="row gx-3 gx-lg-5 mt-2 mt-lg-4">
-      <news-grid :articles="channelArticles.slice(0, 30)" />
+      <div class="col-12 col-md-9">
+        <news-grid :articles="channelArticles.slice(0, 30)" />
+      </div>
 
       <div class="col-md-3 d-none d-md-block">
+        <sidebar
+          :articles="
+            [...articles]
+              .sort((a, b) => (a.views > b.views ? -1 : 1))
+              .slice(0, 7)
+          "
+        />
+
+        <h2 class="fs-5 mt-4">Explore channels</h2>
+
+        <ul class="list-inline">
+          <li
+            v-for="(c, i) in otherChannels"
+            :key="i"
+            class="mb-2 me-2 list-inline-item"
+          >
+            <nuxt-link :to="'/c/' + c.slug" class="btn btn-sm btn-secondary">
+              {{ c.title }}
+            </nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="col-md-3 d-none d-md-block">
         Articles
         <span class="display-6 text-muted">
           {{ channelArticles.length }}
@@ -53,7 +79,7 @@
             </nuxt-link>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

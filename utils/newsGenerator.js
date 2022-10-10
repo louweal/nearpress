@@ -46,46 +46,14 @@ export function news(n) {
 
   let a = [];
   for (let i = 0; i < n; i++) {
-    let title = getWords(Math.floor(Math.random() * 4) + 7);
+    let title = getWords(Math.floor(Math.random() * 4) + 7).replace(".", "");
+    title = title.charAt(0) + title.slice(1).toLowerCase();
     let content = makeParagraphs(7 + Math.ceil(Math.random() * 5));
     let channel = channelSlugs[Math.floor(Math.random() * numChannels)];
     let numImages = channels.find((c) => c.slug === channel).images;
 
-    let authors = [
-      { name: "Molly Ogelbe" },
-      { name: "Tedie Sivorn" },
-      { name: "Darnall Fitchett" },
-      { name: "Morgan New" },
-      { name: "Amory Alexandre" },
-      { name: "Cristabel Roof" },
-      { name: "Estevan McKenny" },
-      { name: "Verney Keilty" },
-      { name: "Alden Trouncer" },
-      { name: "Kori Bielefeld" },
-      { name: "Bertina Geertz" },
-      { name: "Farrand Pirri" },
-      { name: "Doralin Frier" },
-      { name: "Manolo Chimes" },
-      { name: "Hulda Ortner" },
-      { name: "Amalie Hollingdale" },
-      { name: "Marlo Kender" },
-      { name: "Edwina Keiley" },
-      { name: "Ariella Hobell" },
-      { name: "Bryon Rowling" },
-      { name: "Berne Mimmack" },
-      { name: "Verne Fantham" },
-      { name: "Gerda Clotworthy" },
-      { name: "Nanice O'Moylane" },
-      { name: "Orland Middlemass" },
-      { name: "Thalia Kinig" },
-      { name: "Donovan Welldrake" },
-      { name: "Gothart Burtt" },
-      { name: "Ginni Tofano" },
-      { name: "Becki Barcke" },
-    ].map((a) => a.name);
-
     a.push({
-      author: authors[Math.floor(Math.random() * authors.length)],
+      author: Math.floor(Math.random() * 42), // the data/authors.json contains 42 authors
       id: i,
       title: title,
       intro: getWords(14),
@@ -95,7 +63,7 @@ export function news(n) {
       content: content.a,
       total: content.end,
       date: new Date((1662031747 + Math.ceil(Math.random() * 2592000)) * 1000), // 1 sept 2022 + 1 month
-      views: 0,
+      views: Math.ceil(Math.random() * 777),
       viewers: 0,
     });
   }

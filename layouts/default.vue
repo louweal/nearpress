@@ -22,18 +22,20 @@
 <script>
 import { news } from "@/utils/newsGenerator.js";
 import channels from "@/data/channels.json";
+import authors from "@/data/authors.json";
 
 export default {
-  // scrollToTop: true,
   transition: "page",
 
   channels,
+  authors,
 
   created() {
-    this.$store.commit("SET_ARTICLES", news(1));
+    this.$store.commit("SET_ARTICLES", news(120));
     this.$store.commit("SET_CHANNELS", this.$options.channels);
+    this.$store.commit("SET_AUTHORS", this.$options.authors);
 
-    this.$store.commit("setSelectedChannels"); //
+    // this.$store.commit("setSelectedChannels"); //
   },
 
   mounted() {
@@ -45,31 +47,22 @@ export default {
       id: 1,
       name: "Anneloes Louwe",
       channels: ["dogs", "hiking", "chess", "save-ukraine"],
+      authors: [],
       history: [],
     });
   },
 
   watch: {
     "$store.state.showModal": function (show) {
-      if (show === true) {
-        this.disableScroll();
-      } else {
-        this.enableScroll();
+      if (show) {
+        this.posY = window.scrollY;
+        document.body.style.top = `-${window.scrollY}px`;
       }
-    },
-  },
+      document.body.classList.toggle("modal-open");
 
-  methods: {
-    disableScroll() {
-      // console.log("lock page");
-      this.posY = window.scrollY;
-      document.body.style.top = `-${window.scrollY}px`;
-      document.body.classList.add("modal-open");
-    },
-    enableScroll() {
-      // console.log("unlock page");
-      document.body.classList.remove("modal-open");
-      window.scrollTo(0, this.posY);
+      if (!show) {
+        window.scrollTo(0, this.posY);
+      }
     },
   },
 };
