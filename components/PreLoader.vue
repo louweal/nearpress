@@ -63,7 +63,7 @@ export default {};
       margin-right: 1rem;
       transform-origin: center center;
       // border: 1px solid red;
-      animation: spin 0.4s ease-in-out forwards;
+      animation: wobble 0.4s ease-in-out forwards;
     }
 
     p {
@@ -84,39 +84,7 @@ export default {};
   }
 }
 
-// @keyframes fade-in-out {
-//   0% {
-//     opacity: 0;
-//   }
-//   50% {
-//     opacity: 1;
-//   }
-//   100% {
-//     opacity: 0;
-//     visibility: hidden;
-//   }
-// }
-
-// @keyframes scale-down {
-//   100% {
-//     font-size: 1.2em;
-//   }
-// }
-
-// @keyframes scale-up {
-//   0% {
-//     font-size: 1em;
-//   }
-//   50% {
-//     font-size: 1.5em;
-//     // transform: scale(2);
-//   }
-//   100% {
-//     font-size: 1em;
-//   }
-// }
-
-@keyframes spin {
+@keyframes wobble {
   0% {
     transform: rotate(-20deg);
   }
@@ -140,9 +108,18 @@ export default {};
   }
 }
 
-// @keyframes rotate {
-//   to {
-//     transform: rotate(-360deg);
+// @keyframes fade-in-up-down {
+//   0% {
+//     transform: translateY(60px); // scaleY(1.2)
+//     opacity: 0;
+//   }
+//   80% {
+//     transform: translateY(-2px);
+//     opacity: 1;
+//   }
+//   100% {
+//     transform: translateY(0px);
+//     opacity: 1;
 //   }
 // }
 </style>

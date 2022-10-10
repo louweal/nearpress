@@ -5,8 +5,6 @@
         <div class="col-12 col-md-10 offset-md-1">
           <form>
             <div class="form-group d-grid">
-              <!-- <label for="image">Image</label> -->
-
               <div
                 class="ratio ratio-16x9 field--upload rounded image cursor-pointer"
                 @click="toggleModal"
@@ -28,17 +26,9 @@
             <li>{{ date }}</li>
             <li v-if="channel">{{ channel }}</li>
           </ul>
-          <!-- <h1>Write article</h1> -->
           <form class="gy-3">
             <div class="vstack gap-2">
               <div class="form-group">
-                <!-- <label for="title ">Title</label> -->
-                <!-- <input
-                  type="text"
-                  class="form-control fs-2 fw-bold"
-                  id="title"
-                /> -->
-
                 <textarea
                   class="form-control fs-2 fw-bold"
                   id="title"
@@ -49,8 +39,6 @@
               </div>
 
               <div class="form-group">
-                <!-- <label for="content">Text</label> -->
-
                 <p>
                   <b>Tip:</b> To create a sub-heading, add two asterisks before
                   and after a word or phrase: e.g. <b>**I'm a heading**</b>.
@@ -63,70 +51,91 @@
                   placeholder="Text"
                 ></textarea>
 
+                <span id="characters" v-if="article.content">{{
+                  article.content.length
+                }}</span>
+                characters
+
+                <!-- 
                 <p>
                   <span>{{ text.length }}</span> characters <br />You receive
                   {{ text.length * 10 }} microNEAR when someone reads the whole
                   article.
-                </p>
+                </p> -->
               </div>
             </div>
           </form>
         </div>
 
+        <div class="mt-4"></div>
+
         <div class="col-12 col-md-5 offset-md-2">
           <h2 class="fs-5">Metadata</h2>
 
-          <div class="form-group">
-            <!-- <label for="channel">Channel</label> -->
+          <form>
+            <div class="form-group">
+              <!-- <label for="channel">Channel</label> -->
 
-            <select
-              class="form-select"
-              aria-label="channel select"
-              id="channel"
-            >
-              <option selected>Select channel</option>
-              <option
-                value="c.slug"
-                v-for="(c, i) in [...$options.channels].sort((a, b) =>
-                  a.title > b.title ? 1 : -1
-                )"
-                :key="i"
+              <select
+                class="form-select"
+                aria-label="channel select"
+                id="channel"
+                @change="setChannel($event)"
               >
-                {{ c.title }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="intro">Introduction (shown on overview pages)</label>
+                <option selected>Select channel</option>
+                <option
+                  :value="c.slug"
+                  v-for="(c, i) in [...$options.channels].sort((a, b) =>
+                    a.title > b.title ? 1 : -1
+                  )"
+                  :key="i"
+                >
+                  {{ c.title }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="intro">Introduction (shown on overview pages)</label>
 
-            <p>
-              Your article introduction has to be between 100 and 200
-              characters.
-            </p>
+              <textarea
+                class="form-control"
+                id="intro"
+                rows="3"
+                @input="(e) => setIntro(e.target.value)"
+              ></textarea>
 
-            <textarea
-              class="form-control"
-              id="intro"
-              rows="3"
-              @input="(e) => setIntro(e.target.value)"
-            ></textarea>
+              <p>
+                <span id="characters">{{ intro.length }}</span> characters
+                <br />
+                <span class="text-danger" v-if="intro.length < 100">
+                  Introduction length should be >= 100 characters.
+                </span>
+                <span class="text-danger" v-if="intro.length > 200">
+                  Introduction length should be less than or equal to 200
+                  characters.
+                </span>
+              </p>
+            </div>
 
-            <p>
-              <span id="characters">{{ intro.length }}</span> characters
-            </p>
-          </div>
-
-          <button class="btn btn-secondary" type="submit">Publish</button>
+            <div
+              v-if="validFields"
+              class="btn btn-secondary"
+              @click="publishArtice()"
+            >
+              Publish
+            </div>
+          </form>
         </div>
 
-        <div class="col-12 col-md-3">
-          <h2 class="fs-4">Preview</h2>
-          <template v-if="article.title && article.visual && article.intro">
+        <div
+          class="col-12 col-md-3"
+          v-if="article.title && article.visual && article.intro"
+        >
+          <h2 class="fs-5">Preview:</h2>
+          <template>
             <card :article="article" />
           </template>
         </div>
-        <!-- </form> -->
-        <!-- </div> -->
       </div>
     </div>
 
@@ -182,9 +191,7 @@ export default {
       text: "",
       channel: undefined,
 
-      article: {
-        channel: "new",
-      },
+      article: {},
     };
   },
 
@@ -196,6 +203,19 @@ export default {
         year: "numeric",
       });
     },
+
+    validFields() {
+      return (
+        this.article.intro &&
+        this.article.intro.length >= 100 &&
+        this.article.intro.length <= 200 &&
+        this.article.title &&
+        this.article.title.length > 0 &&
+        this.article.visual &&
+        this.article.channel &&
+        this.article.content
+      );
+    },
   },
 
   methods: {
@@ -206,13 +226,15 @@ export default {
     selectImage(i) {
       this.image = i;
       // this.article["visual"] = i;
-      Vue.set(this.article, "visual", i);
+      Vue.set(this.article, "visual", { name: i, path: "new" });
 
       this.showModal = !this.showModal;
     },
 
     setTitle(e) {
       Vue.set(this.article, "title", e);
+      let slug = e.toLowerCase.replace(" ", "-");
+      Vue.set(this.article, "slug", slug);
     },
 
     setIntro(e) {
@@ -223,7 +245,26 @@ export default {
     },
 
     setText(e) {
-      this.text = e;
+      let p = e.split(/(?:\r?\n)+/);
+      console.log(p);
+      Vue.set(this.article, "content", e);
+    },
+
+    setChannel(e) {
+      // console.log(e.target.value);
+      Vue.set(this.article, "channel", e.target.value);
+    },
+
+    publishArtice() {
+      let id = this.$store.state.articles.length + 1;
+      console.log(id);
+
+      Vue.set(this.article, "id", id);
+      Vue.set(this.article, "author", this.$store.state.user.name);
+
+      Vue.set(this.article, "date", this.date);
+      this.$store.commit("addArticle", this.article);
+      this.$router.push("/");
     },
   },
 };

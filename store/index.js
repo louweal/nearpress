@@ -22,6 +22,10 @@ export const mutations = {
     state.channels = payload;
   },
 
+  addArticle(state, payload) {
+    state.articles.push(payload);
+  },
+
   // id, progress
   setProgress(state, payload) {
     if (state.user) {

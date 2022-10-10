@@ -93,7 +93,7 @@ export default {
 
   computed: {
     visual() {
-      return getImage(this.article.channel, this.article.visual);
+      return getImage(this.article.visual);
     },
   },
 

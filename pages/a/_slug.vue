@@ -9,7 +9,7 @@
               backgroundImage: visual,
             }"
           >
-            {{ visual === "none" ? article.visual : "" }}
+            <!-- {{ visual === "none" ? article.visual.name : "" }} -->
           </div>
         </div>
 
@@ -146,7 +146,10 @@ export default {
 
   computed: {
     visual() {
-      return getImage(this.article.channel, this.article.visual);
+      if (this.article.visual) {
+        return getImage(this.article.visual);
+      }
+      return "none";
     },
   },
 

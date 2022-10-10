@@ -30,7 +30,7 @@ export default {
   channels,
 
   created() {
-    this.$store.commit("SET_ARTICLES", news(300));
+    this.$store.commit("SET_ARTICLES", news(1));
     this.$store.commit("SET_CHANNELS", this.$options.channels);
 
     this.$store.commit("setSelectedChannels"); //

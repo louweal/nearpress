@@ -1,10 +1,17 @@
-export default function getImage(path, name) {
-  // let img = "none";
+export default function getImage(visual) {
   try {
-    return `url(${require("@/images/" + path + "/" + name + ".webp")})`;
+    return `url(${require("@/images/" +
+      visual.path +
+      "/" +
+      visual.name +
+      ".webp")})`;
   } catch {
     try {
-      return `url(${require("@/images/" + path + "/" + name + ".jpg")})`;
+      return `url(${require("@/images/" +
+        visual.path +
+        "/" +
+        visual.name +
+        ".jpg")})`;
     } catch {
       return "none";
     }

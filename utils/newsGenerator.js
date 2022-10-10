@@ -90,7 +90,7 @@ export function news(n) {
       title: title,
       intro: getWords(14),
       slug: title.toLowerCase().replaceAll(" ", "-"),
-      visual: Math.ceil(Math.random() * numImages),
+      visual: { name: Math.ceil(Math.random() * numImages), path: channel },
       channel: channel,
       content: content.a,
       total: content.end,

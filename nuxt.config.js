@@ -33,4 +33,8 @@ export default {
   components: true,
   buildModules: [],
   build: {},
+
+  generate: {
+    fallback: true,
+  },
 };

@@ -22,8 +22,8 @@
           <div class="modal-body px-4">
             <p class="text-center">
               Connect your NEAR wallet to read and write articles on NearPress.
-              Reading articles costs 10 microNEAR per character, which is payed
-              directly and fully to the writer of the article.
+              Reading articles costs 10 microNEAR per character, which goes
+              directly to the writer.
             </p>
             <div class="d-grid gap-2 mb-3">
               <div class="btn btn-secondary cursor-pointer" @click="signIn">
@@ -35,9 +35,9 @@
             <div class="btn btn-secondary cursor-pointer" @click="signIn">
               MetaMask
             </div> -->
-              <nuxt-link to="/getting-started" class="fw-bold text-center mt-1">
+              <!-- <nuxt-link to="/getting-started" class="fw-bold text-center mt-1">
                 I need more information
-              </nuxt-link>
+              </nuxt-link> -->
             </div>
           </div>
         </slot>
