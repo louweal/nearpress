@@ -1,28 +1,24 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
-// @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&family=Open+Sans:wght@300;500;700&display=swap");
 
-// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "@/node_modules/bootstrap/scss/functions";
 
-$primary: #000; // #3b153d;
-$secondary: #755df1; // #8e3c69; // rgba(0, 0, 0, 0.5); // #b185d6;
+// theme settings
+$primary: #000;
+$secondary: #755df1;
 $light: #ddd;
-$dark: pink;
-
 $body-bg: #f4f4f4;
-$link-decoration: none;
-
 $border-color: #ddd;
-
-//typography
 $font-family-base: "Open Sans", sans-serif;
 $font-weight-base: 300;
-// $font-size-base: 1rem;
 $line-height-base: 1.54;
-
 $display-font-family: "Lobster Two", cursive;
 $display-font-weight: 700;
+//end theme settings
+
+$link-decoration: none;
+
+//typography
 
 $headings-font-weight: 700;
 $headings-line-height: 1.4;
@@ -32,8 +28,8 @@ $aspect-ratios: (
   "4x3": calc(3 / 4 * 100%),
   "16x9": calc(9 / 16 * 100%),
   "21x9": calc(9 / 21 * 100%),
+  // additional ratios:
   "3x4": calc(4 / 3 * 100%),
-  // added
 );
 
 // buttons
@@ -48,36 +44,32 @@ $btn-font-weight: 500;
 
 $enable-smooth-scroll: false;
 
-$breadcrumb-active-color: $secondary;
-
 // badges
 $badge-font-size: 0.7em;
 $badge-font-weight: 500;
-// $badge-color: $white;
 $badge-padding-x: 0.7em;
 $badge-padding-y: 0.35em;
 
 // form
-$form-label-font-weight: 700;
+$form-label-font-weight: 700; // not working??
+// $input-focus-width: 0;
+$input-btn-focus-box-shadow: none;
 
-// 3. Include remainder of required Bootstrap stylesheets
+// Bootstrap stylesheets
 @import "@/node_modules/bootstrap/scss/variables";
 @import "@/node_modules/bootstrap/scss/mixins";
 @import "@/node_modules/bootstrap/scss/maps";
 @import "@/node_modules/bootstrap/scss/utilities";
 
-// 4. Include any optional Bootstrap components as you like
+// Optional Bootstrap components
 @import "@/node_modules/bootstrap/scss/root";
 @import "@/node_modules/bootstrap/scss/reboot";
 @import "@/node_modules/bootstrap/scss/images";
 @import "@/node_modules/bootstrap/scss/containers";
 @import "@/node_modules/bootstrap/scss/grid";
-@import "@/node_modules/bootstrap/scss/navbar"; // ?
 @import "@/node_modules/bootstrap/scss/buttons";
 @import "@/node_modules/bootstrap/scss/dropdown";
-// @import "@/node_modules/bootstrap/scss/modal";
 @import "@/node_modules/bootstrap/scss/close"; // = close button
-@import "@/node_modules/bootstrap/scss/breadcrumb";
 @import "@/node_modules/bootstrap/scss/badge";
 @import "@/node_modules/bootstrap/scss/forms";
 @import "@/node_modules/bootstrap/scss/type"; // list
@@ -121,14 +113,11 @@ body {
   transition: filter 0.3s linear;
 }
 
+// custom gradient backgrounds
 .bg-secondary,
 .btn-secondary {
-  background: rgb(117, 93, 241);
-  background: linear-gradient(
-    141deg,
-    rgba(117, 93, 241, 1) 0%,
-    rgba(149, 94, 174, 1) 81%
-  );
+  background: $secondary;
+  background: linear-gradient(141deg, $secondary 0%, var(--my-secondary2) 81%);
   color: #fff;
   transition: filter 0.24s linear !important;
 
@@ -139,6 +128,23 @@ body {
   }
 }
 
+// custom icon gradient background
+.bi.color-secondary,
+span.color-secondary {
+  background: -webkit-linear-gradient(45deg, $secondary, var(--my-secondary2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: filter 0.24s linear !important;
+
+  &:hover,
+  &:active:hover,
+  &:focus {
+    filter: hue-rotate(77deg);
+  }
+}
+
+// for vue page transitions
 .page-enter-active,
 .page-leave-active {
   transition: all 0.3s cubic-bezier(0.2, 0, 0.1, 1);
@@ -149,6 +155,7 @@ body {
   transform: translateY(60px);
 }
 
+// custom inline list with bullets in between
 .bullet-list-inline {
   padding-left: 0;
 
@@ -175,14 +182,11 @@ body {
   }
 }
 
+// custom animation
 .fade-in-up {
   animation: fade-in-up 0.7s cubic-bezier(0.2, 0, 0.1, 1) both;
   will-change: transform, opacity;
   animation-play-state: paused;
-  // opacity: 1;
-
-  // @include from(m) {
-  // }
 }
 
 .start-animation {
@@ -199,48 +203,11 @@ body {
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
+// card custom responsive heading size (needs mixins which are only available here)
+.card h2 {
+  font-size: 1rem;
+
+  @include media-breakpoint-up(lg) {
+    font-size: 1.125rem;
   }
-  to {
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  animation: fade-in 0.7s cubic-bezier(0.2, 0, 0.1, 1) both;
-  will-change: opacity;
-  animation-play-state: paused;
-}
-
-// card
-
-.card {
-  h2 {
-    font-size: 1rem;
-
-    @include media-breakpoint-up(lg) {
-      font-size: 1.125rem;
-    }
-  }
-}
-
-.bi.color-secondary,
-span.color-secondary {
-  background: -webkit-linear-gradient(45deg, #755df1, #955eae);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: filter 0.24s linear !important;
-
-  &:hover,
-  &:active:hover,
-  &:focus {
-    filter: hue-rotate(77deg);
-  }
-}
-
-.bi--active {
-  filter: hue-rotate(77deg);
 }

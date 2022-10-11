@@ -43,27 +43,33 @@
         </div>
       </div>
 
-      <div class="mt-3" v-for="(c, i) in userCategories" :key="i">
-        <h2 class="fs-5">
-          <nuxt-link :to="'/c/' + c.slug">
-            {{ c.title }}
-            <i class="bi bi-arrow-right"></i>
-          </nuxt-link>
-        </h2>
+      <template v-for="(c, i) in userCategories">
+        <div
+          class="mt-3"
+          v-if="posts.filter((a) => a.category === c.slug).length > 0"
+          :key="i"
+        >
+          <h2 class="fs-5">
+            <nuxt-link :to="'/c/' + c.slug">
+              {{ c.title }}
+              <i class="bi bi-arrow-right"></i>
+            </nuxt-link>
+          </h2>
 
-        <div class="row gy-0 gx-3 pt-1">
-          <div
-            class="col-12 col-md"
-            v-for="(post, i) in [...posts]
-              .filter((a) => a.category === c.slug)
-              .sort((a, b) => (a.date > b.date ? -1 : 1))
-              .slice(0, 5)"
-            :key="i"
-          >
-            <card :post="post" :showIntro="false" :borderTop="i !== 0" />
+          <div class="row gy-0 gx-3 pt-1">
+            <div
+              class="col-12 col-md"
+              v-for="(post, i) in [...posts]
+                .filter((a) => a.category === c.slug)
+                .sort((a, b) => (a.date > b.date ? -1 : 1))
+                .slice(0, 5)"
+              :key="i"
+            >
+              <card :post="post" :showIntro="false" :borderTop="i !== 0" />
+            </div>
           </div>
         </div>
-      </div>
+      </template>
 
       <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5">
         <div class="col-12 col-md-9">

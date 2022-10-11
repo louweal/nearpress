@@ -5,7 +5,7 @@
     <div id="page">
       <characters />
 
-      <navbar ref="header" />
+      <Header />
       <div class="min-vh-100 d-flex flex-column justify-content-between">
         <div id="pushdown" class="mb-2 mb-md-3 mb-lg-4"></div>
 
@@ -31,14 +31,14 @@ export default {
   writers,
 
   created() {
-    this.$store.commit("SET_POSTS", news(160));
+    this.$store.commit("SET_POSTS", news(120));
     this.$store.commit("SET_CATEGORIES", this.$options.categories);
     this.$store.commit("SET_WRITERS", this.$options.writers);
   },
 
   mounted() {
-    let headerHeight = document.querySelector("#header").offsetHeight;
-    let pushdown = document.querySelector("#pushdown");
+    let headerHeight = document.querySelector("#header").offsetHeight; //refs ?
+    let pushdown = document.querySelector("#pushdown"); // refs?
     pushdown.style.height = headerHeight + "px";
 
     // this.$store.commit("setUser", {

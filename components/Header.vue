@@ -1,11 +1,11 @@
 <template>
   <nav
-    class="shadow-sm navbar border-bottom navbar-expand-lg bg-white fixed-top py-md-3"
-    ref="header"
+    class="header shadow-sm border-bottom bg-white fixed-top py-md-3"
     id="header"
+    ref="header"
   >
-    <div class="container-xl">
-      <nuxt-link to="/" class="me-4 navbar-logo">
+    <div class="container-xl d-flex justify-content-between align-items-center">
+      <nuxt-link to="/" class="me-4" aria-label="to homepage">
         <img src="@/images/logo.svg" alt="" width="203" height="45" />
       </nuxt-link>
 
@@ -125,13 +125,14 @@ export default {
       // hide dropdown on scroll
       let menu = this.$refs["dropdown-menu"];
 
-      if (menu) {
+      if (menu && this.dropdownActive) {
         menu.style.display = "none";
-        this.dropdownActive = !this.dropdownActive;
+        this.dropdownActive = false;
       }
     },
 
     toggleDropdown(e) {
+      // console.log("click!");
       let menu = this.$refs["dropdown-menu"];
       // console.log(e.target);
       if (!this.dropdownActive) {
@@ -158,7 +159,7 @@ export default {
   transform: translateY(0);
 }
 
-.navbar {
+.header {
   transition: transform 0.4s ease-in-out;
   will-change: transform;
 

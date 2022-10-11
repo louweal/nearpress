@@ -18,20 +18,15 @@ function makeParagraphs(n) {
   let a = [];
   let end = 0;
   for (let i = 0; i < n; i++) {
-    let p = {
-      count: 0,
-    };
+    let p = {};
 
     if (i > 0 && Math.ceil(Math.random() * 3) == 3) {
       // add section title above paragraph (1/3 prob)
       p["title"] = getWords(Math.ceil(Math.random() * 3));
-      // p["count"] += p.title.length;
       end += p.title.length;
       p["titleEnd"] = end;
-      end;
     }
     p["content"] = getWords(30 + Math.floor(Math.random() * 55));
-    // p["count"] += p.content.length; // character count
     end += p.content.length;
     p["end"] = end;
     a.push(p);
@@ -65,7 +60,6 @@ export function news(n) {
       total: content.end,
       date: new Date((1662031747 + Math.ceil(Math.random() * 2592000)) * 1000), // 1 sept 2022 + 1 month
       views: Math.ceil(Math.random() * 777),
-      viewers: 0,
     });
   }
 

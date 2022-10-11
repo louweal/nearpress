@@ -1,5 +1,5 @@
 <template>
-  <div class="my-3 my-xl-4 fade-in" data-aos="68">
+  <div class="my-3 my-xl-4">
     <div class="hstack gap-3">
       <span class="align-middle me-1">Share:</span>
       <a

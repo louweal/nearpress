@@ -2,31 +2,29 @@
   <main>
     <div class="container-xl">
       <div class="row">
-        <div class="col-12 col-md-10 offset-md-1">
+        <!-- <div class="col-12 col-md-10 offset-md-1">
           <div
             class="post-img ratio ratio-16x9 rounded mb-2 bg-light"
             :style="{
               backgroundImage: visual,
             }"
-          >
-            <!-- {{ visual === "none" ? post.visual.name : "" }} -->
-          </div>
-        </div>
+          ></div>
+        </div> -->
 
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
           <ul class="bullet-list-inline mt-2">
             <li>
               <nuxt-link :to="'/w/' + author.slug">{{ author.name }}</nuxt-link>
             </li>
-            <li>
+            <!-- <li>
               {{ formatDate(post.date) }}
-            </li>
+            </li> -->
             <li>
               <nuxt-link :to="'/c/' + post.category">
                 {{ post.category }}
               </nuxt-link>
             </li>
-            <li>Views: {{ post.views }}</li>
+            <li>{{ post.views }}x read</li>
           </ul>
 
           <h1>{{ post.title }}</h1>
@@ -54,7 +52,7 @@
             </p>
           </template>
 
-          <p class="text-secondary fade-in" data-aos="68">
+          <p class="text-secondary">
             Thank you for reading this post and supporting
             <b>
               <nuxt-link :to="'/w/' + author.slug" class="text-secondary">

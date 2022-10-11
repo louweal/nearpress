@@ -23,7 +23,7 @@
         <div class="col-12 col-md-8 offset-md-2">
           <ul class="bullet-list-inline mt-2">
             <li v-if="$store.state.user">{{ $store.state.user.name }}</li>
-            <li>{{ date }}</li>
+            <li>{{ datestring }}</li>
             <li v-if="category">{{ category }}</li>
           </ul>
           <form class="gy-3">
@@ -51,9 +51,9 @@
                   placeholder="Text"
                 ></textarea>
 
-                <span id="characters" v-if="post.content">{{
-                  post.content.length
-                }}</span>
+                <span id="characters" v-if="post.content">
+                  {{ post.content ? post.content.length : 0 }}
+                </span>
                 characters
 
                 <!-- 
@@ -108,11 +108,10 @@
                 <span id="characters">{{ intro.length }}</span> characters
                 <br />
                 <span class="text-danger" v-if="intro.length < 100">
-                  Introduction length should be >= 100 characters.
+                  The introduction should be at least 100 characters.
                 </span>
                 <span class="text-danger" v-if="intro.length > 200">
-                  Introduction length should be less than or equal to 200
-                  characters.
+                  The introduction can't have more than 200 characters.
                 </span>
               </p>
             </div>
@@ -192,7 +191,11 @@ export default {
 
   computed: {
     date() {
-      return new Date(Date.now()).toLocaleDateString("us-EN", {
+      return new Date(Date.now());
+    },
+
+    datestring() {
+      return this.date.toLocaleDateString("us-EN", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -232,7 +235,7 @@ export default {
 
     setTitle(e) {
       Vue.set(this.post, "title", e);
-      let slug = e.toLowerCase.replace(" ", "-");
+      let slug = e.toLowerCase().replace(" ", "-");
       Vue.set(this.post, "slug", slug);
     },
 
@@ -244,9 +247,44 @@ export default {
     },
 
     setText(e) {
-      let p = e.split(/(?:\r?\n)+/);
-      console.log(p);
-      Vue.set(this.post, "content", e);
+      let parts = e.split(/(?:\r?\n)+/);
+
+      if (parts.length > 0) {
+        let a = [];
+        let end = 0;
+        for (let i = 0; i < parts.length; i++) {
+          if (parts[i]) {
+            let p = {};
+
+            // let p = paragraphs[i];
+            if (parts[i].startsWith("**")) {
+              //title
+              let title = parts[i].replaceAll("**", "");
+              if (title.length > 0) {
+                p["title"] = title;
+                end += title.length;
+                p["titleEnd"] = end;
+
+                if (parts[i + 1]) {
+                  p["content"] = parts[i + 1];
+                  end += p["content"].length;
+                  p["end"] = end;
+
+                  i = i + 1; // skip next part
+                }
+              }
+            } else {
+              // content
+              p["content"] = parts[i];
+              end += p.content.length;
+              p["end"] = end;
+            }
+            a.push(p);
+          }
+        }
+        Vue.set(this.post, "content", a);
+        Vue.set(this.post, "total", end);
+      }
     },
 
     setCategory(e) {
@@ -259,9 +297,11 @@ export default {
       console.log(id);
 
       Vue.set(this.post, "id", id);
-      Vue.set(this.post, "author", this.$store.state.user.name);
-
+      Vue.set(this.post, "author", 43); // me
       Vue.set(this.post, "date", this.date);
+      Vue.set(this.post, "views", 0);
+
+      // console.log(this.post);
       this.$store.commit("addPost", this.post);
       this.$router.push("/");
     },

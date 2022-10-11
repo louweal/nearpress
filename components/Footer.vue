@@ -6,7 +6,11 @@
           <div
             class="col-12 col-lg-auto text-center text-lg-left align-self-center"
           >
-            <nuxt-link to="/" class="footer-logo my-2 d-block">
+            <nuxt-link
+              to="/"
+              class="footer-logo my-2 d-block"
+              aria-label="to homepage"
+            >
               <img src="@/images/logo.svg" alt="" />
             </nuxt-link>
           </div>

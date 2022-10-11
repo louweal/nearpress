@@ -28,11 +28,7 @@
   top: 0;
   left: 0;
   z-index: -1;
-  background: #f4f4f4; // rgb(232, 232, 232);
-  background: linear-gradient(
-    180deg,
-    rgba(#f4f4f4, 1) 0%,
-    rgba(255, 255, 255, 1) 47%
-  );
+  background: #f4f4f4;
+  background: linear-gradient(180deg, #f4f4f4 0%, #fff 47%);
 }
 </style>

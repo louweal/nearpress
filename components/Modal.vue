@@ -61,12 +61,11 @@ export default {
     signIn() {
       this.toggleModal();
 
-      // todo
       this.$store.commit("setUser", {
         id: 1,
         name: "Anneloes Louwe",
         categories: ["dogs", "hiking", "chess", "save-ukraine"],
-        writers: [1, 3, 7, 9, 13, 15], //this.$store.state.writers.map((w) => w.id).slice(0, 7), //[],
+        writers: [1, 3, 7, 9, 13, 15],
         history: [],
       });
 
