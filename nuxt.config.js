@@ -17,7 +17,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "Decentralized news platform on NEAR",
+        content: "Connects everyone with everyone",
       },
       { name: "format-detection", content: "telephone=no" },
     ],
@@ -35,6 +35,6 @@ export default {
   build: {},
 
   generate: {
-    fallback: true,
+    fallback: true, // for error pages on Netlify
   },
 };

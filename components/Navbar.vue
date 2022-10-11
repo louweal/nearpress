@@ -11,9 +11,9 @@
 
       <div class="dropdown d-none d-sm-inline cursor-pointer">
         <div class="dropdown-toggle pe-3" @click="toggleDropdown">
-          {{ hasChannels ? "Your channels" : "All channels" }}
+          {{ hasCategories ? "Your channels" : "All channels" }}
         </div>
-        <div class="dropdown-menu" ref="dropdown-menu" v-if="hasChannels">
+        <div class="dropdown-menu" ref="dropdown-menu">
           <nuxt-link
             :to="'/c/' + c.slug"
             event=""
@@ -21,22 +21,7 @@
               toggleDropdown();
               $router.push('/c/' + c.slug);
             "
-            v-for="(c, i) in userChannels"
-            :key="i"
-            class="dropdown-item"
-          >
-            {{ c.title }}
-          </nuxt-link>
-        </div>
-        <div class="dropdown-menu" ref="dropdown-menu" v-else>
-          <nuxt-link
-            :to="'/c/' + c.slug"
-            event=""
-            @click.native="
-              toggleDropdown();
-              $router.push('/c/' + c.slug);
-            "
-            v-for="(c, i) in $options.channels"
+            v-for="(c, i) in hasCategories ? userCategories : categories"
             :key="i"
             class="dropdown-item"
           >
@@ -67,8 +52,6 @@
 </template>
 
 <script>
-import channels from "@/data/channels.json";
-
 export default {
   data() {
     return {
@@ -76,8 +59,6 @@ export default {
       prevPosY: 0,
     };
   },
-
-  channels: [...channels].sort((a, b) => (a.title > b.title ? 1 : -1)),
 
   mounted() {
     window.addEventListener("scroll", this.aosHeader);
@@ -88,17 +69,23 @@ export default {
   },
 
   computed: {
-    userChannels() {
+    userCategories() {
       if (this.$store.state.user) {
-        return this.$options.channels.filter((c) =>
-          this.$store.state.user.channels.includes(c.slug)
+        return this.categories.filter((c) =>
+          this.$store.state.user.categories.includes(c.slug)
         );
       }
       return [];
     },
 
-    hasChannels() {
-      return this.userChannels.length > 0;
+    categories() {
+      return [...this.$store.state.categories].sort((a, b) =>
+        a.title > b.title ? 1 : -1
+      );
+    },
+
+    hasCategories() {
+      return this.userCategories.length > 0;
     },
   },
 

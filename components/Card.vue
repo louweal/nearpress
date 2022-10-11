@@ -1,9 +1,17 @@
 <template>
   <nuxt-link
-    :to="'/a/' + article.slug"
+    :to="{
+      path: '/a/' + post.slug,
+      hash: historicProgress !== 0 ? '#' + historicProgress : false,
+    }"
     event=""
     @click.native="
-      $store.state.user ? $router.push('/a/' + article.slug) : paywall()
+      $store.state.user
+        ? $router.push({
+            path: '/a/' + post.slug,
+            hash: historicProgress !== 0 ? '#' + historicProgress : false,
+          })
+        : paywall()
     "
     class="card"
   >
@@ -35,9 +43,9 @@
         </div>
       </div>
       <div class="col-8 col-md-12 d-none d-md-block">
-        <h2 class="card-title">{{ article.title }}</h2>
+        <h2 class="card-title">{{ post.title }}</h2>
 
-        <p v-if="showIntro" class="d-none d-md-block">{{ article.intro }}</p>
+        <p v-if="showIntro" class="d-none d-md-block">{{ post.intro }}</p>
       </div>
 
       <div
@@ -45,7 +53,7 @@
         :class="flex ? 'col-8 col-sm-9' : 'col-12'"
       >
         <h2 class="card-title" :class="flex ? 'fw-light' : false">
-          {{ article.title }}
+          {{ post.title }}
         </h2>
       </div>
     </div>
@@ -62,7 +70,7 @@ export default {
     };
   },
   props: {
-    article: {
+    post: {
       type: [Array, Object],
       default: () => [],
     },
@@ -81,26 +89,38 @@ export default {
   },
 
   mounted() {
-    if (this.$store.state.user && this.article) {
+    if (this.$store.state.user && this.post) {
       let history = this.$store.state.user.history.find(
-        (a) => a.id === this.article.id
+        (a) => a.id === this.post.id
       );
       if (history) {
-        this.progress = parseInt((100 * history.progress) / this.article.total);
+        this.progress = parseInt((100 * history.progress) / this.post.total);
       }
     }
   },
 
   computed: {
     visual() {
-      return getImage(this.article.visual);
+      return getImage(this.post.visual);
+    },
+
+    historicProgress() {
+      if (this.$store.state.user) {
+        let history = this.$store.state.user.history.find(
+          (a) => a.id === this.post.id
+        );
+        if (history) {
+          return history.progress;
+        }
+      }
+      return 0;
     },
   },
 
   methods: {
     paywall() {
       this.$store.commit("toggleModal");
-      this.$store.commit("setClickedArticle", "/a/" + this.article.slug);
+      this.$store.commit("setClickedPost", "/a/" + this.post.slug);
       document.getElementById("page").classList.toggle("is-blurred");
     },
   },

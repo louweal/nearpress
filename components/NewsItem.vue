@@ -1,32 +1,35 @@
 <template>
   <nuxt-link
-    :to="'/a/' + article.slug"
+    :to="{
+      path: '/a/' + post.slug,
+      hash: historicProgress !== 0 ? '#' + historicProgress : false,
+    }"
     event=""
     @click.native="
-      $store.state.user ? $router.push('/a/' + article.slug) : paywall(article)
+      $store.state.user
+        ? $router.push({
+            path: '/a/' + post.slug,
+            hash: historicProgress !== 0 ? '#' + historicProgress : false,
+          })
+        : paywall(post)
     "
     class="d-block w-100 m-1 pt-1"
   >
     <small class="text-muted fw-bold">
       <ul class="bullet-list-inline mb-0">
-        <li>{{ article.channel }}</li>
+        <li>{{ post.category }}</li>
         <li>{{ author.name }}</li>
       </ul>
-      <!-- {{ formatDate(article.date) }} -->
     </small>
     <h3 class="fs-6 fw-light">
-      {{ article.title }}
+      {{ post.title }}
       <span class="badge bg-secondary" v-if="progress"> {{ progress }} %</span>
     </h3>
   </nuxt-link>
 </template>
 
 <script>
-// import authors from "@/data/authors.json";
-
 export default {
-  // authors,
-
   data() {
     return {
       progress: 0,
@@ -34,7 +37,7 @@ export default {
   },
 
   props: {
-    article: {
+    post: {
       type: [Array, Object],
       default: () => [],
     },
@@ -42,40 +45,36 @@ export default {
 
   computed: {
     author() {
-      return this.$store.state.authors.find(
-        (a) => a.id === this.article.author
-      );
+      return this.$store.state.writers.find((a) => a.id === this.post.author);
+    },
+    historicProgress() {
+      if (this.$store.state.user) {
+        let history = this.$store.state.user.history.find(
+          (a) => a.id === this.post.id
+        );
+        if (history) {
+          return history.progress;
+        }
+      }
+      return 0;
     },
   },
 
   mounted() {
-    if (this.$store.state.user && this.article) {
+    if (this.$store.state.user && this.post) {
       let history = this.$store.state.user.history.find(
-        (a) => a.id === this.article.id
+        (a) => a.id === this.post.id
       );
       if (history) {
-        this.progress = parseInt((100 * history.progress) / this.article.total);
+        this.progress = parseInt((100 * history.progress) / this.post.total);
       }
     }
   },
 
   methods: {
-    // formatDate(date) {
-    //   return (
-    //     date.toLocaleDateString("us-EN", {
-    //       day: "numeric",
-    //       month: "long",
-    //     }) +
-    //     ", " +
-    //     date.toLocaleTimeString("en-GB", {
-    //       hour: "2-digit",
-    //       minute: "2-digit",
-    //     })
-    //   );
-    // },
     paywall() {
       this.$store.commit("toggleModal");
-      this.$store.commit("setClickedArticle", "/a/" + this.article.slug);
+      this.$store.commit("setClickedPost", "/a/" + this.post.slug);
       document.getElementById("page").classList.toggle("is-blurred");
     },
   },

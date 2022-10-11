@@ -1,7 +1,7 @@
 <template>
   <div class="footer mt-3 mt-xl-5 border-top border-light">
     <div class="py-2">
-      <div class="container-lg" style="font-size: 0.91rem">
+      <div class="container-xl" style="font-size: 0.91rem">
         <div class="row g-0 g-md-3">
           <div
             class="col-12 col-lg-auto text-center text-lg-left align-self-center"

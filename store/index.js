@@ -1,34 +1,31 @@
 export const state = () => ({
   showModal: false,
-  articles: [],
-  channels: [],
-  authors: [],
-  clickedArticle: undefined,
+  posts: [],
+  categories: [],
+  writers: [],
+  clickedPost: undefined,
   user: undefined,
 });
 
 export const mutations = {
-  toggleModal(state, payload) {
-    state.showModal = !state.showModal;
-  },
-  toggleDropdown(state) {
+  toggleModal(state) {
     state.showModal = !state.showModal;
   },
 
-  SET_ARTICLES(state, payload) {
-    state.articles = payload;
+  SET_POSTS(state, payload) {
+    state.posts = payload;
   },
 
-  SET_CHANNELS(state, payload) {
-    state.channels = payload;
+  SET_CATEGORIES(state, payload) {
+    state.categories = payload;
   },
 
-  SET_AUTHORS(state, payload) {
-    state.authors = payload;
+  SET_WRITERS(state, payload) {
+    state.writers = payload;
   },
 
-  addArticle(state, payload) {
-    state.articles.push(payload);
+  addPost(state, payload) {
+    state.posts.push(payload);
   },
 
   // id, progress
@@ -55,39 +52,27 @@ export const mutations = {
     state.user = payload;
   },
 
-  // setSelectedChannels(state) {
-  //   if (state.user) {
-  //     state.channels.forEach(
-  //       (c) => (c["selected"] = state.user.channels.includes(c.slug))
-  //     );
-  //   } else {
-  //     return;
-  //   }
-  // },
-
   updateViews(state, id) {
-    state.articles.forEach(
-      (a) => (a.views = a.id === id ? a.views + 1 : a.views)
-    );
+    state.posts.forEach((a) => (a.views = a.id === id ? a.views + 1 : a.views));
   },
 
-  addUserChannel(state, payload) {
-    state.user.channels.push(payload);
+  addUserCategory(state, payload) {
+    state.user.categories.push(payload);
   },
 
-  removeUserChannel(state, payload) {
-    state.user.channels = state.user.channels.filter((c) => c !== payload);
+  removeUserCategory(state, payload) {
+    state.user.categories = state.user.categories.filter((c) => c !== payload);
   },
 
-  addAuthor(state, payload) {
-    state.user.authors.push(payload);
+  addWriter(state, payload) {
+    state.user.writers.push(payload);
   },
 
-  removeAuthor(state, payload) {
-    state.user.authors = state.user.authors.filter((c) => c !== payload);
+  removeWriter(state, payload) {
+    state.user.writers = state.user.writers.filter((c) => c !== payload);
   },
 
-  setClickedArticle(state, payload) {
-    state.clickedArticle = payload;
+  setClickedPost(state, payload) {
+    state.clickedPost = payload;
   },
 };

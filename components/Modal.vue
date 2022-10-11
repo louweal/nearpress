@@ -21,8 +21,8 @@
           </div>
           <div class="modal-body px-4">
             <p class="text-center">
-              Connect your NEAR wallet to read and write articles on NearPress.
-              Reading articles costs 10 microNEAR per character, which goes
+              Connect your NEAR wallet to read and write posts on NearPress.
+              Reading posts costs 10 microNEAR per character, which goes
               directly to the writer.
             </p>
             <div class="d-grid gap-2 mb-3">
@@ -65,16 +65,16 @@ export default {
       this.$store.commit("setUser", {
         id: 1,
         name: "Anneloes Louwe",
-        channels: ["dogs", "hiking", "chess", "save-ukraine"],
-        authors: [],
+        categories: ["dogs", "hiking", "chess", "save-ukraine"],
+        writers: [1, 3, 7, 9, 13, 15], //this.$store.state.writers.map((w) => w.id).slice(0, 7), //[],
         history: [],
       });
 
-      let goto = this.$store.state.clickedArticle
-        ? this.$store.state.clickedArticle
+      let goto = this.$store.state.clickedPost
+        ? this.$store.state.clickedPost
         : "/";
       this.$router.push(goto);
-      this.$store.commit("setClickedArticle", undefined);
+      this.$store.commit("setClickedPost", undefined);
     },
   },
 };

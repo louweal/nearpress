@@ -24,7 +24,7 @@
           <ul class="bullet-list-inline mt-2">
             <li v-if="$store.state.user">{{ $store.state.user.name }}</li>
             <li>{{ date }}</li>
-            <li v-if="channel">{{ channel }}</li>
+            <li v-if="category">{{ category }}</li>
           </ul>
           <form class="gy-3">
             <div class="vstack gap-2">
@@ -51,8 +51,8 @@
                   placeholder="Text"
                 ></textarea>
 
-                <span id="characters" v-if="article.content">{{
-                  article.content.length
+                <span id="characters" v-if="post.content">{{
+                  post.content.length
                 }}</span>
                 characters
 
@@ -60,7 +60,7 @@
                 <p>
                   <span>{{ text.length }}</span> characters <br />You receive
                   {{ text.length * 10 }} microNEAR when someone reads the whole
-                  article.
+                  post.
                 </p> -->
               </div>
             </div>
@@ -74,18 +74,18 @@
 
           <form>
             <div class="form-group">
-              <!-- <label for="channel">Channel</label> -->
+              <!-- <label for="category">Category</label> -->
 
               <select
                 class="form-select"
-                aria-label="channel select"
-                id="channel"
-                @change="setChannel($event)"
+                aria-label="category select"
+                id="category"
+                @change="setCategory($event)"
               >
                 <option selected>Select channel</option>
                 <option
                   :value="c.slug"
-                  v-for="(c, i) in [...$options.channels].sort((a, b) =>
+                  v-for="(c, i) in [...categories].sort((a, b) =>
                     a.title > b.title ? 1 : -1
                   )"
                   :key="i"
@@ -129,11 +129,11 @@
 
         <div
           class="col-12 col-md-3"
-          v-if="article.title && article.visual && article.intro"
+          v-if="post.title && post.visual && post.intro"
         >
           <h2 class="fs-5">Preview:</h2>
           <template>
-            <card :article="article" />
+            <card :post="post" />
           </template>
         </div>
       </div>
@@ -178,20 +178,15 @@
 <script>
 import Vue from "vue";
 
-import channels from "@/data/channels.json";
-
 export default {
-  channels,
-
   data() {
     return {
       showModal: false,
       image: -1,
       intro: "",
       text: "",
-      channel: undefined,
-
-      article: {},
+      category: undefined,
+      post: {},
     };
   },
 
@@ -204,16 +199,20 @@ export default {
       });
     },
 
+    categories() {
+      return this.$store.state.categories;
+    },
+
     validFields() {
       return (
-        this.article.intro &&
-        this.article.intro.length >= 100 &&
-        this.article.intro.length <= 200 &&
-        this.article.title &&
-        this.article.title.length > 0 &&
-        this.article.visual &&
-        this.article.channel &&
-        this.article.content
+        this.post.intro &&
+        this.post.intro.length >= 100 &&
+        this.post.intro.length <= 200 &&
+        this.post.title &&
+        this.post.title.length > 0 &&
+        this.post.visual &&
+        this.post.category &&
+        this.post.content
       );
     },
   },
@@ -225,45 +224,45 @@ export default {
 
     selectImage(i) {
       this.image = i;
-      // this.article["visual"] = i;
-      Vue.set(this.article, "visual", { name: i, path: "new" });
+      // this.post["visual"] = i;
+      Vue.set(this.post, "visual", { name: i, path: "new" });
 
       this.showModal = !this.showModal;
     },
 
     setTitle(e) {
-      Vue.set(this.article, "title", e);
+      Vue.set(this.post, "title", e);
       let slug = e.toLowerCase.replace(" ", "-");
-      Vue.set(this.article, "slug", slug);
+      Vue.set(this.post, "slug", slug);
     },
 
     setIntro(e) {
       // console.log(e);
       this.intro = e;
-      // this.article["intro"] = e;
-      Vue.set(this.article, "intro", e);
+      // this.post["intro"] = e;
+      Vue.set(this.post, "intro", e);
     },
 
     setText(e) {
       let p = e.split(/(?:\r?\n)+/);
       console.log(p);
-      Vue.set(this.article, "content", e);
+      Vue.set(this.post, "content", e);
     },
 
-    setChannel(e) {
+    setCategory(e) {
       // console.log(e.target.value);
-      Vue.set(this.article, "channel", e.target.value);
+      Vue.set(this.post, "category", e.target.value);
     },
 
     publishArtice() {
-      let id = this.$store.state.articles.length + 1;
+      let id = this.$store.state.posts.length + 1;
       console.log(id);
 
-      Vue.set(this.article, "id", id);
-      Vue.set(this.article, "author", this.$store.state.user.name);
+      Vue.set(this.post, "id", id);
+      Vue.set(this.post, "author", this.$store.state.user.name);
 
-      Vue.set(this.article, "date", this.date);
-      this.$store.commit("addArticle", this.article);
+      Vue.set(this.post, "date", this.date);
+      this.$store.commit("addPost", this.post);
       this.$router.push("/");
     },
   },

@@ -1,7 +1,7 @@
 export default function (to) {
   if (to.hash) {
     return window.scrollTo({
-      top: document.querySelector(to.hash).offsetTop + window.innerHeight,
+      top: document.querySelector(to.hash).offsetTop + window.innerHeight, //useless offset!??
       behavior: "smooth",
     });
   }

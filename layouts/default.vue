@@ -21,21 +21,19 @@
 
 <script>
 import { news } from "@/utils/newsGenerator.js";
-import channels from "@/data/channels.json";
-import authors from "@/data/authors.json";
+import categories from "@/data/channels.json";
+import writers from "@/data/writers.json";
 
 export default {
   transition: "page",
 
-  channels,
-  authors,
+  categories,
+  writers,
 
   created() {
-    this.$store.commit("SET_ARTICLES", news(120));
-    this.$store.commit("SET_CHANNELS", this.$options.channels);
-    this.$store.commit("SET_AUTHORS", this.$options.authors);
-
-    // this.$store.commit("setSelectedChannels"); //
+    this.$store.commit("SET_POSTS", news(160));
+    this.$store.commit("SET_CATEGORIES", this.$options.categories);
+    this.$store.commit("SET_WRITERS", this.$options.writers);
   },
 
   mounted() {
@@ -43,13 +41,13 @@ export default {
     let pushdown = document.querySelector("#pushdown");
     pushdown.style.height = headerHeight + "px";
 
-    this.$store.commit("setUser", {
-      id: 1,
-      name: "Anneloes Louwe",
-      channels: ["dogs", "hiking", "chess", "save-ukraine"],
-      authors: [],
-      history: [],
-    });
+    // this.$store.commit("setUser", {
+    //   id: 1,
+    //   name: "Anneloes Louwe",
+    //   categories: ["dogs", "hiking", "chess", "save-ukraine"],
+    //   writers: [],
+    //   history: [],
+    // });
   },
 
   watch: {

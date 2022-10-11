@@ -1,5 +1,5 @@
 import loremIpsum from "~/data/lorem-ipsum.json";
-import channels from "~/data/channels.json";
+import categories from "~/data/channels.json";
 
 function shuffledLorem() {
   return loremIpsum.text
@@ -40,26 +40,27 @@ function makeParagraphs(n) {
 }
 
 export function news(n) {
-  let numChannels = channels.length;
+  let numCategories = categories.length;
 
-  let channelSlugs = channels.map((c) => c.slug);
+  let categorySlugs = categories.map((c) => c.slug);
 
   let a = [];
   for (let i = 0; i < n; i++) {
+    let author = Math.ceil(Math.random() * 42);
     let title = getWords(Math.floor(Math.random() * 4) + 7).replace(".", "");
     title = title.charAt(0) + title.slice(1).toLowerCase();
-    let content = makeParagraphs(7 + Math.ceil(Math.random() * 5));
-    let channel = channelSlugs[Math.floor(Math.random() * numChannels)];
-    let numImages = channels.find((c) => c.slug === channel).images;
+    let content = makeParagraphs(7 + Math.ceil(Math.random() * 15));
+    let category = categorySlugs[author % numCategories];
+    let numImages = categories.find((c) => c.slug === category).images;
 
     a.push({
-      author: Math.floor(Math.random() * 42), // the data/authors.json contains 42 authors
+      author: author, // the data/writers.json contains 42 writers, with ids 1-42
       id: i,
       title: title,
       intro: getWords(14),
       slug: title.toLowerCase().replaceAll(" ", "-"),
-      visual: { name: Math.ceil(Math.random() * numImages), path: channel },
-      channel: channel,
+      visual: { name: Math.ceil(Math.random() * numImages), path: category },
+      category: category,
       content: content.a,
       total: content.end,
       date: new Date((1662031747 + Math.ceil(Math.random() * 2592000)) * 1000), // 1 sept 2022 + 1 month

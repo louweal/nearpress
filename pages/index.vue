@@ -1,19 +1,29 @@
 <template>
   <main>
     <div class="container-xl">
-      <ChannelList
-        :channels="userChannels.length > 0 ? userChannels : $options.channels"
+      <category-list
+        :categories="
+          userCategories.length > 0 ? userCategories : $options.categories
+        "
       />
 
-      <hero :articles="recentArticles.slice(0, 3)" />
+      <!-- {{ userWriters }} -->
+
+      <hero :posts="feed.slice(0, 3)" />
 
       <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5">
         <div class="col-12 col-md-9">
-          <news-grid :articles="recentArticles.slice(2, 35)" />
+          <news-grid :posts="feed.slice(2, 11)" hide-first-post="mobile" />
         </div>
 
         <div class="col-md-3 d-none d-md-block">
-          <sidebar :articles="articles.slice(0, 10)" />
+          <sidebar
+            :posts="
+              [...posts]
+                .sort((a, b) => (a.views > b.views ? -1 : 1))
+                .slice(0, 10)
+            "
+          />
         </div>
       </div>
 
@@ -23,13 +33,54 @@
         <div class="row gy-0 gx-3 pt-1">
           <div
             class="col-12 col-md"
-            v-for="(article, i) in [...articles]
+            v-for="(post, i) in [...posts]
               .sort((a, b) => (a.views > b.views ? -1 : 1))
               .slice(0, 10)"
             :key="i"
           >
-            <card :article="article" :showIntro="false" :borderTop="i !== 0" />
+            <card :post="post" :showIntro="false" :borderTop="i !== 0" />
           </div>
+        </div>
+      </div>
+
+      <div class="mt-3" v-for="(c, i) in userCategories" :key="i">
+        <h2 class="fs-5">
+          <nuxt-link :to="'/c/' + c.slug">
+            {{ c.title }}
+            <i class="bi bi-arrow-right"></i>
+          </nuxt-link>
+        </h2>
+
+        <div class="row gy-0 gx-3 pt-1">
+          <div
+            class="col-12 col-md"
+            v-for="(post, i) in [...posts]
+              .filter((a) => a.category === c.slug)
+              .sort((a, b) => (a.date > b.date ? -1 : 1))
+              .slice(0, 5)"
+            :key="i"
+          >
+            <card :post="post" :showIntro="false" :borderTop="i !== 0" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5">
+        <div class="col-12 col-md-9">
+          <news-grid :posts="feed.slice(11)" />
+        </div>
+
+        <div
+          class="col-md-3 d-none d-md-block"
+          v-if="feed.slice(11).length > 6"
+        >
+          <sidebar
+            title="Recent articles"
+            :posts="
+              [...posts].sort((a, b) => (a.date > b.date ? -1 : 1)).slice(0, 10)
+            "
+          />
+          <!-- <sidebar :posts="posts.slice(0, 10)" /> -->
         </div>
       </div>
     </div>
@@ -37,46 +88,39 @@
 </template>
 
 <script>
-import channels from "@/data/channels.json";
-
 export default {
   transition: "page",
 
-  channels,
-
   computed: {
-    articles() {
-      if (this.$store.state.user && this.userChannels.length > 0) {
-        return this.userArticles;
-      }
-      return this.$store.state.articles; // all articles
+    posts() {
+      return this.$store.state.posts; // all posts
     },
 
-    userChannels() {
+    feed() {
+      if (this.$store.state.user && this.userWriters.length > 0) {
+        return [...this.posts]
+          .filter((a) => this.$store.state.user.writers.includes(a.author))
+          .sort((a, b) => (a.date > b.date ? -1 : 1)); // move somewhere else!
+      }
+      return [...this.posts].sort((a, b) => (a.date > b.date ? -1 : 1));
+    },
+
+    userWriters() {
       if (this.$store.state.user) {
-        return this.$options.channels.filter((c) =>
-          this.$store.state.user.channels.includes(c.slug)
+        return this.$store.state.writers.filter((w) =>
+          this.$store.state.user.writers.includes(w.id)
         );
       }
       return [];
     },
 
-    userArticles() {
-      if (this.$store.state.user && this.userChannels.length > 0) {
-        return this.$store.state.articles.filter((a) =>
-          this.$store.state.user.channels.includes(a.channel)
+    userCategories() {
+      if (this.$store.state.user) {
+        return this.$store.state.categories.filter((c) =>
+          this.$store.state.user.categories.includes(c.slug)
         );
       }
-      return "Error";
-    },
-
-    recentArticles() {
-      if (this.$store.state.user && this.userChannels.length > 0) {
-        return [...this.userArticles].sort((a, b) =>
-          a.date > b.date ? -1 : 1
-        );
-      }
-      return [...this.articles].sort((a, b) => (a.date > b.date ? -1 : 1));
+      return [];
     },
   },
 };

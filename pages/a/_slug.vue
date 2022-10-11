@@ -1,15 +1,15 @@
 <template>
   <main>
-    <div class="container-lg">
+    <div class="container-xl">
       <div class="row">
         <div class="col-12 col-md-10 offset-md-1">
           <div
-            class="article-img ratio ratio-16x9 rounded mb-2 bg-light"
+            class="post-img ratio ratio-16x9 rounded mb-2 bg-light"
             :style="{
               backgroundImage: visual,
             }"
           >
-            <!-- {{ visual === "none" ? article.visual.name : "" }} -->
+            <!-- {{ visual === "none" ? post.visual.name : "" }} -->
           </div>
         </div>
 
@@ -19,19 +19,19 @@
               <nuxt-link :to="'/w/' + author.slug">{{ author.name }}</nuxt-link>
             </li>
             <li>
-              {{ formatDate(article.date) }}
+              {{ formatDate(post.date) }}
             </li>
             <li>
-              <nuxt-link :to="'/c/' + article.channel">
-                {{ article.channel }}
+              <nuxt-link :to="'/c/' + post.category">
+                {{ post.category }}
               </nuxt-link>
             </li>
-            <li>Views: {{ article.views }}</li>
+            <li>Views: {{ post.views }}</li>
           </ul>
 
-          <h1>{{ article.title }}</h1>
+          <h1>{{ post.title }}</h1>
 
-          <template v-for="(p, i) in article.content">
+          <template v-for="(p, i) in post.content">
             <h2
               :key="'title' + i"
               v-if="p.title"
@@ -48,18 +48,22 @@
               :class="historicProgress < p.end ? 'fade-in-up' : false"
               :data-aos="historicProgress < p.end ? 70 : undefined"
               :data-end="p.end"
+              :id="p.end"
             >
               {{ p.content }}
             </p>
           </template>
 
           <p class="text-secondary fade-in" data-aos="68">
-            Thank you for reading this article and supporting
-            <b>{{ author.name }}</b
+            Thank you for reading this post and supporting
+            <b>
+              <nuxt-link :to="'/w/' + author.slug" class="text-secondary">
+                {{ author.name }}
+              </nuxt-link> </b
             >!
           </p>
 
-          <social-share :title="article.title" />
+          <social-share :title="post.title" />
         </div>
       </div>
 
@@ -68,12 +72,12 @@
       <div class="row gy-0 g-md-3 pt-1">
         <div
           class="col-12 col-md"
-          v-for="(a, i) in articles
-            .filter((a) => a.channel === article.channel && a.id !== article.id)
+          v-for="(a, i) in posts
+            .filter((a) => a.category === post.category && a.id !== post.id)
             .slice(0, 5)"
           :key="i"
         >
-          <card :article="a" :showIntro="false" :borderTop="i !== 0" />
+          <card :post="a" :showIntro="false" :borderTop="i !== 0" />
         </div>
       </div>
       <div class="progress">
@@ -87,12 +91,9 @@
 
 <script>
 import getImage from "@/utils/getImage.js";
-// import authors from "@/data/authors.json";
 
 export default {
   transition: "page",
-
-  // authors,
 
   data() {
     return {
@@ -101,16 +102,14 @@ export default {
       prevPosY: 0,
       progress: 0,
       historicProgress: 0,
-      articles: () => {},
-      article: () => {},
+      posts: () => {},
+      post: () => {},
     };
   },
 
   created() {
-    this.articles = this.$store.state.articles;
-    this.article = this.articles.find(
-      (a) => a.slug === this.$route.params.slug
-    );
+    this.posts = this.$store.state.posts;
+    this.post = this.posts.find((a) => a.slug === this.$route.params.slug);
   },
 
   async mounted() {
@@ -119,7 +118,7 @@ export default {
     window.addEventListener("scroll", this.aos);
 
     let history = this.$store.state.user.history.find(
-      (a) => a.id === this.article.id
+      (a) => a.id === this.post.id
     );
 
     if (history) {
@@ -131,9 +130,9 @@ export default {
   },
 
   beforeDestroy() {
-    if (this.article) {
+    if (this.post) {
       this.$store.commit("setProgress", {
-        id: +this.article.id,
+        id: +this.post.id,
         progress: this.progress,
       });
     }
@@ -143,31 +142,29 @@ export default {
 
   watch: {
     progress: function (val) {
-      let p = parseInt((val * 100) / this.article.total);
+      let p = parseInt((val * 100) / this.post.total);
       if (p === 100) {
-        this.$store.commit("updateViews", this.article.id);
+        this.$store.commit("updateViews", this.post.id);
       }
     },
   },
 
   computed: {
     visual() {
-      if (this.article.visual) {
-        return getImage(this.article.visual);
+      if (this.post.visual) {
+        return getImage(this.post.visual);
       }
       return "none";
     },
 
     author() {
-      return this.$store.state.authors.find(
-        (a) => a.id === this.article.author
-      );
+      return this.$store.state.writers.find((a) => a.id === this.post.author);
     },
   },
 
   methods: {
     validatePage() {
-      if (!this.article) {
+      if (!this.post) {
         this.$nuxt.error({
           statusCode: 404,
           message: "Article not found",
@@ -184,8 +181,8 @@ export default {
     },
 
     updateBar() {
-      if (this.article) {
-        let p = (100 * this.progress) / this.article.total;
+      if (this.post) {
+        let p = (100 * this.progress) / this.post.total;
         let bar = this.$refs["bar"];
 
         if (bar) {
@@ -223,7 +220,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article-img {
+.post-img {
   width: 100%;
   height: auto;
   overflow: hidden;

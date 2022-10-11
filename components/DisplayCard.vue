@@ -1,9 +1,17 @@
 <template>
   <nuxt-link
-    :to="'/a/' + article.slug"
+    :to="{
+      path: '/a/' + post.slug,
+      hash: historicProgress !== 0 ? '#' + historicProgress : false,
+    }"
     event=""
     @click.native="
-      $store.state.user ? $router.push('/a/' + article.slug) : paywall()
+      $store.state.user
+        ? $router.push({
+            path: '/a/' + post.slug,
+            hash: historicProgress !== 0 ? '#' + historicProgress : false,
+          })
+        : paywall()
     "
     class="card position-relative"
   >
@@ -16,7 +24,7 @@
       ></div>
 
       <div class="card-img-overlay rounded pb-1 px-3 px-lg-4 pb-lg-2">
-        <h2 class="text-white fs-3">{{ article.title }}</h2>
+        <h2 class="text-white fs-3">{{ post.title }}</h2>
       </div>
     </div>
     <span
@@ -39,33 +47,44 @@ export default {
   },
 
   props: {
-    article: {
+    post: {
       type: [Array, Object],
       default: () => [],
     },
   },
 
   mounted() {
-    if (this.$store.state.user && this.article) {
+    if (this.$store.state.user && this.post) {
       let history = this.$store.state.user.history.find(
-        (a) => a.id === this.article.id
+        (a) => a.id === this.post.id
       );
       if (history) {
-        this.progress = parseInt((100 * history.progress) / this.article.total);
+        this.progress = parseInt((100 * history.progress) / this.post.total);
       }
     }
   },
 
   computed: {
     visual() {
-      return getImage(this.article.visual);
+      return getImage(this.post.visual);
+    },
+    historicProgress() {
+      if (this.$store.state.user) {
+        let history = this.$store.state.user.history.find(
+          (a) => a.id === this.post.id
+        );
+        if (history) {
+          return history.progress;
+        }
+      }
+      return 0;
     },
   },
 
   methods: {
     paywall() {
       this.$store.commit("toggleModal");
-      this.$store.commit("setClickedArticle", "/a/" + this.article.slug);
+      this.$store.commit("setClickedPost", "/a/" + this.post.slug);
       document.getElementById("page").classList.toggle("is-blurred");
     },
   },
@@ -85,6 +104,7 @@ export default {
   height: 100%;
   overflow: hidden;
   background-position: center;
+  background-repeat: no-repeat;
   transition: background-size 0.4s 0.15s cubic-bezier(0.2, 0, 0.1, 1);
   background-size: 115%;
 }
