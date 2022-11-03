@@ -9,8 +9,6 @@
       </div>
     </div>
 
-    <!-- shown on mobile only: -->
-
     <div class="row gy-0 gx-3 d-sm-none mt-2">
       <div class="col-6" v-for="(post, i) in posts.slice(1, 3)" :key="i">
         <card :post="post" :flex="false" :borderTop="false" />

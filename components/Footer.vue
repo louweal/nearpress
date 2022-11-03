@@ -8,6 +8,8 @@
           >
             <nuxt-link
               to="/"
+              event=""
+              @click.native="scrollToTop($route.path)"
               class="footer-logo my-2 d-block"
               aria-label="to homepage"
             >
@@ -29,7 +31,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    scrollToTop(path) {
+      if (path === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "auto" });
+        this.$router.push("/");
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -6,10 +6,8 @@
           <h1 class="fs-2">Privacy statement</h1>
 
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-            accusantium odit ipsam obcaecati rem qui quod ab, consectetur et
-            repellat dolores labore vitae ducimus nulla possimus corrupti
-            eveniet enim quo.
+            This website does not collect user data and also does not use
+            cookies.
           </p>
         </div>
       </div>
@@ -18,7 +16,14 @@
 </template>
 
 <script>
-export default {};
+// import { fakeBooks } from "@/utils/fakeBookGenerator";
+
+export default {
+  async created() {
+    // let bookset = fakeBooks(142);
+    // console.log(bookset);
+  },
+};
 </script>
 
 <style></style>

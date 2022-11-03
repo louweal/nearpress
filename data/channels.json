@@ -1,33 +1,38 @@
 [
   {
-    "title": "Chess",
-    "slug": "chess",
+    "title": "Climate change",
+    "slug": "climate-change",
+    "visual": "17",
     "images": 18
   },
   {
-    "title": "Dogs",
-    "slug": "dogs",
-    "images": 33
-  },
-
-  {
-    "title": "UX design",
-    "slug": "ux-design",
-    "images": 21
+    "title": "Water pollution",
+    "slug": "water-pollution",
+    "visual": "18",
+    "images": 26
   },
   {
-    "title": "Hiking",
-    "slug": "hiking",
-    "images": 32
+    "title": "Poverty",
+    "slug": "poverty",
+    "visual": "1",
+    "images": 1
   },
   {
-    "title": "Soccer",
-    "slug": "soccer",
-    "images": 23
+    "title": "LGBTQ+ rights",
+    "slug": "lgbtq-rights",
+    "visual": "1",
+    "images": 1
   },
   {
-    "title": "Save Ukraine",
-    "slug": "save-ukraine",
-    "images": 35
+    "title": "COVID-19",
+    "slug": "covid-19",
+    "visual": "1",
+    "images": 1
+  },
+  {
+    "title": "War in Ukraine",
+    "slug": "war-in-ukraine",
+    "visual": "1",
+    "images": 1
   }
 ]

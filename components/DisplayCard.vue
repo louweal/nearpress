@@ -2,24 +2,15 @@
   <nuxt-link
     :to="{
       path: '/a/' + post.slug,
-      hash: historicProgress !== 0 ? '#' + historicProgress : false,
+      hash: progress !== 0 && progress !== 100 ? '#c' + progress : false,
     }"
-    event=""
-    @click.native="
-      $store.state.user
-        ? $router.push({
-            path: '/a/' + post.slug,
-            hash: historicProgress !== 0 ? '#' + historicProgress : false,
-          })
-        : paywall()
-    "
     class="card position-relative"
   >
     <div class="ratio ratio-4x3">
       <div
         class="card-img position-absolute rounded bg-light"
         :style="{
-          backgroundImage: visual,
+          backgroundImage: `url(${require('@/images/' + post.visual)}`,
         }"
       ></div>
 
@@ -31,14 +22,13 @@
       class="badge bg-secondary position-absolute m-1 top-0 end-0 lh-1"
       v-if="progress"
     >
-      {{ progress }} %
+      <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
+      <span v-else>{{ progress }}%</span>
     </span>
   </nuxt-link>
 </template>
 
 <script>
-import getImage from "@/utils/getImage.js";
-
 export default {
   data() {
     return {
@@ -58,34 +48,17 @@ export default {
       let history = this.$store.state.user.history.find(
         (a) => a.id === this.post.id
       );
-      if (history) {
-        this.progress = parseInt((100 * history.progress) / this.post.total);
-      }
+      this.progress = history ? history.progress : 0;
     }
   },
 
   computed: {
-    visual() {
-      return getImage(this.post.visual);
-    },
-    historicProgress() {
-      if (this.$store.state.user) {
-        let history = this.$store.state.user.history.find(
-          (a) => a.id === this.post.id
-        );
-        if (history) {
-          return history.progress;
-        }
-      }
-      return 0;
-    },
-  },
-
-  methods: {
-    paywall() {
-      this.$store.commit("toggleModal");
-      this.$store.commit("setClickedPost", "/a/" + this.post.slug);
-      document.getElementById("page").classList.toggle("is-blurred");
+    mine() {
+      // post is written by the user himself
+      return (
+        this.$store.state.user.id === this.author.id ||
+        this.$store.state.user.id === this.author.address
+      );
     },
   },
 };
@@ -116,11 +89,10 @@ export default {
   bottom: 0;
   width: 100%;
   height: 100%;
-  // padding: 1.3rem 2rem;
   display: flex;
   align-items: flex-end;
   background: rgb(0, 0, 0);
-  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 59%);
+  background: linear-gradient(0deg, #000 0%, rgba(0, 0, 0, 0) 59%);
   z-index: 3;
 }
 </style>

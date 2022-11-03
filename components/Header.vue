@@ -1,19 +1,37 @@
 <template>
   <nav
-    class="header shadow-sm border-bottom bg-white fixed-top py-md-3"
+    class="header shadow-sm border-bottom bg-white fixed-top py-2 py-md-3"
     id="header"
     ref="header"
   >
     <div class="container-xl d-flex justify-content-between align-items-center">
-      <nuxt-link to="/" class="me-4" aria-label="to homepage">
-        <img src="@/images/logo.svg" alt="" width="203" height="45" />
+      <nuxt-link
+        to="/"
+        event=""
+        @click.native="
+          hideDropdown();
+          scrollToTop($route.path);
+        "
+        class="me-4"
+        aria-label="to homepage"
+      >
+        <img src="@/images/logo.svg" alt="to homepage" height="46" />
       </nuxt-link>
 
       <div class="dropdown d-none d-sm-inline cursor-pointer">
-        <div class="dropdown-toggle pe-3" @click="toggleDropdown">
-          {{ hasCategories ? "Your channels" : "All channels" }}
-        </div>
-        <div class="dropdown-menu" ref="dropdown-menu">
+        <div class="dropdown-toggle pe-3" @click="toggleDropdown">Discover</div>
+        <div class="dropdown-menu" ref="dropdown-menu" v-if="showDropdown">
+          <nuxt-link
+            to="/search"
+            event=""
+            @click.native="
+              toggleDropdown();
+              $router.push('/search');
+            "
+            class="dropdown-item fw-bold bg-secondary mb-1 py-2 text-white d-flex justify-content-between"
+          >
+            Search ... <i class="bi bi-search"></i>
+          </nuxt-link>
           <nuxt-link
             :to="'/c/' + c.slug"
             event=""
@@ -21,7 +39,7 @@
               toggleDropdown();
               $router.push('/c/' + c.slug);
             "
-            v-for="(c, i) in hasCategories ? userCategories : categories"
+            v-for="(c, i) in categories"
             :key="i"
             class="dropdown-item"
           >
@@ -31,13 +49,25 @@
       </div>
 
       <div class="ms-auto d-flex align-items-center gap-2 gap-md-4">
-        <div v-if="$store.state.user" @click="signOut" class="cursor-pointer">
-          Disconnect<span class="d-none d-md-inline"> wallet</span>
-        </div>
+        <nuxt-link
+          to="/account"
+          event=""
+          v-if="$store.state.user"
+          @click.native="
+            hideDropdown();
+            $router.push('/account');
+          "
+          class="cursor-pointer"
+        >
+          Account
+        </nuxt-link>
 
         <div
           class="btn btn-secondary"
-          @click="toggleModal"
+          @click="
+            hideDropdown();
+            toggleModal();
+          "
           v-if="!$store.state.user"
         >
           Connect<span class="d-none d-md-inline"> wallet</span>
@@ -55,8 +85,8 @@
 export default {
   data() {
     return {
-      dropdownActive: false,
       prevPosY: 0,
+      showDropdown: false,
     };
   },
 
@@ -90,9 +120,13 @@ export default {
   },
 
   methods: {
-    signOut() {
-      this.$store.commit("setUser", undefined);
-      this.$router.push("/");
+    scrollToTop(path) {
+      if (path === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "auto" });
+        this.$router.push("/");
+      }
     },
 
     aosHeader() {
@@ -118,29 +152,23 @@ export default {
 
         // update previous scroll positon
         this.prevPosY = window.scrollY;
-      } else {
-        console.log("header missing?");
       }
 
       // hide dropdown on scroll
       let menu = this.$refs["dropdown-menu"];
 
-      if (menu && this.dropdownActive) {
+      if (menu && this.showDropdown) {
         menu.style.display = "none";
-        this.dropdownActive = false;
+        this.showDropdown = false;
       }
     },
 
-    toggleDropdown(e) {
-      // console.log("click!");
-      let menu = this.$refs["dropdown-menu"];
-      // console.log(e.target);
-      if (!this.dropdownActive) {
-        menu.style.display = "block";
-      } else {
-        menu.style.display = "none";
-      }
-      this.dropdownActive = !this.dropdownActive;
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
+    },
+
+    hideDropdown() {
+      this.showDropdown = false;
     },
 
     toggleModal() {
@@ -159,12 +187,16 @@ export default {
   transform: translateY(0);
 }
 
+.dropdown-menu {
+  display: block;
+}
+
 .header {
   transition: transform 0.4s ease-in-out;
   will-change: transform;
 
   &-logo img {
-    max-width: 36vw !important;
+    max-width: 20vw !important;
   }
 }
 </style>

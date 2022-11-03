@@ -1,7 +1,7 @@
 {
-  "name": "n3ws",
+  "name": "nearpress",
   "version": "1.0.0",
-  "description": "N3WS is a decentralized news platform on NEAR",
+  "description": "nearpress: fictional stories reimagined on TRON",
   "main": "index.js",
   "scripts": {
     "dev": "nuxt --port 8000",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/louweal/n3ws.git"
+    "url": "git+https://github.com/louweal/nearpress.git"
   },
   "author": "Anneloes Louwe",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/louweal/n3ws/issues"
+    "url": "https://github.com/louweal/nearpress/issues"
   },
-  "homepage": "https://github.com/louweal/n3ws#readme",
+  "homepage": "https://github.com/louweal/nearpress#readme",
   "dependencies": {
     "bootstrap": "^5.2.1",
     "core-js": "^3.25.2",

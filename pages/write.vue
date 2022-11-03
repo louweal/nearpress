@@ -1,139 +1,168 @@
 <template>
   <main>
-    <div class="container">
+    <div class="container-xl">
       <div class="row">
-        <div class="col-12 col-md-10 offset-md-1">
-          <form>
-            <div class="form-group d-grid">
-              <div
-                class="ratio ratio-16x9 field--upload rounded image cursor-pointer"
-                @click="toggleModal"
-                :style="{
-                  backgroundImage:
-                    image !== -1
-                      ? `url(${require('@/images/new/' + image + '.jpg')})`
-                      : false,
-                }"
-              >
-                <p v-if="image === -1">Click to select an image</p>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="col-12 col-md-8 offset-md-2">
-          <ul class="bullet-list-inline mt-2">
-            <li v-if="$store.state.user">{{ $store.state.user.name }}</li>
-            <li>{{ datestring }}</li>
-            <li v-if="category">{{ category }}</li>
-          </ul>
-          <form class="gy-3">
-            <div class="vstack gap-2">
-              <div class="form-group">
-                <textarea
-                  class="form-control fs-2 fw-bold"
-                  id="title"
-                  rows="2"
-                  @input="(e) => setTitle(e.target.value)"
-                  placeholder="Title"
-                ></textarea>
-              </div>
-
-              <div class="form-group">
-                <p>
-                  <b>Tip:</b> To create a sub-heading, add two asterisks before
-                  and after a word or phrase: e.g. <b>**I'm a heading**</b>.
-                </p>
-                <textarea
-                  class="form-control"
-                  id="content"
-                  rows="16"
-                  @input="(e) => setText(e.target.value)"
-                  placeholder="Text"
-                ></textarea>
-
-                <span id="characters" v-if="post.content">
-                  {{ post.content ? post.content.length : 0 }}
-                </span>
-                characters
-
-                <!-- 
-                <p>
-                  <span>{{ text.length }}</span> characters <br />You receive
-                  {{ text.length * 10 }} microNEAR when someone reads the whole
-                  post.
-                </p> -->
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="mt-4"></div>
-
-        <div class="col-12 col-md-5 offset-md-2">
-          <h2 class="fs-5">Metadata</h2>
-
-          <form>
-            <div class="form-group">
-              <!-- <label for="category">Category</label> -->
-
-              <select
-                class="form-select"
-                aria-label="category select"
-                id="category"
-                @change="setCategory($event)"
-              >
-                <option selected>Select channel</option>
-                <option
-                  :value="c.slug"
-                  v-for="(c, i) in [...categories].sort((a, b) =>
-                    a.title > b.title ? 1 : -1
-                  )"
-                  :key="i"
-                >
-                  {{ c.title }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="intro">Introduction (shown on overview pages)</label>
-
-              <textarea
-                class="form-control"
-                id="intro"
-                rows="3"
-                @input="(e) => setIntro(e.target.value)"
-              ></textarea>
-
-              <p>
-                <span id="characters">{{ intro.length }}</span> characters
-                <br />
-                <span class="text-danger" v-if="intro.length < 100">
-                  The introduction should be at least 100 characters.
-                </span>
-                <span class="text-danger" v-if="intro.length > 200">
-                  The introduction can't have more than 200 characters.
-                </span>
-              </p>
-            </div>
-
+        <div
+          :class="
+            $options.type === 'article'
+              ? 'col-12 col-md-10 offset-md-1'
+              : 'col-4 col-md-2 offset-sm-1 offset-lg-2'
+          "
+        >
+          <div class="form-group d-grid">
             <div
-              v-if="validFields"
-              class="btn btn-secondary"
-              @click="publishArtice()"
+              class="ratio field--upload rounded image cursor-pointer bg-light"
+              :class="$options.type === 'article' ? 'ratio-3x1' : 'ratio-3x4'"
+              @click="toggleModal"
+              :style="{
+                backgroundImage:
+                  image !== -1
+                    ? `url(${require('@/images/' +
+                        path +
+                        '/' +
+                        image +
+                        '.jpg')})`
+                    : false,
+              }"
             >
-              Publish
+              <p v-if="image === -1">Click to select an image</p>
             </div>
-          </form>
+          </div>
         </div>
 
         <div
-          class="col-12 col-md-3"
-          v-if="post.title && post.visual && post.intro"
+          class=""
+          :class="
+            $options.type === 'article'
+              ? 'col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2 mt-2'
+              : 'col-12 col-md-8 col-lg-6 mb-2 align-self-center'
+          "
         >
-          <h2 class="fs-5">Preview:</h2>
-          <template>
-            <card :post="post" />
-          </template>
+          <div class="row gy-2 my-2">
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  aria-label="category select"
+                  id="category"
+                  @change="setCategory($event)"
+                >
+                  <option selected value="select">
+                    Select
+                    {{ $options.type === "article" ? "channel" : "genre" }}
+                  </option>
+                  <option
+                    :value="c.slug"
+                    v-for="(c, i) in [...categories].sort((a, b) =>
+                      a.title > b.title ? 1 : -1
+                    )"
+                    :key="i"
+                  >
+                    {{ c.title }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  aria-label="category select"
+                  id="price"
+                  @change="setPrice($event)"
+                >
+                  <option selected value="select">Select price</option>
+                  <option
+                    :value="p"
+                    v-for="(p, i) in [0, 200, 250, 300, 350, 400, 450, 500]"
+                    :key="i"
+                  >
+                    {{ p }} TRX / {{ (p * trxusd).toFixed(2) }} USD
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <textarea
+              class="form-control fs-2 fw-bold"
+              id="title"
+              rows="2"
+              @input="(e) => setTitle(e.target.value)"
+              placeholder="Title"
+            ></textarea>
+          </div>
+        </div>
+        <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
+          <div class="form-group mt-3">
+            <textarea
+              class="form-control"
+              id="intro"
+              :rows="$options.type === 'article' ? 5 : 8"
+              :placeholder="
+                $options.type === 'article' ? 'Introduction' : 'Blurb'
+              "
+              @input="(e) => setIntro(e.target.value)"
+            ></textarea>
+
+            <ul class="bullet-list-inline">
+              <li>
+                <span id="characters">{{ post.intro.length }}</span
+                >/{{ introMax }} characters
+              </li>
+
+              <li v-if="post.intro.length < introMin">
+                <span class="text-danger">
+                  The minimum length is {{ introMin }} characters.
+                </span>
+              </li>
+
+              <li v-if="post.intro.length > introMax">
+                <span class="text-danger">
+                  The maximum length is {{ introMax }} characters.
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <p class="mb-0">
+              <template v-if="$options.type === 'article'">
+                <b>Important:</b> Paragraphs shorter than 50 characters will be
+                automatically converted to headings after publication.
+              </template>
+              <template v-else>
+                <b>Important:</b> Each chapter title has to start with 'Chapter
+                ' or 'CHAPTER ' and has to be shorter than 80 characters.
+              </template>
+            </p>
+
+            <textarea
+              class="form-control"
+              id="content"
+              rows="20"
+              @input="(e) => setText(e.target.value)"
+              placeholder="Content"
+            ></textarea>
+
+            <ul class="bullet-list-inline">
+              <li>{{ post.content ? post.content.length : 0 }} characters</li>
+              <li v-if="numChapters > 0 && $options.type === 'book'">
+                {{ numChapters }} chapter<span v-if="numChapters > 1">s</span>
+              </li>
+              <li v-if="numHeadings > 0 && $options.type === 'article'">
+                {{ numHeadings }} heading<span v-if="numHeadings > 1">s</span>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="btn btn-secondary mt-1"
+            @click="validFields ? publishPost() : false"
+            :class="validFields ? 'opacity-100' : 'opacity-50'"
+          >
+            Publish
+          </div>
         </div>
       </div>
     </div>
@@ -154,13 +183,22 @@
             ></button>
           </div>
           <div class="row g-1">
-            <div class="col-4" v-for="i in 9" :key="i" :set="(j = i + 1)">
-              <div class="ratio ratio-16x9 cursor-pointer">
+            <div
+              :class="$options.type === 'article' ? 'col-4' : 'col-3'"
+              v-for="i in 12"
+              :key="i"
+            >
+              <div
+                class="ratio cursor-pointer"
+                :class="$options.type === 'article' ? 'ratio-4x3' : 'ratio-3x4'"
+              >
                 <div
                   class="position-absolute rounded bg-light image"
                   @click="selectImage(i)"
                   :style="{
-                    backgroundImage: `url(${require('@/images/new/' +
+                    backgroundImage: `url(${require('@/images/' +
+                      path +
+                      '/' +
                       i +
                       '.jpg')})`,
                   }"
@@ -176,30 +214,73 @@
 
 <script>
 import Vue from "vue";
+import getUSD from "@/utils/getUSD.js";
 
 export default {
+  type: "article",
+
   data() {
     return {
       showModal: false,
       image: -1,
-      intro: "",
-      text: "",
       category: undefined,
-      post: {},
+      post: { intro: "" },
+      trxusd: 1,
     };
   },
 
+  async created() {
+    if (!this.$store.state.user) return;
+
+    Vue.set(this.post, "author", this.$store.state.user.id);
+    Vue.set(this.post, "type", "article"); // ??
+    this.trxusd = await getUSD();
+  },
+
+  async fetch() {
+    await this.validateAccess();
+  },
+
   computed: {
-    date() {
-      return new Date(Date.now());
+    introMin() {
+      return this.$options.type === "article" ? 100 : 250;
     },
 
-    datestring() {
-      return this.date.toLocaleDateString("us-EN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
+    introMax() {
+      return this.$options.type === "article" ? 200 : 500;
+    },
+
+    path() {
+      return this.$options.type === "article" ? "landscape" : "portrait";
+    },
+
+    price() {
+      return this.post.content
+        ? ((this.post.content.length / 1000) * this.trxusd).toFixed(2)
+        : -1;
+    },
+
+    numHeadings() {
+      return this.post.content
+        ? this.post.content.split(/(?:\r?\n)+/).filter((p) => p.length < 50)
+            .length
+        : "0";
+    },
+
+    numChapters() {
+      return this.post.content
+        ? this.post.content
+            .toLowerCase()
+            .split(/(?:\r?\n)+/)
+            .filter((p) => p.startsWith("chapter ")).length
+        : "0";
+    },
+
+    me() {
+      if (this.$store.state.user) {
+        return this.$store.state.user.name; // todo
+      }
+      return undefined;
     },
 
     categories() {
@@ -209,101 +290,85 @@ export default {
     validFields() {
       return (
         this.post.intro &&
-        this.post.intro.length >= 100 &&
-        this.post.intro.length <= 200 &&
+        this.post.intro.length >= this.introMin &&
+        this.post.intro.length <= this.introMax &&
         this.post.title &&
         this.post.title.length > 0 &&
         this.post.visual &&
         this.post.category &&
-        this.post.content
+        this.post.content &&
+        this.post.price
       );
     },
   },
 
+  watch: {
+    "$store.state.user": function () {
+      if (this.$store.state.user == undefined) {
+        this.$router.push("/");
+      }
+    },
+  },
+
   methods: {
+    validateAccess() {
+      if (this.$store.state.user == undefined) {
+        return this.$nuxt.error({
+          statusCode: 403,
+          message: "Access denied",
+        });
+      }
+    },
+
     toggleModal() {
       this.showModal = !this.showModal;
     },
 
     selectImage(i) {
       this.image = i;
-      // this.post["visual"] = i;
-      Vue.set(this.post, "visual", { name: i, path: "new" });
+      Vue.set(this.post, "visual", `${this.path}/${i}.jpg`);
 
       this.showModal = !this.showModal;
     },
 
     setTitle(e) {
       Vue.set(this.post, "title", e);
-      let slug = e.toLowerCase().replace(" ", "-");
+      let slug = e
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9 ]/g, "")
+        .replaceAll(" ", "-");
       Vue.set(this.post, "slug", slug);
     },
 
     setIntro(e) {
-      // console.log(e);
-      this.intro = e;
-      // this.post["intro"] = e;
       Vue.set(this.post, "intro", e);
     },
 
     setText(e) {
-      let parts = e.split(/(?:\r?\n)+/);
-
-      if (parts.length > 0) {
-        let a = [];
-        let end = 0;
-        for (let i = 0; i < parts.length; i++) {
-          if (parts[i]) {
-            let p = {};
-
-            // let p = paragraphs[i];
-            if (parts[i].startsWith("**")) {
-              //title
-              let title = parts[i].replaceAll("**", "");
-              if (title.length > 0) {
-                p["title"] = title;
-                end += title.length;
-                p["titleEnd"] = end;
-
-                if (parts[i + 1]) {
-                  p["content"] = parts[i + 1];
-                  end += p["content"].length;
-                  p["end"] = end;
-
-                  i = i + 1; // skip next part
-                }
-              }
-            } else {
-              // content
-              p["content"] = parts[i];
-              end += p.content.length;
-              p["end"] = end;
-            }
-            a.push(p);
-          }
-        }
-        Vue.set(this.post, "content", a);
-        Vue.set(this.post, "total", end);
-      }
+      Vue.set(this.post, "content", e);
     },
 
     setCategory(e) {
-      // console.log(e.target.value);
-      Vue.set(this.post, "category", e.target.value);
+      if (e.target.value !== "select") {
+        Vue.set(this.post, "category", e.target.value);
+      } else {
+        Vue.set(this.post, "category", undefined);
+      }
     },
 
-    publishArtice() {
-      let id = this.$store.state.posts.length + 1;
-      console.log(id);
+    setPrice(e) {
+      if (e.target.value !== "select") {
+        Vue.set(this.post, "price", e.target.value);
+      }
+    },
 
-      Vue.set(this.post, "id", id);
-      Vue.set(this.post, "author", 43); // me
-      Vue.set(this.post, "date", this.date);
+    publishPost() {
+      Vue.set(this.post, "id", this.$store.state.posts.length + 1);
+      Vue.set(this.post, "date", new Date().getTime() / 1000);
       Vue.set(this.post, "views", 0);
 
-      // console.log(this.post);
       this.$store.commit("addPost", this.post);
-      this.$router.push("/");
+      this.$router.push("/a/" + this.post.slug);
     },
   },
 };
@@ -318,7 +383,6 @@ export default {
   p {
     display: block;
     width: 100%;
-    // height: 50%;
     text-align: center;
     transform: translateY(calc(50% - 1rem));
   }
@@ -327,5 +391,6 @@ export default {
 .image {
   background-size: 120%;
   background-position: center center;
+  background-repeat: no-repeat;
 }
 </style>

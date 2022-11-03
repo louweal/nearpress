@@ -3,7 +3,7 @@
     <h2 class="fs-5">{{ title }}</h2>
 
     <div class="" v-for="(post, i) in posts" :key="i">
-      <news-item :post="post" :class="i !== 0 ? 'border-top' : false" />
+      <post-item :post="post" :class="i !== 0 ? 'border-top' : false" />
     </div>
   </div>
 </template>

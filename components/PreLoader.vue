@@ -2,8 +2,8 @@
   <div class="pre-loader">
     <div class="pre-loader__inner p-5">
       <div class="d-flex logo">
-        <div class="spinner">
-          <img src="@/images/logo-icon.svg" alt="logo" />
+        <div class="wobbler w-100 h-100">
+          <img src="@/images/logo-icon.svg" alt="logo" class="w-100 h-100" />
         </div>
         <span class="color-secondary display-2 lh-1"> NearPress </span>
       </div>
@@ -25,9 +25,6 @@ export default {};
   background-color: #fff;
   display: block;
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   width: 100vw;
   height: 100%;
   z-index: 3000;
@@ -39,7 +36,7 @@ export default {};
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center; //space-around;
+    justify-content: center;
     align-items: center;
 
     .logo {
@@ -47,22 +44,9 @@ export default {};
       animation: fade-in-up 1.8s cubic-bezier(0.2, 0, 0.1, 1) forwards;
     }
 
-    img {
-      // width: min(40vw, 160px);
-      height: 50px;
-      width: 50px;
-      width: 100%;
-      height: 100%;
-    }
-
-    .spinner {
-      height: 50px;
-      width: 50px;
-      width: 100%;
-      height: 100%;
+    .wobbler {
       margin-right: 1rem;
       transform-origin: center center;
-      // border: 1px solid red;
       animation: wobble 0.4s ease-in-out forwards;
     }
 
@@ -77,11 +61,13 @@ export default {};
     }
   }
 }
-@for $i from 1 through 10 {
-  $delay: #{$i * 200};
-  .delay-#{$delay} {
-    animation-delay: #{$delay}ms !important;
-  }
+
+.delay-800 {
+  animation-delay: 800ms !important;
+}
+
+.delay-1400 {
+  animation-delay: 1400ms !important;
 }
 
 @keyframes wobble {
@@ -97,7 +83,7 @@ export default {};
   75% {
     transform: rotate(10deg);
   }
-  10% {
+  100% {
     transform: rotate(0deg);
   }
 }
@@ -107,19 +93,4 @@ export default {};
     transform: translateY(-100%);
   }
 }
-
-// @keyframes fade-in-up-down {
-//   0% {
-//     transform: translateY(60px); // scaleY(1.2)
-//     opacity: 0;
-//   }
-//   80% {
-//     transform: translateY(-2px);
-//     opacity: 1;
-//   }
-//   100% {
-//     transform: translateY(0px);
-//     opacity: 1;
-//   }
-// }
 </style>

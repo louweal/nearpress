@@ -15,52 +15,68 @@ function getWords(x) {
 }
 
 function makeParagraphs(n) {
-  let a = [];
-  let end = 0;
-  for (let i = 0; i < n; i++) {
-    let p = {};
+  let s = "";
+  let chapter = 1;
 
-    if (i > 0 && Math.ceil(Math.random() * 3) == 3) {
-      // add section title above paragraph (1/3 prob)
-      p["title"] = getWords(Math.ceil(Math.random() * 3));
-      end += p.title.length;
-      p["titleEnd"] = end;
+  for (let i = 0; i < n; i++) {
+    if (i === 0 || Math.ceil(Math.random() * 3) == 3) {
+      let title =
+        getWords(Math.ceil(Math.random() * 3)).replaceAll(".", "") + "\n";
+      chapter += 1;
+      s += title;
     }
-    p["content"] = getWords(30 + Math.floor(Math.random() * 55));
-    end += p.content.length;
-    p["end"] = end;
-    a.push(p);
+
+    let content = getWords(30 + Math.floor(Math.random() * 55)) + "\n";
+    s += content;
   }
-  return { a, end };
+
+  return s;
 }
 
-export function news(n) {
+export function fakeNews(n) {
   let numCategories = categories.length;
-
   let categorySlugs = categories.map((c) => c.slug);
+  let imagesUsed = new Array(numCategories).fill(0);
+  let imagesPerCategory = categories.map((c) => c.images);
 
   let a = [];
   for (let i = 0; i < n; i++) {
-    let author = Math.ceil(Math.random() * 42);
-    let title = getWords(Math.floor(Math.random() * 4) + 7).replace(".", "");
+    let title = getWords(Math.floor(Math.random() * 4) + 7).replaceAll(".", "");
+    let slug = title.toLowerCase().replaceAll(" ", "-");
+    let existingSlugSet = new Set(a.map((a) => a.slug));
+
+    if (existingSlugSet.has(slug)) {
+      n += 1;
+      continue; // do not add post with duplicate title/slug
+    }
+
+    let author = Math.floor(Math.random() * 42); // the data/writers.json contains 42 writers, with ids 0-41
     title = title.charAt(0) + title.slice(1).toLowerCase();
-    let content = makeParagraphs(7 + Math.ceil(Math.random() * 15));
-    let category = categorySlugs[author % numCategories];
-    let numImages = categories.find((c) => c.slug === category).images;
+    let content = makeParagraphs(7 + Math.ceil(Math.random() * 15)); // max 50 paragraphs
+    let catId = author % numCategories;
+    let category = categorySlugs[catId];
 
     a.push({
-      author: author, // the data/writers.json contains 42 writers, with ids 1-42
-      id: i,
+      id: a.length,
       title: title,
-      intro: getWords(14),
       slug: title.toLowerCase().replaceAll(" ", "-"),
-      visual: { name: Math.ceil(Math.random() * numImages), path: category },
+      intro: getWords(10 + Math.ceil(Math.random() * 8)),
+      visual: `${category}/${imagesUsed[catId] + 1}.jpg`,
       category: category,
-      content: content.a,
-      total: content.end,
-      date: new Date((1662031747 + Math.ceil(Math.random() * 2592000)) * 1000), // 1 sept 2022 + 1 month
-      views: Math.ceil(Math.random() * 777),
+      content: content,
+      date:
+        new Date(
+          (1577840461 + Math.ceil(Math.random() * 94694400)) * 1000
+        ).getTime() / 1000, // 1-1-2020 + 3 years -- the date timestamp is in SECONDS for solidity
+      author: author,
+      views: Math.ceil(Math.random() * 500),
+      price:
+        Math.ceil(Math.random() * 12) === 12
+          ? 0
+          : (3 + Math.ceil(Math.random() * 7)) * 50, // price in TRX
     });
+
+    imagesUsed[catId] = (imagesUsed[catId] + 1) % imagesPerCategory[catId];
   }
 
   return a;

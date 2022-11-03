@@ -1,6 +1,5 @@
 export default {
   ssr: false,
-
   modern: "client",
   target: "static",
   router: {
@@ -17,7 +16,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "Connects everyone with everyone",
+        content: "Connects everyone, with everyone",
       },
       { name: "format-detection", content: "telephone=no" },
     ],

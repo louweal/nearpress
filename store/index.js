@@ -3,7 +3,6 @@ export const state = () => ({
   posts: [],
   categories: [],
   writers: [],
-  clickedPost: undefined,
   user: undefined,
 });
 
@@ -21,35 +20,89 @@ export const mutations = {
   },
 
   SET_WRITERS(state, payload) {
-    state.writers = payload;
+    state.writers = payload; //
   },
 
   addPost(state, payload) {
-    state.posts.push(payload);
+    let post = {
+      slug: payload.title.toLowerCase().replaceAll(" ", "-"),
+      ...payload,
+    };
+    state.posts.push(post);
+
+    localStorage.setItem(
+      "browserPosts",
+      JSON.stringify(state.posts.filter((p) => p.id >= 144))
+    );
+  },
+
+  removePost(state, payload) {
+    state.posts = state.posts.filter((p) => p.id !== payload);
+
+    localStorage.setItem(
+      "browserPosts",
+      JSON.stringify(state.posts.filter((p) => p.id >= 144))
+    );
   },
 
   // id, progress
   setProgress(state, payload) {
     if (state.user) {
-      // console.log(state.user.history.map((i) => i.id));
       if (state.user.history.map((i) => i.id).includes(payload.id)) {
-        //update
-        state.user.history.forEach(
-          (i) =>
-            (i.progress = i.id === payload.id ? payload.progress : i.progress)
-        );
-      } else {
-        // add history item
-        state.user.history.push({
-          id: payload.id,
-          progress: payload.progress,
+        state.user.history.forEach((i) => {
+          i.progress = i.id === payload.id ? payload.progress : i.progress;
         });
+      } else {
+        state.user.history.push(payload);
       }
+      updateLocalStorageUser(state.user);
     }
   },
 
   setUser(state, payload) {
     state.user = payload;
+    if (payload) {
+      updateLocalStorageUser(state.user);
+    }
+  },
+
+  addWriter(state, payload) {
+    if (state.writers.find((w) => w.id === payload.id) === undefined) {
+      state.writers.push(payload);
+
+      // update browser storage
+      localStorage.setItem(
+        "browserWriters",
+        JSON.stringify(state.writers.slice(42))
+      );
+    }
+  },
+
+  setUserName(state, payload) {
+    state.user.name = payload;
+    state.user.slug = payload
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9 ]/g, "")
+      .replaceAll(" ", "-");
+
+    // also update username in localstorage
+    let users = JSON.parse(localStorage.getItem("users"));
+    users.forEach((w) => {
+      w.name = w.id === state.user.id ? state.user.name : w.name;
+      w.slug = w.id === state.user.id ? state.user.slug : w.slug;
+    });
+    localStorage.setItem("users", JSON.stringify(users));
+
+    state.writers.forEach((w) => {
+      w.name = w.id === state.user.id ? state.user.name : w.name;
+      w.slug = w.id === state.user.id ? state.user.slug : w.slug;
+    });
+
+    // update browser storage
+    localStorage.setItem(
+      "browserWriters",
+      JSON.stringify(state.writers.slice(42))
+    );
   },
 
   updateViews(state, id) {
@@ -58,21 +111,30 @@ export const mutations = {
 
   addUserCategory(state, payload) {
     state.user.categories.push(payload);
+    updateLocalStorageUser(state.user);
   },
 
   removeUserCategory(state, payload) {
     state.user.categories = state.user.categories.filter((c) => c !== payload);
+    updateLocalStorageUser(state.user);
   },
 
-  addWriter(state, payload) {
+  addUserWriter(state, payload) {
     state.user.writers.push(payload);
+    updateLocalStorageUser(state.user);
   },
 
-  removeWriter(state, payload) {
+  removeUserWriter(state, payload) {
     state.user.writers = state.user.writers.filter((c) => c !== payload);
-  },
-
-  setClickedPost(state, payload) {
-    state.clickedPost = payload;
+    updateLocalStorageUser(state.user);
   },
 };
+
+function updateLocalStorageUser(user) {
+  // or append
+  let users = JSON.parse(localStorage.getItem("users")).filter(
+    (u) => u.id !== user.id
+  );
+  users.push(user);
+  localStorage.setItem("users", JSON.stringify(users));
+}

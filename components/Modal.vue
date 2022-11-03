@@ -3,7 +3,7 @@
     class="modal"
     :class="$store.state.showModal ? 'modal--active' : 'modal--inactive'"
   >
-    <div class="modal__bg" @click="toggleModal"></div>
+    <div class="modal__bg cursor-pointer" @click="toggleModal"></div>
     <div class="modal__inner">
       <div class="modal__content p-2 rounded border">
         <slot>
@@ -19,25 +19,44 @@
               @click="toggleModal"
             ></button>
           </div>
-          <div class="modal-body px-4">
+          <div class="modal-body px-1">
             <p class="text-center">
-              Connect your NEAR wallet to read and write posts on NearPress.
-              Reading posts costs 10 microNEAR per character, which goes
-              directly to the writer.
+              Can you imagine a world where you can start reading as many books
+              as you like and only pay for the pages you read? Connect your TRON
+              wallet and let your imagination become reality.
             </p>
-            <div class="d-grid gap-2 mb-3">
-              <div class="btn btn-secondary cursor-pointer" @click="signIn">
-                MetaMask
+            <div class="d-grid gap-2 mb-1">
+              <div
+                class="btn btn-secondary cursor-pointer d-none d-md-block"
+                @click="signIn"
+              >
+                TronLink
               </div>
-              <!-- <div class="btn btn-secondary cursor-pointer" @click="signIn">
-              MetaMask
+              <div
+                class="btn btn-secondary cursor-pointer d-md-none opacity-50"
+              >
+                TronLink
+              </div>
             </div>
-            <div class="btn btn-secondary cursor-pointer" @click="signIn">
-              MetaMask
-            </div> -->
-              <!-- <nuxt-link to="/getting-started" class="fw-bold text-center mt-1">
-                I need more information
-              </nuxt-link> -->
+            <div class="text-center mt-2 d-md-none">
+              <p class="text-danger">
+                TronLink is currently not available for mobile browsers
+              </p>
+            </div>
+
+            <div class="text-center mt-2" v-if="error">
+              <p class="text-danger">
+                Unable to connect your TronLink wallet. Install the
+                <a
+                  href="https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec"
+                  target="_blank"
+                  >TronLink
+                  <i class="bi bi-box-arrow-up-right"></i>
+                </a>
+                browser extension, sign in to your TRON wallet and select the
+                Nile or Shasta testnet. Then click the button above again and
+                accept the connection request.
+              </p>
             </div>
           </div>
         </slot>
@@ -47,33 +66,84 @@
 </template>
 
 <script>
+import { getTronWebAddress } from "~/utils/tronUtils.js";
+import { setContract } from "@/utils/tronUtils";
+
 export default {
+  data() {
+    return {
+      error: false,
+    };
+  },
+
   methods: {
     toggleModal() {
       this.$store.commit("toggleModal");
       document.getElementById("page").classList.toggle("is-blurred");
+      this.error = false;
     },
 
-    closeAndClick() {
-      this.toggleModal();
-      this.$router.push(path);
-    },
-    signIn() {
-      this.toggleModal();
-
+    setUser(id, address, name, slug) {
       this.$store.commit("setUser", {
-        id: 1,
-        name: "Anneloes Louwe",
-        categories: ["dogs", "hiking", "chess", "save-ukraine"],
-        writers: [1, 3, 7, 9, 13, 15],
+        id,
+        address,
+        name,
+        slug,
+        categories: [],
+        writers: [],
         history: [],
       });
+    },
 
-      let goto = this.$store.state.clickedPost
-        ? this.$store.state.clickedPost
-        : "/";
-      this.$router.push(goto);
-      this.$store.commit("setClickedPost", undefined);
+    signInDemo() {
+      let address = "TArXQAezpyHmebwrvshUUf3ECoEXoPc9Ri";
+      let name = "Demo wallet";
+      let slug = "demo-wallet";
+
+      let users = JSON.parse(localStorage.getItem("users"));
+      let user = users ? users.find((u) => u.address === address) : undefined;
+
+      if (user) {
+        this.$store.commit("setUser", user);
+      } else {
+        let numUsers = users ? users.length : 0;
+        let id = 42 + numUsers;
+        this.setUser(id, address, name, slug);
+        this.$store.commit("addWriter", { id, address, name, slug });
+      }
+      this.toggleModal();
+    },
+
+    async signIn() {
+      let tronAddress = await getTronWebAddress();
+      if (!tronAddress) {
+        this.error = true;
+        return;
+      }
+
+      let success = await setContract();
+      if (!success) {
+        this.error = true;
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users"));
+      let user = users
+        ? users.find((u) => u.address === tronAddress.base58)
+        : undefined;
+
+      if (user) {
+        this.$store.commit("setUser", user);
+      } else {
+        let numUsers = users ? users.length : 0;
+        let id = 42 + numUsers;
+        let address = tronAddress.base58;
+        let name = tronAddress.name;
+        let slug = tronAddress.name.toLowerCase().replaceAll(" ", "-");
+        this.setUser(id, address, name, slug);
+        this.$store.commit("addWriter", { id, address, name, slug });
+      }
+      this.toggleModal();
     },
   },
 };
@@ -141,14 +211,14 @@ export default {
     .modal__bg {
       opacity: 0;
       visibility: hidden;
-      transition: all 0.5s 0.3s linear;
+      transition: all 0.3s 0.15s linear;
     }
 
     .modal__content {
       visibility: hidden;
       opacity: 0;
       transform: translateY(100px);
-      transition: all 0.4s cubic-bezier(0.2, 0, 0.1, 1);
+      transition: all 0.3s cubic-bezier(0.2, 0, 0.1, 1);
     }
   }
 }

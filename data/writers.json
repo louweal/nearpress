@@ -1,304 +1,254 @@
 [
   {
+    "id": 0,
+    "name": "Isacco Raithmill",
+    "slug": "isacco-raithmill",
+    "address": "TDYN75e7LxsyCdLupVv9HNwp3aopFH2ekL"
+  },
+  {
     "id": 1,
     "name": "Franzen Endrici",
     "slug": "franzen-endrici",
-    "gender": "M",
-    "avatar": 1
+    "address": "TJVW4EDsFSGhrBxLouwUyDmSaYGVw9a2pt"
   },
   {
     "id": 2,
     "name": "Kermie Filyushkin",
     "slug": "kermie-filyushkin",
-    "gender": "F",
-    "avatar": 1
+    "address": "TGz6spY4fmLRwJDukGmXrr4xthaGWsq1zd"
   },
   {
     "id": 3,
     "name": "Yoshi Ucceli",
     "slug": "yoshi-ucceli",
-    "gender": "F",
-    "avatar": 2
+    "address": "TNmvUNg2u2CjCJ4HQsa4UcJoxdZmz7AjWS"
   },
   {
     "id": 4,
     "name": "Daile Waddie",
     "slug": "daile-waddie",
-    "gender": "F",
-    "avatar": 3
+    "address": "TXhvcNF6esU9AeMspi9YBfbtf8jUxXE2qj"
   },
   {
     "id": 5,
     "name": "Neel Skehens",
     "slug": "neel-skehens",
-    "gender": "M",
-    "avatar": 2
+    "address": "TLdMtVzGfTBKC3DQwAEATyP73ork2SsLrn"
   },
   {
     "id": 6,
     "name": "Sherman Covelle",
-    "slug": null,
-    "gender": "M",
-    "avatar": 3
+    "slug": "sherman-covelle",
+    "address": "TRzmGHoZB5jtHXqHbQBbXupx1RDGMDA5sA"
   },
   {
     "id": 7,
     "name": "Joe Quintin",
     "slug": "joe-quintin",
-    "gender": "M",
-    "avatar": 4
-  },
-  {
-    "id": 41,
-    "name": "Isacco Raithmill",
-    "slug": "isacco-raithmill",
-    "gender": "M",
-    "avatar": 5
+    "address": "TSwQA9tR4S5xPinLhr7WzfMkJMDM2vX5aF"
   },
   {
     "id": 8,
     "name": "Di Lulham",
     "slug": "di-lulham",
-    "gender": "F",
-    "avatar": 4
+    "address": "TGTT4qb7yN4R2FBQf97LWRHJFVPZQ8W4ag"
   },
   {
     "id": 9,
     "name": "Nolie Hare",
     "slug": "nolie-hare",
-    "gender": "F",
-    "avatar": 5
+    "address": "TMGEsQrvKjRsiKrpbL5FzCXKWFWoTyhgok"
   },
   {
     "id": 10,
     "name": "Myer Botha",
     "slug": "myer-botha",
-    "gender": "F",
-    "avatar": 6
+    "address": "TQS8baUsRMTDFXLpRVg1zqXG7izP5EGr7j"
   },
   {
     "id": 11,
     "name": "Linda Jagels",
     "slug": "linda-jagels",
-    "gender": "F",
-    "avatar": 7
+    "address": "TJLWSvueXnY6GQq8B7G2rWWoy9o3hhgVKG"
   },
   {
     "id": 12,
     "name": "Andrei Yellowlea",
     "slug": "andrei-yellowlea",
-    "gender": "M",
-    "avatar": 6
+    "address": "TKWA7h4RbJsWGp7U5VjTjyXkumU7QzLtxP"
   },
   {
     "id": 13,
     "name": "Willy Curwood",
     "slug": "willy-curwood",
-    "gender": "M",
-    "avatar": 7
+    "address": "TQbAGhUEg26iGamf9PgvNdkmCGZMf5FfwG"
   },
   {
     "id": 14,
     "name": "Anjela Langthorn",
     "slug": "anjela-langthorn",
-    "gender": "F",
-    "avatar": 8
+    "address": "TLLPNLjznmRW7ursFPdmgNEnBrj2yReiD7"
   },
   {
     "id": 15,
     "name": "Flynn Sussans",
     "slug": "flynn-sussans",
-    "gender": "M",
-    "avatar": 8
+    "address": "THpWeAYNx3aSk521wcJQj1KppeKpckje6U"
   },
   {
     "id": 16,
     "name": "Sadie Hamlin",
     "slug": "sadie-hamlin",
-    "gender": "F",
-    "avatar": 9
+    "address": "TTHAcYdViP2eupCee7oiiakDwHU3xGjPGh"
   },
   {
     "id": 17,
     "name": "Melessa Mahood",
     "slug": "melessa-mahood",
-    "gender": "F",
-    "avatar": 10
+    "address": "TGzQ8v2AEW69cPSHZ3x58ntfgPo27seD7F"
   },
   {
     "id": 18,
     "name": "Lindsay Lezemore",
     "slug": "lindsay-lezemore",
-    "gender": "F",
-    "avatar": 11
+    "address": "TPw7j7iQXLhGxePtCQQTGAHP8espmXNjDw"
   },
   {
     "id": 19,
     "name": "Clareta Warrick",
     "slug": "clareta-warrick",
-    "gender": "F",
-    "avatar": 12
+    "address": "TQ9mSjaeHGeHiS9L3ZhcZN6hC6Hmbr5Pbk"
   },
   {
     "id": 20,
     "name": "Eugene Ryley",
     "slug": "eugene-ryley",
-    "gender": "M",
-    "avatar": 9
+    "address": "TSzHdx9CtfRoYtejKM5ZjgRLt2Rrpzk4iM"
   },
   {
     "id": 21,
     "name": "Brantley Dullard",
     "slug": "brantley-dullard",
-    "gender": "M",
-    "avatar": 10
+    "address": "TVraJLEV7uNXAwbbNMyQYGMYfxUQTENAfa"
   },
   {
     "id": 22,
     "name": "Caril Eatock",
     "slug": "caril-eatock",
-    "gender": "F",
-    "avatar": 13
+    "address": "TCVSFTW1FMbpJM2emaLdk6denV9zjCKG6e"
   },
   {
     "id": 23,
     "name": "Anjanette Burg",
     "slug": "anjanette-burg",
-    "gender": "F",
-    "avatar": 14
+    "address": "TEqLvYzeGNX9U4QKU7i7mZwUS1YYzoZ46i"
   },
   {
     "id": 24,
     "name": "Jay Grinnikov",
     "slug": "jay-grinnikov",
-    "gender": "M",
-    "avatar": 11
+    "address": "TJk13Hfmv9F4VCdmjuoaMKWZAi4G1pvyvN"
   },
   {
     "id": 25,
     "name": "Kiley Dafforne",
     "slug": "kiley-dafforne",
-    "gender": "M",
-    "avatar": 12
+    "address": "TAv6hS9WHYVBy4BxuuGE2iXa8Xg3VtSUD5"
   },
   {
     "id": 26,
     "name": "Alene Tudge",
     "slug": "alene-tudge",
-    "gender": "F",
-    "avatar": 15
+    "address": "TXvabhy8yQ976muwvxPDFEzcQHVfjngvFV"
   },
   {
     "id": 27,
     "name": "Wynn Craske",
     "slug": "wynn-craske",
-    "gender": "M",
-    "avatar": 13
+    "address": "TMg5tZz8XMTvpFHDu8xVMsAN7rhji3KMPz"
   },
   {
     "id": 28,
     "name": "Had Yanshonok",
     "slug": "had-yanshonok",
-    "gender": "M",
-    "avatar": 14
+    "address": "TQAJJhJa6qwwYSqQx2nALhgfPQghXHXZap"
   },
   {
     "id": 29,
     "name": "Masha Blancowe",
     "slug": "masha-blancowe",
-    "gender": "F",
-    "avatar": 16
+    "address": "TRJyKpFGm9WL44H4opz7K4KJQqkfgYjFgJ"
   },
   {
     "id": 30,
     "name": "Hamlen Howlings",
     "slug": "hamlen-howlings",
-    "gender": "M",
-    "avatar": 15
+    "address": "TCiqTGpHgtMYpL5HqqCJAgHXeDG2oskRB2"
   },
   {
     "id": 31,
     "name": "Sidonnie Harte",
     "slug": "sidonnie-harte",
-    "gender": "F",
-    "avatar": 17
+    "address": "TE3a6sckABjGYYWZDU7mdBXfXi61rAiXRe"
   },
   {
     "id": 32,
     "name": "Lucille Styan",
     "slug": "lucille-styan",
-    "gender": "F",
-    "avatar": 18
+    "address": "THuT1SKEYJbos9tRHfDoGaX6Ba4tHgmUsv"
   },
   {
     "id": 33,
     "name": "Christophorus Slaughter",
     "slug": "christophorus-slaughter",
-    "gender": "M",
-    "avatar": 16
+    "address": "TKnebRKqiWrgycNFxU3zx7TVfpvjN8Sh1f"
   },
   {
     "id": 34,
     "name": "Karen Beecroft",
     "slug": "karen-beecroft",
-    "gender": "F",
-    "avatar": 19
+    "address": "TV3c4MQ8qgDpMS7YpNxQSEZNzaUr4pcy7z"
   },
   {
     "id": 35,
     "name": "Percy Pakeman",
     "slug": "percy-pakeman",
-    "gender": "M",
-    "avatar": 17
+    "address": "TVRtnpkmmwcurCCofX3Srqby6e9qhgDX7D"
   },
   {
     "id": 36,
     "name": "Jen Ellwell",
     "slug": "jen-ellwell",
-    "gender": "F",
-    "avatar": 20
+    "address": "TPzDTLiq3L53tHTXckHV7BBNVF1gwiMAAk"
   },
   {
     "id": 37,
     "name": "Reinhold Bayman",
     "slug": "reinhold-bayman",
-    "gender": "M",
-    "avatar": 18
+    "address": "TYXXDB5vfo354gYt69CG52gPAG4b2H3QXD"
   },
   {
     "id": 38,
     "name": "Shauna Tocqueville",
     "slug": "shauna-tocqueville",
-    "gender": "F",
-    "avatar": 21
+    "address": "THjQDQZuZp7MgcERUqUjzNBMGm3CkdTnSJ"
   },
   {
     "id": 39,
     "name": "Violet Whittam",
     "slug": "violet-whittam",
-    "gender": "F",
-    "avatar": 22
+    "address": "THH5txGd2adpppBxpCvVq54PV2hHe73xVe"
   },
   {
     "id": 40,
     "name": "Mercedes Humble",
     "slug": "mercedes-humble",
-    "gender": "F",
-    "avatar": 23
+    "address": "TPsnhAmgpqQU7N7fKYJ5s4Q6BLQpqk5XBg"
   },
-
   {
-    "id": 42,
+    "id": 41,
     "name": "Dacie Bartke",
     "slug": "dacie-bartke",
-    "gender": "F",
-    "avatar": 24
-  },
-  {
-    "id": 43,
-    "name": "Anneloes Louwe",
-    "slug": "anneloes-louwe",
-    "gender": "F",
-    "avatar": 24
+    "address": "THFEy7JNoZLZUAxkmCfRuzLcqDPraDmaFd"
   }
 ]

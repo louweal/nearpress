@@ -2,17 +2,8 @@
   <nuxt-link
     :to="{
       path: '/a/' + post.slug,
-      hash: historicProgress !== 0 ? '#' + historicProgress : false,
+      hash: progress !== 0 && progress !== 100 ? '#c' + progress : false,
     }"
-    event=""
-    @click.native="
-      $store.state.user
-        ? $router.push({
-            path: '/a/' + post.slug,
-            hash: historicProgress !== 0 ? '#' + historicProgress : false,
-          })
-        : paywall()
-    "
     class="card"
   >
     <div v-if="borderTop" class="w-100 border-top d-md-none"></div>
@@ -28,7 +19,7 @@
           <div
             class="card-img ratio ratio-4x3 rounded mb-md-1 mb-xl-2 w-100 bg-light"
             :style="{
-              backgroundImage: visual,
+              backgroundImage: `url(${require('@/images/' + post.visual)}`,
             }"
           ></div>
 
@@ -36,16 +27,23 @@
             class="badge bg-secondary position-absolute m-1 top-0 end-0"
             v-if="progress"
           >
-            <i v-if="progress === 100" class="bi bi-check"></i>
+            <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
 
-            <span v-else>{{ progress }} %</span>
+            <span v-else>{{ progress }}%</span>
+          </span>
+
+          <span
+            class="badge bg-secondary text-white position-absolute m-1 top-0 start-0 lh-1"
+            v-if="post.price === 0"
+          >
+            FREE
           </span>
         </div>
       </div>
       <div class="col-8 col-md-12 d-none d-md-block">
         <h2 class="card-title">{{ post.title }}</h2>
 
-        <p v-if="showIntro" class="d-none d-md-block">{{ post.intro }}</p>
+        <p v-if="showIntro" class="d-none d-md-block mb-0">{{ post.intro }}</p>
       </div>
 
       <div
@@ -61,8 +59,6 @@
 </template>
 
 <script>
-import getImage from "@/utils/getImage.js";
-
 export default {
   data() {
     return {
@@ -93,35 +89,17 @@ export default {
       let history = this.$store.state.user.history.find(
         (a) => a.id === this.post.id
       );
-      if (history) {
-        this.progress = parseInt((100 * history.progress) / this.post.total);
-      }
+      this.progress = history ? history.progress : 0;
     }
   },
 
   computed: {
-    visual() {
-      return getImage(this.post.visual);
-    },
-
-    historicProgress() {
-      if (this.$store.state.user) {
-        let history = this.$store.state.user.history.find(
-          (a) => a.id === this.post.id
-        );
-        if (history) {
-          return history.progress;
-        }
-      }
-      return 0;
-    },
-  },
-
-  methods: {
-    paywall() {
-      this.$store.commit("toggleModal");
-      this.$store.commit("setClickedPost", "/a/" + this.post.slug);
-      document.getElementById("page").classList.toggle("is-blurred");
+    mine() {
+      // post is written by the user himself
+      return (
+        this.$store.state.user.id === this.author.id ||
+        this.$store.state.user.id === this.author.address
+      );
     },
   },
 };
@@ -134,7 +112,6 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  // border: 1px solid plum;
 
   &:hover {
     .card-img {
