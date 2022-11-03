@@ -57,7 +57,7 @@
           </h2>
 
           <p v-if="post.price > 0">
-            Price: <b>{{ post.price }}</b> <small>TRX</small> /
+            Price: <b>{{ post.price.toFixed(3) }}</b> <small>NEAR</small> /
             <b>{{ price }}</b> <small>USD</small>
           </p>
           <p v-else>
@@ -137,7 +137,7 @@
             <small
               class="fw-bold text-danger"
               :key="'error' + i"
-              v-if="+p.progress - 2 == progress && error"
+              v-if="+p.progress == progress && error"
             >
               [{{ error }}]
             </small>
@@ -206,7 +206,7 @@
 
 <script>
 import getUSD from "@/utils/getUSD.js";
-import { payWriter } from "@/utils/tronUtils";
+import { payWriter } from "@/utils/nearUtils";
 
 export default {
   transition: "post", // important for scroll position on page load!
@@ -220,7 +220,7 @@ export default {
       historicProgress: 0,
       posts: () => {},
       post: () => {},
-      trxusd: 1,
+      nearusd: 1,
       showBlurb: true,
       showContents: false,
       numChapters: 0,
@@ -235,7 +235,7 @@ export default {
   async created() {
     this.posts = this.$store.state.posts;
     this.post = this.posts.find((a) => a.slug === this.$route.params.post);
-    this.trxusd = await getUSD();
+    this.nearusd = await getUSD();
   },
 
   async fetch() {
@@ -329,7 +329,7 @@ export default {
     },
 
     price() {
-      return (this.post.price * this.trxusd).toFixed(2);
+      return (this.post.price * this.nearusd).toFixed(2);
     },
 
     author() {
@@ -413,10 +413,8 @@ export default {
                 return; //break;
               }
 
-              let toPay = +(
-                ((target.dataset.progress - this.paid) / 100) *
-                this.post.price
-              );
+              let toPay =
+                ((target.dataset.progress - this.paid) / 100) * this.post.price;
 
               if (toPay > 0) {
                 this.error = undefined;
@@ -425,11 +423,7 @@ export default {
                 // this.message = "Awaiting transaction ...";
                 this.freezeWindow();
 
-                let result = await payWriter(
-                  this.author.address,
-                  this.post.id,
-                  toPay
-                );
+                let result = await payWriter(this.author.address, toPay);
 
                 if (result.success === true) {
                   this.message =
@@ -439,7 +433,7 @@ export default {
                   this.payment = toPay;
 
                   // console.log(
-                  //   `Succesfully transferred ${toPay} TRX to ${this.author.name} (${this.author.address})`
+                  //   `Succesfully transferred ${toPay} NEAR to ${this.author.name} (${this.author.address})`
                   // );
                   this.paid = this.progress;
                   target.classList.add("start-animation");

@@ -94,6 +94,13 @@ export default {
   },
 
   computed: {
+    author() {
+      let author = this.$store.state.writers.find(
+        (w) => w.id === this.post.author
+      );
+      return author ? author : { name: "Unknown author" };
+    },
+
     mine() {
       // post is written by the user himself
       return (
@@ -115,7 +122,7 @@ export default {
 
   &:hover {
     .card-img {
-      background-size: 120%;
+      background-size: 117%;
     }
 
     .card-title {

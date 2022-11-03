@@ -57,6 +57,7 @@ export default {
     img {
       width: min(50vw, 150px);
       filter: grayscale(1);
+      opacity: 0.34;
     }
   }
 }

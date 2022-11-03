@@ -66,8 +66,8 @@
 </template>
 
 <script>
-import { getTronWebAddress } from "~/utils/tronUtils.js";
-import { setContract } from "@/utils/tronUtils";
+import { getTronWebAddress } from "~/utils/nearUtils.js";
+import { setContract } from "@/utils/nearUtils";
 
 export default {
   data() {

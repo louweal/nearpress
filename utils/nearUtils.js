@@ -44,7 +44,7 @@ export async function setContract() {
   return true;
 }
 
-export async function payWriter(address, bookId, value) {
+export async function payWriter(address, value) {
   if (contract === undefined) {
     // try to get the contract again
     setContract();
@@ -54,11 +54,14 @@ export async function payWriter(address, bookId, value) {
     .payWriter(address)
     .send({
       feeLimit: 100_000_000,
-      callValue: window.tronWeb.toSun(value),
+      callValue: Math.round(window.tronWeb.toSun(value)),
       shouldPollResponse: false,
     })
     .then(() => {
-      return { success: true, message: `Succesfully transferred ${value} TRX` };
+      return {
+        success: true,
+        message: `Succesfully transferred ${value} NEAR`,
+      };
     })
     .catch((err) => {
       let message;

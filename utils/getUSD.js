@@ -1,4 +1,4 @@
-export default async function getUSD(currency = "TRX") {
+export default async function getUSD(currency = "NEAR") {
   let response = await fetch(
     `https://min-api.cryptocompare.com/data/price?fsym=${currency}&tsyms=USD`
   );

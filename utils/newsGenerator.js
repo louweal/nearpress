@@ -21,12 +21,12 @@ function makeParagraphs(n) {
   for (let i = 0; i < n; i++) {
     if (i === 0 || Math.ceil(Math.random() * 3) == 3) {
       let title =
-        getWords(Math.ceil(Math.random() * 3)).replaceAll(".", "") + "\n";
+        getWords(Math.ceil(Math.random() * 4)).replaceAll(".", "") + "\n";
       chapter += 1;
       s += title;
     }
 
-    let content = getWords(30 + Math.floor(Math.random() * 55)) + "\n";
+    let content = getWords(55 + Math.floor(Math.random() * 70)) + "\n";
     s += content;
   }
 
@@ -52,7 +52,7 @@ export function fakeNews(n) {
 
     let author = Math.floor(Math.random() * 42); // the data/writers.json contains 42 writers, with ids 0-41
     title = title.charAt(0) + title.slice(1).toLowerCase();
-    let content = makeParagraphs(7 + Math.ceil(Math.random() * 15)); // max 50 paragraphs
+    let content = makeParagraphs(8 + Math.ceil(Math.random() * 14));
     let catId = author % numCategories;
     let category = categorySlugs[catId];
 
@@ -69,11 +69,9 @@ export function fakeNews(n) {
           (1577840461 + Math.ceil(Math.random() * 94694400)) * 1000
         ).getTime() / 1000, // 1-1-2020 + 3 years -- the date timestamp is in SECONDS for solidity
       author: author,
-      views: Math.ceil(Math.random() * 500),
+      views: Math.ceil(300 + Math.random() * 700),
       price:
-        Math.ceil(Math.random() * 12) === 12
-          ? 0
-          : (3 + Math.ceil(Math.random() * 7)) * 50, // price in TRX
+        Math.ceil(Math.random() * 12) === 12 ? 0 : 0.3 + Math.random() * 1.7, // price in NEAR
     });
 
     imagesUsed[catId] = (imagesUsed[catId] + 1) % imagesPerCategory[catId];

@@ -15,7 +15,7 @@
       ></div>
 
       <div class="card-img-overlay rounded pb-1 px-3 px-lg-4 pb-lg-2">
-        <h2 class="text-white fs-3">{{ post.title }}</h2>
+        <h2 class="text-white fs-2">{{ post.title }}</h2>
       </div>
     </div>
     <span
@@ -24,6 +24,12 @@
     >
       <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
       <span v-else>{{ progress }}%</span>
+    </span>
+    <span
+      class="badge bg-secondary text-white position-absolute m-1 top-0 start-0 lh-1"
+      v-if="post.price === 0"
+    >
+      FREE
     </span>
   </nuxt-link>
 </template>

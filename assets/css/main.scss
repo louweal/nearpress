@@ -126,7 +126,7 @@ body {
   background: $secondary;
   background: linear-gradient(141deg, $secondary 0%, var(--my-secondary2) 81%);
   color: #fff;
-  transition: filter 0.24s linear !important;
+  transition: filter 0.44s linear !important;
 
   &:hover,
   &:active:hover,
@@ -169,7 +169,7 @@ span.color-secondary {
 
 .post-enter {
   opacity: 0.1;
-  transform: translateY(-75vh);
+  transform: translateY(-25vh);
 }
 
 .post-leave-active {

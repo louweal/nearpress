@@ -77,7 +77,7 @@
                     v-for="(p, i) in [0, 200, 250, 300, 350, 400, 450, 500]"
                     :key="i"
                   >
-                    {{ p }} TRX / {{ (p * trxusd).toFixed(2) }} USD
+                    {{ p }} NEAR / {{ (p * nearusd).toFixed(2) }} USD
                   </option>
                 </select>
               </div>
@@ -225,7 +225,7 @@ export default {
       image: -1,
       category: undefined,
       post: { intro: "" },
-      trxusd: 1,
+      nearusd: 1,
     };
   },
 
@@ -234,7 +234,7 @@ export default {
 
     Vue.set(this.post, "author", this.$store.state.user.id);
     Vue.set(this.post, "type", "article"); // ??
-    this.trxusd = await getUSD();
+    this.nearusd = await getUSD();
   },
 
   async fetch() {
@@ -256,7 +256,7 @@ export default {
 
     price() {
       return this.post.content
-        ? ((this.post.content.length / 1000) * this.trxusd).toFixed(2)
+        ? ((this.post.content.length / 1000) * this.nearusd).toFixed(2)
         : -1;
     },
 
