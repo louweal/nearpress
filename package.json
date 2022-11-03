@@ -1,7 +1,7 @@
 {
   "name": "nearpress",
   "version": "1.0.0",
-  "description": "nearpress: fictional stories reimagined on TRON",
+  "description": "nearpress: journalism. reinvented",
   "main": "index.js",
   "scripts": {
     "dev": "nuxt --port 8000",

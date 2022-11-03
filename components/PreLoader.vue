@@ -9,8 +9,8 @@
       </div>
 
       <p class="display-6 fs-3 text-secondary text-center mt-2">
-        <span class="color-secondary delay-800">connects everyone</span>
-        <span class="color-secondary delay-1400">with everyone</span>
+        <span class="color-secondary delay-800">journalism, </span>
+        <span class="color-secondary delay-1400">reinvented</span>
       </p>
     </div>
   </div>

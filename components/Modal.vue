@@ -21,28 +21,28 @@
           </div>
           <div class="modal-body px-1">
             <p class="text-center">
-              Can you imagine a world where you can start reading as many books
-              as you like and only pay for the pages you read? Connect your TRON
-              wallet and let your imagination become reality.
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente
+              facere exercitationem provident sint facilis numquam nihil! Saepe
+              omnis est fugiat aspernatur accusamus.
             </p>
             <div class="d-grid gap-2 mb-1">
               <div
                 class="btn btn-secondary cursor-pointer d-none d-md-block"
                 @click="signIn"
               >
-                TronLink
+                Connect to NEAR
               </div>
               <div
                 class="btn btn-secondary cursor-pointer d-md-none opacity-50"
               >
-                TronLink
+                Connect to NEAR
               </div>
             </div>
-            <div class="text-center mt-2 d-md-none">
+            <!-- <div class="text-center mt-2 d-md-none">
               <p class="text-danger">
                 TronLink is currently not available for mobile browsers
               </p>
-            </div>
+            </div> -->
 
             <div class="text-center mt-2" v-if="error">
               <p class="text-danger">
