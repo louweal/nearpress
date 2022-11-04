@@ -406,7 +406,7 @@ export default {
           if (!target.classList.contains("start-animation")) {
             if (target.dataset.progress && !this.mine && this.post.price > 0) {
               // trigger paywall
-              if (!tronWeb.defaultAddress || !this.$store.state.user) {
+              if (!tronWeb || !this.$store.state.user) {
                 this.$store.commit("toggleModal");
                 document.getElementById("page").classList.toggle("is-blurred");
                 this.prevPosY = window.scrollY;

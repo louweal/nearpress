@@ -3,7 +3,7 @@
     "title": "Climate change",
     "slug": "climate-change",
     "visual": "17",
-    "images": 18
+    "images": 27
   },
   {
     "title": "Water pollution",
@@ -14,8 +14,8 @@
   {
     "title": "Poverty",
     "slug": "poverty",
-    "visual": "1",
-    "images": 1
+    "visual": "16",
+    "images": 29
   },
   {
     "title": "LGBTQ+ rights",
@@ -26,13 +26,13 @@
   {
     "title": "COVID-19",
     "slug": "covid-19",
-    "visual": "1",
-    "images": 1
+    "visual": "11",
+    "images": 20
   },
   {
     "title": "War in Ukraine",
     "slug": "war-in-ukraine",
-    "visual": "1",
-    "images": 1
+    "visual": "4",
+    "images": 35
   }
 ]
