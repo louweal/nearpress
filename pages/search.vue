@@ -19,7 +19,7 @@
         </div>
 
         <div class="col-md-3 align-self-center">
-          {{ posts.length }} books found
+          {{ posts.length }} articles found
         </div>
 
         <div class="col-12 col-md-9">
@@ -48,7 +48,7 @@
               <nuxt-link :to="'/w/' + w.slug" class="">
                 <h3 class="fw-bold fs-6 mb-0 text-secondary">{{ w.name }}</h3>
                 <span
-                  >{{ w.numPosts }} book<span v-if="w.numPosts > 1"
+                  >{{ w.numPosts }} article<span v-if="w.numPosts > 1"
                     >s</span
                   ></span
                 >

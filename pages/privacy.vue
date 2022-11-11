@@ -16,12 +16,12 @@
 </template>
 
 <script>
-// import { fakeBooks } from "@/utils/fakeBookGenerator";
+// import { fakeBooks } from "@/utils/fakeNewsGenerator";
 
 export default {
   async created() {
-    // let bookset = fakeBooks(142);
-    // console.log(bookset);
+    // let posts = fakeBooks(142);
+    // console.log(posts);
   },
 };
 </script>

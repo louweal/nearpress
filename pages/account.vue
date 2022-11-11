@@ -51,7 +51,7 @@
               <nuxt-link :to="'/w/' + w.slug" class="">
                 <h3 class="fw-bold fs-6 mb-0 text-secondary">{{ w.name }}</h3>
                 <span
-                  >{{ w.numBooks }} book<span v-if="w.numBooks > 1"
+                  >{{ w.numBooks }} article<span v-if="w.numBooks > 1"
                     >s</span
                   ></span
                 >
@@ -152,7 +152,7 @@ export default {
     },
 
     reading() {
-      //books the user is currently reading
+      //posts the user is currently reading
       let ids = this.$store.state.user.history
         .filter((h) => h.progress < 100 && h.progress > 0)
         .map((h) => h.id);
@@ -160,7 +160,7 @@ export default {
     },
 
     read() {
-      // books the user has read
+      // posts the user has read
       let ids = this.$store.state.user.history
         .filter((h) => h.progress === 100)
         .map((h) => h.id);

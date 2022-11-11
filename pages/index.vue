@@ -32,10 +32,9 @@
 
         <div class="col-md-3 d-none d-md-block">
           <sidebar
+            title="Recent articles"
             :posts="
-              [...posts]
-                .sort((a, b) => (a.views > b.views ? -1 : 1))
-                .slice(0, 10)
+              [...posts].sort((a, b) => (a.date > b.date ? -1 : 1)).slice(0, 10)
             "
           />
         </div>
@@ -123,16 +122,17 @@
           v-if="feed.slice(11).length > 6"
         >
           <sidebar
-            title="Recent articles"
             :posts="
-              [...posts].sort((a, b) => (a.date > b.date ? -1 : 1)).slice(0, 10)
+              [...posts]
+                .sort((a, b) => (a.views > b.views ? -1 : 1))
+                .slice(0, 10)
             "
           />
         </div>
       </div>
 
       <template v-if="freePosts.length > 0">
-        <h2 class="fs-5 mt-3 mt-4">Free books</h2>
+        <h2 class="fs-5 mt-3 mt-4">Read for free</h2>
 
         <div class="row gy-0 gx-3 pt-md-1 mb-lg-4">
           <div class="col-12 col-md" v-for="(post, i) in freePosts" :key="i">

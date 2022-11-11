@@ -24,7 +24,7 @@
           ></div>
 
           <span
-            class="badge bg-secondary position-absolute m-1 top-0 end-0"
+            class="badge bg-secondary position-absolute m-1 m-lg-2 top-0 end-0"
             v-if="progress"
           >
             <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
@@ -33,7 +33,7 @@
           </span>
 
           <span
-            class="badge bg-secondary text-white position-absolute m-1 top-0 start-0 lh-1"
+            class="badge bg-secondary text-white position-absolute m-1 m-lg-2 top-0 start-0 lh-1"
             v-if="post.price === 0"
           >
             FREE
@@ -122,7 +122,7 @@ export default {
 
   &:hover {
     .card-img {
-      background-size: 117%;
+      background-size: 115%;
     }
 
     .card-title {
@@ -140,7 +140,7 @@ export default {
   overflow: hidden;
   background-repeat: no-repeat;
   background-position: center;
-  transition: background-size 0.3s 0.15s cubic-bezier(0.2, 0, 0.1, 1);
-  background-size: 115%;
+  transition: background-size 0.6s cubic-bezier(0.2, 0, 0.1, 1);
+  background-size: 125%;
 }
 </style>

@@ -12,7 +12,7 @@
     <div class="row gx-3 my-3 my-md-0">
       <div :class="hero ? 'col-12' : 'col-3 col-md-12'">
         <div class="position-relative">
-          <div class="ratio ratio-3x4">
+          <div class="ratio ratio-1x1">
             <div
               class="card-img position-absolute rounded bg-light"
               :style="{
@@ -23,7 +23,7 @@
             </div>
 
             <div
-              class="card-img-overlay rounded pb-3 px-3 px-lg-3 pb-lg-3"
+              class="card-img-overlay rounded pb-2 px-3 px-lg-3 xxxpb-lg-3"
               :class="hero ? 'd-flex' : 'd-none d-md-flex'"
             >
               <component
@@ -33,7 +33,7 @@
               >
                 {{ post.title }}
               </component>
-              <span class="fw-bold text-white">{{ author.name }}</span>
+              <!-- <span class="fw-bold text-white">{{ author.name }}</span> -->
             </div>
 
             <div
@@ -68,7 +68,7 @@
         :class="hero ? 'd-none' : false"
       >
         <h2 class="fs-5">{{ post.title }}</h2>
-        <span class="fw-bold">{{ author.name }}</span>
+        <!-- <span class="fw-bold">{{ author.name }}</span> -->
       </div>
     </div>
   </nuxt-link>
@@ -146,7 +146,7 @@ export default {
   overflow: hidden;
 
   &:hover .card-img {
-    background-size: 120%;
+    background-size: 160%;
   }
 }
 
@@ -156,7 +156,7 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   transition: background-size 0.4s 0.15s cubic-bezier(0.2, 0, 0.1, 1);
-  background-size: 115%;
+  background-size: 150%; // 115%;
 }
 
 .card-img-overlay {
@@ -170,7 +170,7 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
   background: rgb(0, 0, 0);
-  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 59%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 99%);
   z-index: 3;
 }
 

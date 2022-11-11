@@ -19,14 +19,14 @@
       </div>
     </div>
     <span
-      class="badge bg-secondary position-absolute m-1 top-0 end-0 lh-1"
+      class="badge bg-secondary position-absolute m-1 m-lg-2 top-0 end-0 lh-1 fs-6"
       v-if="progress"
     >
       <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
       <span v-else>{{ progress }}%</span>
     </span>
     <span
-      class="badge bg-secondary text-white position-absolute m-1 top-0 start-0 lh-1"
+      class="badge bg-secondary text-white position-absolute m-1 m-lg-2 top-0 start-0 lh-1 fs-6"
       v-if="post.price === 0"
     >
       FREE

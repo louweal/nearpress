@@ -1,5 +1,5 @@
 <template>
-  <div class="row g-0 g-md-3 g-lg-4">
+  <div class="row g-0 g-md-3 g-lg-5">
     <div
       class="col-12 col-md-4"
       v-for="(post, i) in posts"

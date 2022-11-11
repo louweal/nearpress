@@ -355,7 +355,7 @@ export default {
     },
 
     computeProgress(end) {
-      // percentage of book read after reading this part [2%, 4%, ..., 100%]
+      // percentage of post read after reading this part [2%, 4%, ..., 100%]
       return Math.round((end * 50) / this.post.content.length) * 2;
     },
 

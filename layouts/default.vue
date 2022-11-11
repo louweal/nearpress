@@ -17,7 +17,7 @@
 import categories from "@/data/channels.json";
 // import posts from "@/data/posts.json";
 import writers from "@/data/writers.json";
-import { fakeNews } from "@/utils/newsGenerator.js";
+import { fakeNews } from "@/utils/fakeNewsGenerator.js";
 
 export default {
   categories,
