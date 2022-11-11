@@ -19,7 +19,7 @@ function makeParagraphs(n) {
   let chapter = 1;
 
   for (let i = 0; i < n; i++) {
-    if (i === 0 || Math.ceil(Math.random() * 3) == 3) {
+    if (i !== 0 && Math.ceil(Math.random() * 3) == 3) {
       let title =
         getWords(Math.ceil(Math.random() * 4)).replaceAll(".", "") + "\n";
       chapter += 1;

@@ -92,11 +92,11 @@
       <div v-if="userCategories.length === 0" class="mb-2 mt-3 mt-lg-5">
         <p v-if="signedIn">You can also subscribe to your favorite channels.</p>
 
-        <div class="row gy-3 gy-lg-0 gx-3 pt-1">
+        <div class="row g-0 g-lg-5 xxxgy-lg-0 pt-1">
           <hr class="mb-0 d-md-none" />
 
           <div
-            class="col-12 col-md-4 col-lg"
+            class="col-12 col-md-4 col-lg-3 xxxcol-lg"
             v-for="(c, i) in categories"
             :key="i"
           >
