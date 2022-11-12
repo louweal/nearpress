@@ -60,7 +60,7 @@ export function fakeNews(n) {
       id: a.length,
       title: title,
       slug: title.toLowerCase().replaceAll(" ", "-"),
-      intro: getWords(10 + Math.ceil(Math.random() * 8)),
+      intro: getWords(30 + Math.ceil(Math.random() * 14)),
       visual: `${category}/${imagesUsed[catId] + 1}.jpg`,
       category: category,
       content: content,

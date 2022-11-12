@@ -9,7 +9,7 @@
         hideFirstPost === 'desktop' && i === 0 ? 'd-md-none' : false,
       ]"
     >
-      <card :post="post" :borderTop="i !== 0" />
+      <card :post="post" :borderTop="!hideBorderTop(i)" :id="i" />
     </div>
   </div>
 </template>
@@ -24,6 +24,12 @@ export default {
     hideFirstPost: {
       type: [Boolean, String],
       default: false, // options:   "mobile" "desktop" (hides post before OR after MD breakpoint (because number of posts in hero is variable)
+    },
+  },
+  methods: {
+    hideBorderTop(i) {
+      if (i === 0) return true;
+      if (this.hideFirstPost === "mobile" && i === 1) return true;
     },
   },
 };
