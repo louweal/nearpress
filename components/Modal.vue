@@ -89,7 +89,6 @@ export default {
     async signIn() {
       if (typeof window.near !== "undefined" && window.near.isSender) {
         console.log("Sender is installed!");
-        window.near.signOut(); // force sign out ...
 
         let connected = connectSender();
         if (!connected) {
