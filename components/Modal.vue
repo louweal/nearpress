@@ -91,7 +91,10 @@ export default {
         console.log("Sender is installed!");
         window.near.signOut(); // force sign out ...
 
-        connectSender();
+        let connected = connectSender();
+        if (!connected) {
+          return;
+        }
       } else {
         this.error = true;
         return;
