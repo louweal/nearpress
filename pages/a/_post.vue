@@ -206,7 +206,7 @@
 
 <script>
 import getUSD from "@/utils/getUSD.js";
-import { payAuthor } from "@/utils/sender.js";
+import { payAuthor, payAuthorDocs } from "@/utils/sender.js";
 
 export default {
   transition: "post", // important for scroll position on page load!
@@ -356,7 +356,7 @@ export default {
 
     computeProgress(end) {
       // percentage of post read after reading this part [2%, 4%, ..., 100%]
-      return Math.round((end * 50) / this.post.content.length) * 2;
+      return Math.round((end * 10) / this.post.content.length) * 10;
     },
 
     toggleAccordion() {
@@ -415,17 +415,19 @@ export default {
 
               let toPay =
                 ((target.dataset.progress - this.paid) / 100) * this.post.price;
+              toPay = toPay.toFixed(20);
 
               if (toPay > 0) {
                 this.error = undefined;
                 this.message = undefined;
 
-                console.log("PAY NOW!");
+                console.log("PAY NOW! " + toPay);
 
                 this.freezeWindow();
 
                 const result = await payAuthor(toPay, "louweal.testnet");
-                // console.log(result);
+
+                console.log(result);
 
                 if (result.success === true) {
                   this.message =

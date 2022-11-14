@@ -195,8 +195,8 @@ export default {
   transition: transform 0.4s ease-in-out;
   will-change: transform;
 
-  &-logo img {
-    max-width: 20vw !important;
+  img {
+    max-width: 44vw !important;
   }
 }
 </style>
