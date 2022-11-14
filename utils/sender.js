@@ -2,9 +2,14 @@ let contractId = "dev-1668429151999-78994884464435";
 
 export async function connectSender() {
   if (!window.near.isSignedIn()) {
-    await window.near.requestSignIn({
-      contractId: contractId,
-    });
+    await window.near
+      .requestSignIn({
+        contractId: contractId,
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Failed to connect Sender");
+      });
   }
 
   if (window.near.isSignedIn()) {
