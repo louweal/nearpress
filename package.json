@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/louweal/nearpress#readme",
   "dependencies": {
-    "@metamask/onboarding": "^1.0.0",
     "bootstrap": "^5.2.1",
     "core-js": "^3.25.2",
     "nuxt": "^2.15.8",

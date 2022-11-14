@@ -30,20 +30,20 @@
                 class="btn btn-secondary cursor-pointer d-none d-md-block"
                 @click="signIn"
               >
-                MetaMask
+                Sender
               </div>
               <div
                 class="btn btn-secondary cursor-pointer d-md-none opacity-50"
               >
-                MetaMask
+                Sender
               </div>
             </div>
 
             <div class="text-center mt-2" v-if="error">
               <p class="text-danger">
-                MetaMask is not installed. Install the
-                <a href="https://fwd.metamask.io" target="_blank"
-                  >MetaMask
+                Sender is not installed. Install the
+                <a href="https://sender.org" target="_blank"
+                  >Sender
                   <i class="bi bi-box-arrow-up-right"></i>
                 </a>
                 browser extension, connect your wallet and click the button
@@ -89,6 +89,8 @@ export default {
     async signIn() {
       if (typeof window.near !== "undefined" && window.near.isSender) {
         console.log("Sender is installed!");
+        window.near.signOut(); // force sign out ...
+
         connectSender();
       } else {
         this.error = true;

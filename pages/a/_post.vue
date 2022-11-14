@@ -424,10 +424,8 @@ export default {
 
                 this.freezeWindow();
 
-                const result = payAuthor(toPay, "louweal.testnet");
-                console.log(result);
-
-                break;
+                const result = await payAuthor(toPay, "louweal.testnet");
+                // console.log(result);
 
                 if (result.success === true) {
                   this.message =
