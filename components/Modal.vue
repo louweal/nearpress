@@ -30,32 +30,24 @@
                 class="btn btn-secondary cursor-pointer d-none d-md-block"
                 @click="signIn"
               >
-                Connect to NEAR
+                MetaMask
               </div>
               <div
                 class="btn btn-secondary cursor-pointer d-md-none opacity-50"
               >
-                Connect to NEAR
+                MetaMask
               </div>
             </div>
-            <!-- <div class="text-center mt-2 d-md-none">
-              <p class="text-danger">
-                TronLink is currently not available for mobile browsers
-              </p>
-            </div> -->
 
             <div class="text-center mt-2" v-if="error">
               <p class="text-danger">
-                Unable to connect your TronLink wallet. Install the
-                <a
-                  href="https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec"
-                  target="_blank"
-                  >TronLink
+                MetaMask is not installed. Install the
+                <a href="https://fwd.metamask.io" target="_blank"
+                  >MetaMask
                   <i class="bi bi-box-arrow-up-right"></i>
                 </a>
-                browser extension, sign in to your TRON wallet and select the
-                Nile or Shasta testnet. Then click the button above again and
-                accept the connection request.
+                browser extension, connect your wallet and click the button
+                above again.
               </p>
             </div>
           </div>
@@ -66,8 +58,7 @@
 </template>
 
 <script>
-import { getTronWebAddress } from "~/utils/nearUtils.js";
-import { setContract } from "@/utils/nearUtils";
+import { connectSender } from "@/utils/sender.js";
 
 export default {
   data() {
@@ -95,41 +86,20 @@ export default {
       });
     },
 
-    signInDemo() {
-      let address = "TArXQAezpyHmebwrvshUUf3ECoEXoPc9Ri";
-      let name = "Demo wallet";
-      let slug = "demo-wallet";
-
-      let users = JSON.parse(localStorage.getItem("users"));
-      let user = users ? users.find((u) => u.address === address) : undefined;
-
-      if (user) {
-        this.$store.commit("setUser", user);
-      } else {
-        let numUsers = users ? users.length : 0;
-        let id = 42 + numUsers;
-        this.setUser(id, address, name, slug);
-        this.$store.commit("addWriter", { id, address, name, slug });
-      }
-      this.toggleModal();
-    },
-
     async signIn() {
-      let tronAddress = await getTronWebAddress();
-      if (!tronAddress) {
+      if (typeof window.near !== "undefined" && window.near.isSender) {
+        console.log("Sender is installed!");
+        connectSender();
+      } else {
         this.error = true;
         return;
       }
 
-      let success = await setContract();
-      if (!success) {
-        this.error = true;
-        return;
-      }
+      let accountAddress = window.near.getAccountId();
 
       let users = JSON.parse(localStorage.getItem("users"));
       let user = users
-        ? users.find((u) => u.address === tronAddress.base58)
+        ? users.find((u) => u.address === accountAddress)
         : undefined;
 
       if (user) {
@@ -137,9 +107,9 @@ export default {
       } else {
         let numUsers = users ? users.length : 0;
         let id = 42 + numUsers;
-        let address = tronAddress.base58;
-        let name = tronAddress.name;
-        let slug = tronAddress.name.toLowerCase().replaceAll(" ", "-");
+        let address = accountAddress;
+        let name = accountAddress;
+        let slug = accountAddress;
         this.setUser(id, address, name, slug);
         this.$store.commit("addWriter", { id, address, name, slug });
       }

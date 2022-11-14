@@ -14,10 +14,7 @@
               @click="showModal = !showModal"
               >Change username</span
             >
-            <span
-              @click="$store.commit('setUser', undefined)"
-              class="btn btn-primary btn-sm"
-            >
+            <span @click="disconnect()" class="btn btn-primary btn-sm">
               <i class="bi bi-box-arrow-right"></i>
               Disconnect<span class="d-none d-md-inline"> wallet</span>
             </span>
@@ -186,6 +183,11 @@ export default {
           message: "Access denied",
         });
       }
+    },
+
+    disconnect() {
+      window.near.signOut();
+      this.$store.commit("setUser", undefined);
     },
 
     changeUsername() {

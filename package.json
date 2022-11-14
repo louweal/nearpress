@@ -4,7 +4,7 @@
   "description": "nearpress: journalism. reinvented",
   "main": "index.js",
   "scripts": {
-    "dev": "nuxt --port 8000",
+    "dev": "nuxt --port 3001",
     "build": "nuxt build",
     "start": "nuxt start --port 8001",
     "generate": "nuxt generate"
@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/louweal/nearpress#readme",
   "dependencies": {
+    "@metamask/onboarding": "^1.0.0",
     "bootstrap": "^5.2.1",
     "core-js": "^3.25.2",
-    "near-api-js": "^1.1.0",
     "nuxt": "^2.15.8",
     "webpack": "^4.46.0"
   },

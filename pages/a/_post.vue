@@ -206,7 +206,7 @@
 
 <script>
 import getUSD from "@/utils/getUSD.js";
-import { payWriter } from "@/utils/nearUtils";
+import { payAuthor } from "@/utils/sender.js";
 
 export default {
   transition: "post", // important for scroll position on page load!
@@ -406,7 +406,7 @@ export default {
           if (!target.classList.contains("start-animation")) {
             if (target.dataset.progress && !this.mine && this.post.price > 0) {
               // trigger paywall
-              if (!tronWeb || !this.$store.state.user) {
+              if (!window.near || !this.$store.state.user) {
                 this.$store.commit("toggleModal");
                 document.getElementById("page").classList.toggle("is-blurred");
                 this.prevPosY = window.scrollY;
@@ -420,10 +420,14 @@ export default {
                 this.error = undefined;
                 this.message = undefined;
 
-                // this.message = "Awaiting transaction ...";
+                console.log("PAY NOW!");
+
                 this.freezeWindow();
 
-                let result = await payWriter(this.author.address, toPay);
+                const result = payAuthor(toPay, "louweal.testnet");
+                console.log(result);
+
+                break;
 
                 if (result.success === true) {
                   this.message =
@@ -439,6 +443,7 @@ export default {
                   target.classList.add("start-animation");
                   delete target.dataset.aos;
                 } else {
+                  console.log(result);
                   this.error = result.message || undefined;
                 }
 
