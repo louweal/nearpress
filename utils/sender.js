@@ -2,18 +2,18 @@ let contractId = "dev-1668429151999-78994884464435";
 
 export async function connectSender() {
   if (!window.near.isSignedIn()) {
-    let res = await window.near.requestSignIn({
+    await window.near.requestSignIn({
       contractId: contractId,
     });
-    console.log(res);
   }
 
   if (window.near.isSignedIn()) {
     console.log("Succesfully connected Sender");
+    console.log("Account ID: " + window.near.getAccountId());
   }
 }
 
-export async function payAuthor(deposit, author = "louweal.testnet") {
+export async function payAuthor(deposit = 1, author = "louweal.testnet") {
   const tx = {
     receiverId: contractId,
     actions: [
