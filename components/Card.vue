@@ -50,7 +50,7 @@
         class="d-md-none align-self-center"
         :class="flex ? 'col-8 col-sm-9' : 'col-12'"
       >
-        <h2 class="card-title" :class="flex ? 'fw-light' : false">
+        <h2 class="card-title" :class="flex ? 'fw-light' : 'mt-1'">
           {{ post.title }}
         </h2>
       </div>
