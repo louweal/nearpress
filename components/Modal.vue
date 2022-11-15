@@ -21,22 +21,26 @@
           </div>
           <div class="modal-body px-1">
             <p class="text-center">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente
-              facere exercitationem provident sint facilis numquam nihil! Saepe
-              omnis est fugiat aspernatur accusamus.
+              Get informed about what really happens in the world, directly from
+              quality journalists. Using your NEAR wallet you can directly pay
+              the journalist a fair price after reading the article.
             </p>
             <div class="d-grid gap-2 mb-1">
               <div
                 class="btn btn-secondary cursor-pointer d-none d-md-block"
                 @click="signIn"
               >
-                Sender
+                Connect Sender Wallet
               </div>
               <div
                 class="btn btn-secondary cursor-pointer d-md-none opacity-50"
               >
-                Sender
+                Connect Sender Wallet
               </div>
+            </div>
+
+            <div class="text-center mt-2 d-md-none">
+              <p>Sender is currently not available for mobile browsers</p>
             </div>
 
             <div class="text-center mt-2" v-if="error">

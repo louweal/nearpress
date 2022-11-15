@@ -74,7 +74,9 @@
                   <option selected value="select">Select price</option>
                   <option
                     :value="p"
-                    v-for="(p, i) in [0, 200, 250, 300, 350, 400, 450, 500]"
+                    v-for="(p, i) in [
+                      0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9, 1,
+                    ]"
                     :key="i"
                   >
                     {{ p }} NEAR / {{ (p * nearusd).toFixed(2) }} USD
@@ -146,12 +148,15 @@
             ></textarea>
 
             <ul class="bullet-list-inline">
-              <li>{{ post.content ? post.content.length : 0 }} characters</li>
-              <li v-if="numChapters > 0 && $options.type === 'book'">
-                {{ numChapters }} chapter<span v-if="numChapters > 1">s</span>
-              </li>
               <li v-if="numHeadings > 0 && $options.type === 'article'">
                 {{ numHeadings }} heading<span v-if="numHeadings > 1">s</span>
+              </li>
+              <li>{{ post.content ? post.content.length : 0 }} characters</li>
+
+              <li v-if="post.content.length < contentMin">
+                <span class="text-danger">
+                  The minimum length is {{ contentMin }} characters.
+                </span>
               </li>
             </ul>
           </div>
@@ -224,8 +229,9 @@ export default {
       showModal: false,
       image: -1,
       category: undefined,
-      post: { intro: "" },
+      post: { intro: "", content: "" },
       nearusd: 1,
+      contentMin: 6000,
     };
   },
 
@@ -243,11 +249,11 @@ export default {
 
   computed: {
     introMin() {
-      return this.$options.type === "article" ? 100 : 250;
+      return this.$options.type === "article" ? 150 : 250;
     },
 
     introMax() {
-      return this.$options.type === "article" ? 200 : 500;
+      return this.$options.type === "article" ? 250 : 500;
     },
 
     path() {
@@ -262,8 +268,9 @@ export default {
 
     numHeadings() {
       return this.post.content
-        ? this.post.content.split(/(?:\r?\n)+/).filter((p) => p.length < 50)
-            .length
+        ? this.post.content
+            .split(/(?:\r?\n)+/)
+            .filter((p) => p.length < 50 && p.length > 0).length
         : "0";
     },
 

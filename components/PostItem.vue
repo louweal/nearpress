@@ -13,7 +13,7 @@
       }"
     >
       <h3 class="fs-6 fw-light mb-0">
-        <span class="badge bg-light" v-if="progress">
+        <span class="badge bg-secondary" v-if="progress">
           <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
           <span v-else>{{ progress }}%</span>
         </span>

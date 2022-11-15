@@ -16,7 +16,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "Connects everyone, with everyone",
+        content: "Get better informed about happens in the world",
       },
       { name: "format-detection", content: "telephone=no" },
     ],
@@ -30,7 +30,7 @@ export default {
   },
 
   components: true,
-  buildModules: [],
+  buildModules: ["@nuxtjs/dotenv"],
   build: {},
 
   generate: {

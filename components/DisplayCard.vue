@@ -60,6 +60,7 @@ export default {
 
   computed: {
     mine() {
+      if (!this.$store.state.user) return false;
       // post is written by the user himself
       return (
         this.$store.state.user.id === this.author.id ||

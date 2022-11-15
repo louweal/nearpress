@@ -1,5 +1,10 @@
 import loremIpsum from "~/data/lorem-ipsum.json";
 import categories from "~/data/channels.json";
+import { Web3Storage } from "web3.storage/dist/bundle.esm.min.js"; // "web3.storage" // = bug fix!
+
+let token = process.env.IPFS_API_TOKEN;
+const storage = new Web3Storage({ token });
+const files = [];
 
 function shuffledLorem() {
   return loremIpsum.text
@@ -16,13 +21,11 @@ function getWords(x) {
 
 function makeParagraphs(n) {
   let s = "";
-  let chapter = 1;
 
   for (let i = 0; i < n; i++) {
     if (i !== 0 && Math.ceil(Math.random() * 3) == 3) {
       let title =
         getWords(Math.ceil(Math.random() * 4)).replaceAll(".", "") + "\n";
-      chapter += 1;
       s += title;
     }
 
@@ -33,7 +36,7 @@ function makeParagraphs(n) {
   return s;
 }
 
-export function fakeNews(n) {
+export async function fakeNews(n) {
   let numCategories = categories.length;
   let categorySlugs = categories.map((c) => c.slug);
   let imagesUsed = new Array(numCategories).fill(0);
@@ -56,7 +59,7 @@ export function fakeNews(n) {
     let catId = author % numCategories;
     let category = categorySlugs[catId];
 
-    a.push({
+    let post = {
       id: a.length,
       title: title,
       slug: title.toLowerCase().replaceAll(" ", "-"),
@@ -67,12 +70,23 @@ export function fakeNews(n) {
       date:
         new Date(
           (1577840461 + Math.ceil(Math.random() * 94694400)) * 1000
-        ).getTime() / 1000, // 1-1-2020 + 3 years -- the date timestamp is in SECONDS for solidity
+        ).getTime() / 1000, // 1-1-2020 + 3 years -- the date timestamp is in SECONDS
       author: author,
       views: Math.ceil(300 + Math.random() * 700),
-      price:
-        Math.ceil(Math.random() * 12) === 12 ? 0 : 0.3 + Math.random() * 1.7, // price in NEAR
-    });
+      price: Math.round(Math.random() * 10) / 10, // price in NEAR
+    };
+
+    // upload post to IPFS
+    let file = new File([JSON.stringify(post)], "post.json");
+
+    files.push(file);
+    const cid = await storage.put(files);
+    // console.log("Content added with CID:", cid);
+
+    post["cid"] = cid;
+
+    // add post post array
+    a.push(post);
 
     imagesUsed[catId] = (imagesUsed[catId] + 1) % imagesPerCategory[catId];
   }

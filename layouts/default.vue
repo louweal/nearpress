@@ -15,14 +15,14 @@
 
 <script>
 import categories from "@/data/channels.json";
-// import posts from "@/data/posts.json";
+import posts from "@/data/posts.json";
 import writers from "@/data/writers.json";
-import { fakeNews } from "@/utils/fakeNewsGenerator.js";
+// import { fakeNews } from "@/utils/fakeNewsGenerator.js";
 
 export default {
   categories,
   writers,
-  // posts,
+  posts,
 
   async created() {
     this.$store.commit("SET_CATEGORIES", this.$options.categories);
@@ -32,12 +32,12 @@ export default {
       this.combinedData(this.$options.writers, "browserWriters")
     );
 
-    let posts = fakeNews(144);
+    // let posts = fakeNews(144);
 
     this.$store.commit(
       "SET_POSTS",
-      // this.combinedData(this.$options.posts, "browserPosts")
-      this.combinedData(posts, "browserPosts")
+      this.combinedData(this.$options.posts, "browserPosts")
+      // this.combinedData(posts, "browserPosts")
     );
   },
 

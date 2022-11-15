@@ -8,9 +8,9 @@
         <span class="color-secondary display-2 lh-1"> NearPress </span>
       </div>
 
-      <p class="display-6 fs-3 text-secondary text-center mt-2">
-        <span class="color-secondary delay-800">journalism, </span>
-        <span class="color-secondary delay-1400">reinvented</span>
+      <p class="fs-4 text-secondary text-center mt-3">
+        <span class="color-secondary delay-800">journalism for everyone, </span>
+        <span class="color-secondary delay-1400">everywhere</span>
       </p>
     </div>
   </div>

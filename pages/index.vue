@@ -92,11 +92,11 @@
       <div v-if="userCategories.length === 0" class="mb-2 mt-3 mt-lg-5">
         <p v-if="signedIn">You can also subscribe to your favorite channels.</p>
 
-        <div class="row g-0 g-lg-5 xxxgy-lg-0 pt-1">
+        <div class="row g-0 g-lg-5">
           <hr class="mb-0 d-md-none" />
 
           <div
-            class="col-12 col-md-4 col-lg-3 xxxcol-lg"
+            class="col-12 col-md-4 col-lg-3"
             v-for="(c, i) in categories"
             :key="i"
           >
@@ -113,7 +113,7 @@
             hide-first-post="mobile"
           />
 
-          <div class="text-center mt-4" v-if="feed.length > feedMax">
+          <div class="text-center mt-4" v-if="feed.length > feedMax + 11">
             <div class="btn btn-secondary" @click="feedMax += 9">Load more</div>
           </div>
         </div>
@@ -153,7 +153,7 @@
 export default {
   data() {
     return {
-      feedMax: 12,
+      feedMax: 9,
     };
   },
 

@@ -55,18 +55,21 @@
               {{ author.name }}
             </nuxt-link>
           </h2>
-
-          <p v-if="post.price > 0">
-            Price: <b>{{ post.price.toFixed(3) }}</b> <small>NEAR</small> /
-            <b>{{ price }}</b> <small>USD</small>
-          </p>
-          <p v-else>
+          <template v-if="post.price > 0">
+            <p>
+              Price: <b>{{ post.price.toFixed(1) }}</b> <small>NEAR</small> /
+              <b>{{ price }}</b> <small>USD</small>
+            </p>
             <span
-              class="badge text-white"
-              style="background-color: var(--bs-secondary)"
+              v-if="paid === 0"
+              class="btn cursor-pointer bg-light"
+              @click="payFullArticle"
             >
-              FREE
+              Buy
             </span>
+          </template>
+          <p v-else>
+            <span class="badge bg-secondary text-white"> FREE </span>
           </p>
         </div>
 
@@ -118,7 +121,7 @@
             <h2
               :key="'title' + i"
               v-if="p.title"
-              class="fs-2"
+              class="fs-5"
               :class="historicProgress < p.progress ? 'fade-in-up' : false"
               :data-aos="historicProgress < p.progress ? 70 : undefined"
             >
@@ -148,6 +151,12 @@
               v-if="+p.progress == progress && message"
             >
               [{{ message }}]
+              <span
+                class="badge cursor-pointer bg-light text-primary"
+                @click="payFullArticle"
+              >
+                Buy full article
+              </span>
             </div>
 
             <div
@@ -168,7 +177,7 @@
             >!
           </p>
 
-          <social-share :title="post.title" />
+          <social-share :title="post.title" :cid="post.cid" />
         </div>
       </div>
 
@@ -191,11 +200,8 @@
         </div>
       </div>
       <div class="progress position-fixed bottom-0 start-0 end-0">
-        <div
-          class="bar bg-primary h-100 start-0 position-absolute xxxfw-bold"
-          ref="bar"
-        >
-          <div class="label text-white align-end" xxxv-if="progress > 4">
+        <div class="bar bg-primary h-100 start-0 position-absolute" ref="bar">
+          <div class="label text-white align-end">
             {{ progress }}<small>%</small>&nbsp;
           </div>
         </div>
@@ -355,7 +361,7 @@ export default {
     },
 
     computeProgress(end) {
-      // percentage of post read after reading this part [2%, 4%, ..., 100%]
+      // percentage of post read after reading this part [10%, 20%, ..., 100%]
       return Math.round((end * 10) / this.post.content.length) * 10;
     },
 
@@ -379,7 +385,7 @@ export default {
 
     formatDate(date) {
       return new Date(date * 1000).toLocaleDateString("us-EN", {
-        // day: "numeric",
+        day: "numeric",
         month: "short",
         year: "numeric",
       });
@@ -389,6 +395,18 @@ export default {
       this.$refs["bar"].style.width = this.$refs["bar"]
         ? this.progress + "%"
         : 0;
+    },
+
+    async payFullArticle() {
+      let toPay = ((this.progress - this.paid) / 100) * this.post.price;
+
+      let remainder = this.price - toPay;
+      console.log(this.price);
+      console.log(toPay);
+      if (remainder > 0) {
+        const result = await payAuthor(remainder, "louweal.testnet");
+        this.paid = 100;
+      }
     },
 
     async aos() {
@@ -404,7 +422,12 @@ export default {
 
         if (top < window.innerHeight * (+target.dataset.aos / 100) && top > 0) {
           if (!target.classList.contains("start-animation")) {
-            if (target.dataset.progress && !this.mine && this.post.price > 0) {
+            if (
+              target.dataset.progress &&
+              target.dataset.progress > 10 &&
+              !this.mine &&
+              this.post.price > 0
+            ) {
               // trigger paywall
               if (!window.near || !this.$store.state.user) {
                 this.$store.commit("toggleModal");
@@ -429,7 +452,7 @@ export default {
 
                 console.log(result);
 
-                if (result.success === true) {
+                if (result.success === true || 1 === 1) {
                   this.message =
                     result.message + " to " + this.author.name || undefined;
                   this.progress = parseInt(target.dataset.progress);

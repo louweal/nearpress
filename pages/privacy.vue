@@ -16,11 +16,12 @@
 </template>
 
 <script>
-// import { fakeBooks } from "@/utils/fakeNewsGenerator";
+// import { fakeNews } from "@/utils/fakeNewsGenerator";
+// import { Web3Storage } from "web3.storage/dist/bundle.esm.min.js";
 
 export default {
   async created() {
-    // let posts = fakeBooks(142);
+    // let posts = await fakeNews(142);
     // console.log(posts);
   },
 };

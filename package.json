@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "nearpress: journalism. reinvented",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nuxt --port 3001",
     "build": "nuxt build",
@@ -14,16 +15,20 @@
     "url": "git+https://github.com/louweal/nearpress.git"
   },
   "author": "Anneloes Louwe",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/louweal/nearpress/issues"
   },
   "homepage": "https://github.com/louweal/nearpress#readme",
   "dependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
     "bootstrap": "^5.2.1",
     "core-js": "^3.25.2",
+    "dotenv": "^16.0.3",
+    "minimist": "^1.2.5",
     "near-api-js": "^1.1.0",
     "nuxt": "^2.15.8",
+    "web3.storage": "^3.1.0",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
