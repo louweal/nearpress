@@ -404,7 +404,7 @@ export default {
       console.log(this.price);
       console.log(toPay);
       if (remainder > 0) {
-        const result = await payAuthor(remainder, "louweal.testnet");
+        const result = await payAuthor(remainder, this.author.address);
         this.paid = 100;
       }
     },
@@ -438,7 +438,7 @@ export default {
 
               let toPay =
                 ((target.dataset.progress - this.paid) / 100) * this.post.price;
-              toPay = toPay.toFixed(20);
+              toPay = toPay.toFixed(2);
 
               if (toPay > 0) {
                 this.error = undefined;
@@ -448,26 +448,20 @@ export default {
 
                 this.freezeWindow();
 
-                const result = await payAuthor(toPay, "louweal.testnet");
+                const result = await payAuthor(toPay, this.author.address);
 
                 console.log(result);
 
-                if (result.success === true || 1 === 1) {
-                  this.message =
-                    result.message + " to " + this.author.name || undefined;
+                if (result.error && result.error === "User reject" && 1 === 1) {
+                  this.error = "You rejected to sign the transaction";
+                } else {
+                  this.message = `Succesfully transferred ${toPay} NEAR to ${this.author.name} (${this.author.address})`;
                   this.progress = parseInt(target.dataset.progress);
                   this.updateBar();
                   this.payment = toPay;
-
-                  // console.log(
-                  //   `Succesfully transferred ${toPay} NEAR to ${this.author.name} (${this.author.address})`
-                  // );
                   this.paid = this.progress;
                   target.classList.add("start-animation");
                   delete target.dataset.aos;
-                } else {
-                  console.log(result);
-                  this.error = result.message || undefined;
                 }
 
                 this.unfreezeWindow();

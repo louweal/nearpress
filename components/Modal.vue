@@ -27,21 +27,21 @@
             </p>
             <div class="d-grid gap-2 mb-1">
               <div
-                class="btn btn-secondary cursor-pointer d-none d-md-block"
+                class="btn btn-secondary cursor-pointer xxxd-none d-md-block"
                 @click="signIn"
               >
                 Connect Sender Wallet
               </div>
-              <div
+              <!-- <div
                 class="btn btn-secondary cursor-pointer d-md-none opacity-50"
               >
                 Connect Sender Wallet
-              </div>
+              </div> -->
             </div>
 
-            <div class="text-center mt-2 d-md-none">
+            <!-- <div class="text-center mt-2 d-md-none">
               <p>Sender is currently not available for mobile browsers</p>
-            </div>
+            </div> -->
 
             <div class="text-center mt-2" v-if="error">
               <p class="text-danger">
