@@ -130,7 +130,6 @@
 
             <p
               :key="i"
-              :id="i"
               :class="historicProgress < p.progress ? 'fade-in-up' : false"
               :data-aos="historicProgress < p.progress ? 70 : undefined"
             >
@@ -140,7 +139,7 @@
             <small
               class="fw-bold text-danger"
               :key="'error' + i"
-              v-if="+p.progress == progress && error"
+              v-if="i === nowReading && error"
             >
               [{{ error }}]
             </small>
@@ -148,7 +147,7 @@
             <div
               class="fw-bold text-warning"
               :key="'message' + i"
-              v-if="+p.progress == progress && message"
+              v-if="i === nowReading && message"
             >
               [{{ message }}]
               <span
@@ -161,6 +160,7 @@
 
             <div
               :key="'payment' + i"
+              :id="i"
               :data-aos="historicProgress < p.progress ? 70 : undefined"
               :data-progress="p.progress"
             ></div>
@@ -230,11 +230,11 @@ export default {
       showBlurb: true,
       showContents: false,
       numChapters: 0,
+      nowReading: 0, // = current paragraph ID
       paid: 0,
       freeze: false, // freeze scroll whilst waiting for transaction
       error: undefined, // error message after unsuccesful payment
       message: undefined, // message after succesfull payment
-      // payment: undefined,
     };
   },
 
@@ -436,6 +436,8 @@ export default {
                 return; //break;
               }
 
+              this.nowReading = +target.id;
+
               let toPay =
                 ((target.dataset.progress - this.paid) / 100) * this.post.price;
               toPay = toPay.toFixed(2);
@@ -458,7 +460,7 @@ export default {
                   this.message = `Succesfully transferred ${toPay} NEAR to ${this.author.name} (${this.author.address})`;
                   this.progress = parseInt(target.dataset.progress);
                   this.updateBar();
-                  this.payment = toPay;
+                  // this.payment = toPay;
                   this.paid = this.progress;
                   target.classList.add("start-animation");
                   delete target.dataset.aos;

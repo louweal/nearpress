@@ -166,7 +166,6 @@ export default {
 
     categories() {
       let subs = this.$store.state.user.categories;
-
       return this.$store.state.categories.filter((c) => subs.includes(c.slug));
     },
 

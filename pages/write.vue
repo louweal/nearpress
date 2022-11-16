@@ -101,7 +101,7 @@
             <textarea
               class="form-control"
               id="intro"
-              :rows="$options.type === 'article' ? 5 : 8"
+              :rows="$options.type === 'article' ? 3 : 8"
               :placeholder="
                 $options.type === 'article' ? 'Introduction' : 'Blurb'
               "
@@ -304,6 +304,7 @@ export default {
         this.post.visual &&
         this.post.category &&
         this.post.content &&
+        this.post.content.length >= this.contentMin &&
         this.post.price
       );
     },
@@ -365,7 +366,7 @@ export default {
 
     setPrice(e) {
       if (e.target.value !== "select") {
-        Vue.set(this.post, "price", e.target.value);
+        Vue.set(this.post, "price", parseFloat(e.target.value));
       }
     },
 
