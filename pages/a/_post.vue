@@ -342,7 +342,6 @@ export default {
             }
 
             if (target.dataset.action === "pay" && this.progress !== 100) {
-              delete target.dataset.aos;
               this.freezeWindow();
 
               const result = await payAuthor(
