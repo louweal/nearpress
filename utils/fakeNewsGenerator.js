@@ -3,8 +3,12 @@ import categories from "~/data/channels.json";
 import { Web3Storage } from "web3.storage/dist/bundle.esm.min.js"; // "web3.storage" // = bug fix!
 
 let token = process.env.IPFS_API_TOKEN;
-const storage = new Web3Storage({ token });
-const files = [];
+if (token) {
+  const storage = new Web3Storage({ token });
+  const files = [];
+} else {
+  console.log("Please add IPFS_API_TOKEN in .env file");
+}
 
 function shuffledLorem() {
   return loremIpsum.text
@@ -76,14 +80,15 @@ export async function fakeNews(n) {
       price: Math.round(Math.random() * 10) / 10, // price in NEAR
     };
 
-    // upload post to IPFS
-    let file = new File([JSON.stringify(post)], "post.json");
+    if (token) {
+      // upload post to IPFS
+      let file = new File([JSON.stringify(post)], "post.json");
+      files.push(file);
+      const cid = await storage.put(files);
+      // console.log("Content added with CID:", cid);
 
-    files.push(file);
-    const cid = await storage.put(files);
-    // console.log("Content added with CID:", cid);
-
-    post["cid"] = cid;
+      post["cid"] = cid;
+    }
 
     // add post post array
     a.push(post);

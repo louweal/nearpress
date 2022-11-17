@@ -4,12 +4,13 @@
     <div id="page">
       <Header />
       <div class="min-vh-100 d-flex flex-column justify-content-between">
-        <div id="pushdown" class="mb-2 mb-md-3 mb-lg-4"></div>
+        <div id="pushdown" class="mb-2 mb-md-3 mb-lg-4 w-100"></div>
         <Nuxt />
         <Footer />
       </div>
     </div>
     <modal />
+    <overlay />
   </div>
 </template>
 
@@ -32,7 +33,8 @@ export default {
       this.combinedData(this.$options.writers, "browserWriters")
     );
 
-    // let posts = fakeNews(144);
+    // let posts = await fakeNews(10);
+    // console.log(posts);
 
     this.$store.commit(
       "SET_POSTS",
@@ -71,9 +73,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-#pushdown {
-  width: 100%;
-}
-</style>

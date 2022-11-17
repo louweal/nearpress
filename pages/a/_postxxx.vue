@@ -60,6 +60,13 @@
               Price: <b>{{ post.price.toFixed(1) }}</b> <small>NEAR</small> /
               <b>{{ price }}</b> <small>USD</small>
             </p>
+            <span
+              v-if="paid === 0"
+              class="btn cursor-pointer bg-light"
+              @click="payFullArticle"
+            >
+              Buy
+            </span>
           </template>
           <p v-else>
             <span class="badge bg-secondary text-white"> FREE </span>
@@ -69,12 +76,38 @@
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2 mt-3">
           <div class="accordion mb-4">
             <div class="accordion-item">
-              <h2 class="accordion-header">
-                <div class="accordion-button cursor-pointer">Introduction</div>
+              <h2 class="accordion-header" @click="toggleAccordion('blurb')">
+                <div class="accordion-button cursor-pointer">
+                  {{ $options.type === "article" ? "Introduction" : "Blurb" }}
+                </div>
               </h2>
-              <div class="accordion-collapse">
+              <div class="accordion-collapse" v-if="showBlurb">
                 <div class="accordion-body">
                   <p>{{ post.intro }}</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="accordion-item"
+              v-if="$options.type === 'book' && numChapters && numChapters > 0"
+            >
+              <h2 class="accordion-header" @click="toggleAccordion('contents')">
+                <div class="accordion-button cursor-pointer">
+                  Contents ({{ numChapters }} chapter<span
+                    v-if="numChapters > 1"
+                    >s</span
+                  >)
+                </div>
+              </h2>
+              <div class="accordion-collapse" v-if="showContents">
+                <div class="accordion-body" style="min-height: 300px">
+                  <ul class="m-3 list-unstyled">
+                    <template v-for="(p, i) in content">
+                      <li v-if="p.title" :key="i">
+                        {{ p.title }}
+                      </li>
+                    </template>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -84,28 +117,64 @@
 
       <div class="row no-select">
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
-          <div v-if="!mine" data-action="connect" data-aos="70">
-            <!-- triggers connect wallet modal -->
-          </div>
           <template v-for="(p, i) in content">
-            <h2 :key="'title' + i" v-if="p.title" class="fs-5">
+            <h2
+              :key="'title' + i"
+              v-if="p.title"
+              class="fs-5"
+              :class="historicProgress < p.progress ? 'fade-in-up' : false"
+              :data-aos="historicProgress < p.progress ? 70 : undefined"
+            >
               {{ p.title }}
             </h2>
 
-            <p :key="i">
+            <p
+              :key="i"
+              :class="historicProgress < p.progress ? 'fade-in-up' : false"
+              :data-aos="historicProgress < p.progress ? 70 : undefined"
+            >
               {{ p.content }}
             </p>
+
+            <small
+              class="fw-bold text-danger"
+              :key="'error' + i"
+              v-if="i === nowReading && error"
+            >
+              [{{ error }}]
+            </small>
+
+            <div
+              class="fw-bold text-warning"
+              :key="'message' + i"
+              v-if="i === nowReading && message"
+            >
+              [{{ message }}]
+              <span
+                class="badge cursor-pointer bg-light text-primary"
+                @click="payFullArticle"
+              >
+                Buy full article
+              </span>
+            </div>
+            {{ p.progress }}
+
+            <div
+              v-if="i < content.length - 1"
+              :key="'payment' + i"
+              :id="i"
+              :data-aos="historicProgress < p.progress ? 70 : undefined"
+              :data-progress="
+                content[i].progress < content[i + 1].progress
+                  ? p.progress
+                  : false
+              "
+            ></div>
+
+            <div :id="'c' + p.progress" :key="'anchor' + i"></div>
           </template>
 
-          <div v-if="!mine" data-action="pay" data-aos="90">
-            <!-- triggers payment prompt -->
-          </div>
-
-          <p
-            class="text-secondary fade-in-up"
-            v-if="!mine && post.price > 0"
-            data-aos="90"
-          >
+          <p class="text-secondary" v-if="!mine && post.price > 0">
             Thank you for supporting
             <b>
               <nuxt-link :to="'/w/' + author.slug" class="text-secondary">
@@ -136,6 +205,13 @@
           />
         </div>
       </div>
+      <div class="progress position-fixed bottom-0 start-0 end-0">
+        <div class="bar bg-primary h-100 start-0 position-absolute" ref="bar">
+          <div class="label text-white align-end">
+            {{ progress }}<small>%</small>&nbsp;
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </template>
@@ -145,6 +221,7 @@ import getUSD from "@/utils/getUSD.js";
 import { payAuthor } from "@/utils/sender.js";
 
 export default {
+  transition: "post", // important for scroll position on page load!
   type: "article",
   data() {
     return {
@@ -152,13 +229,18 @@ export default {
       scrollY: 0,
       prevPosY: 0,
       progress: 0,
+      historicProgress: 0,
       posts: () => {},
       post: () => {},
       nearusd: 1,
+      showBlurb: true,
+      showContents: false,
+      numChapters: 0,
+      nowReading: 0, // = current paragraph ID
+      paid: 0,
       freeze: false, // freeze scroll whilst waiting for transaction
       error: undefined, // error message after unsuccesful payment
       message: undefined, // message after succesfull payment
-      debt: 0,
     };
   },
 
@@ -170,7 +252,6 @@ export default {
 
   async fetch() {
     await this.validatePage();
-    await this.checkDebt();
   },
 
   async mounted() {
@@ -184,11 +265,22 @@ export default {
     );
 
     if (history) {
+      this.historicProgress = history.progress;
       this.progress = history.progress;
+      this.paid = history.progress;
+      this.par = history.par;
+      this.updateBar();
     }
   },
 
   beforeDestroy() {
+    if (this.post && !this.mine) {
+      this.$store.commit("setProgress", {
+        id: +this.post.id,
+        progress: +this.progress,
+      });
+    }
+
     window.removeEventListener("scroll", this.aos);
   },
 
@@ -196,15 +288,6 @@ export default {
     progress: function (val) {
       if (val === 100 && !this.mine) {
         this.$store.commit("updateViews", this.post.id);
-      }
-    },
-    "$store.state.user": function () {
-      if (this.$store.state.user.debt) {
-        return this.$nuxt.error({
-          statusCode: 402,
-          from: this.$route.path,
-          message: `Payment required: ${this.$store.state.user.debt.amount} NEAR`,
-        });
       }
     },
   },
@@ -239,15 +322,18 @@ export default {
         if (this.isChapterTitle(parts[i])) {
           end += parts[i].length;
           p["title"] = parts[i];
+          p["progress"] = this.computeProgress(end);
           this.numChapters += 1;
           if (parts[i + 1]) {
             end += parts[i + 1].length;
             p["content"] = parts[i + 1];
+            p["progress"] = this.computeProgress(end);
             i = i + 1; // skip next part
           }
         } else {
           end += parts[i].length;
           p["content"] = parts[i];
+          p["progress"] = this.computeProgress(end);
         }
         a.push(p);
       }
@@ -285,24 +371,15 @@ export default {
       return Math.round((end * 10) / this.post.content.length) * 10;
     },
 
+    toggleAccordion() {
+      this.showContents = !this.showContents;
+      this.showBlurb = !this.showBlurb;
+    },
     validatePage() {
       if (!this.post) {
         return this.$nuxt.error({
           statusCode: 404,
           message: "Article not found",
-        });
-      }
-    },
-    checkDebt() {
-      if (!this.$store.state.user) return;
-      if (
-        this.$store.state.user.debt &&
-        this.$store.state.user.debt.amount > 0
-      ) {
-        return this.$nuxt.error({
-          statusCode: 402,
-          from: this.$route.path,
-          message: `Debt payment required: ${this.$store.state.user.debt.amount} NEAR`,
         });
       }
     },
@@ -320,69 +397,91 @@ export default {
       });
     },
 
+    updateBar() {
+      this.$refs["bar"].style.width = this.$refs["bar"]
+        ? this.progress + "%"
+        : 0;
+    },
+
+    async payFullArticle() {
+      let toPay = ((this.progress - this.paid) / 100) * this.post.price;
+
+      let remainder = this.price - toPay;
+      console.log(this.price);
+      console.log(toPay);
+      if (remainder > 0) {
+        // const result = await payAuthor(remainder, this.author.address);
+        this.paid = 100;
+      }
+      this.nowReading = -1; // hide messages
+    },
+
     async aos() {
-      // actions on scroll
       let scrollY = window.pageYOffset;
       let direction = scrollY > this.prevPosY ? "down" : "up";
       if (direction === "up") return;
 
       this.scrollY = window.scrollY; // for freeze method
-      let actionTargets = document.querySelectorAll("[data-aos]");
-      for (let i = 0; i < actionTargets.length; i++) {
-        let target = actionTargets[i];
+      let animTargets = document.querySelectorAll("[data-aos]");
+      for (let i = 0; i < animTargets.length; i++) {
+        let target = animTargets[i];
         let top = target.getBoundingClientRect().top;
 
         if (top < window.innerHeight * (+target.dataset.aos / 100) && top > 0) {
           if (!target.classList.contains("start-animation")) {
-            if (target.dataset.action === "connect") {
-              delete target.dataset.aos;
-
-              // trigger wallet connector
+            if (target.dataset.progress && !this.mine && this.post.price > 0) {
+              // trigger paywall
               if (!window.near || !this.$store.state.user) {
                 this.$store.commit("toggleModal");
                 document.getElementById("page").classList.toggle("is-blurred");
                 this.prevPosY = window.scrollY;
-                return;
+                return; //break;
               }
-            }
 
-            if (target.dataset.action === "pay" && this.progress !== 100) {
-              delete target.dataset.aos;
-              this.freezeWindow();
+              this.nowReading = +target.id;
 
-              const result = await payAuthor(
-                this.post.price,
-                this.author.address,
-                this.post.title
-              );
+              let toPay =
+                ((target.dataset.progress - this.paid) / 100) * this.post.price;
+              toPay = toPay.toFixed(2);
 
-              console.log(result);
+              if (toPay > 0) {
+                this.error = undefined;
+                this.message = undefined;
 
-              if (result.error && result.error === "User reject") {
+                console.log("PAY NOW! " + toPay);
+
+                this.freezeWindow();
+
+                const result = await payAuthor(toPay, this.author.address);
+
+                console.log(result);
+
+                if (result.error && result.error === "User reject") {
+                  this.error = "You rejected to sign the transaction";
+                } else {
+                  this.message = `Succesfully transferred ${toPay} NEAR to ${this.author.name} (${this.author.address})`;
+                  this.progress = parseInt(target.dataset.progress);
+                  this.updateBar();
+                  // this.payment = toPay;
+                  this.paid = this.progress;
+                  target.classList.add("start-animation");
+                  delete target.dataset.aos;
+                }
+
                 this.unfreezeWindow();
-
-                this.$store.commit("updateUserDebt", {
-                  id: this.post.id,
-                  title: this.post.title,
-                  author: this.post.author,
-                  amount: this.post.price,
-                });
-                // console.log(this.$store.state.debt);
               } else {
-                this.progress = 100;
-
-                this.$store.commit("setProgress", {
-                  id: +this.post.id,
-                  progress: +this.progress,
-                });
+                target.classList.add("start-animation");
+                delete target.dataset.aos;
               }
-
-              this.unfreezeWindow();
-              return;
+            } else {
+              //title or mine or free
+              if (this.post.price === 0 && target.dataset.progress) {
+                this.progress = parseInt(target.dataset.progress);
+                this.updateBar();
+              }
+              target.classList.add("start-animation");
+              delete target.dataset.aos;
             }
-
-            target.classList.add("start-animation");
-            delete target.dataset.aos;
           }
           this.prevPosY = window.scrollY;
           break; // --> at most one animation per scroll event !
@@ -395,6 +494,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1 {
+  small {
+    opacity: 0;
+    transition: opacity 0.24s ease-out;
+  }
+
+  &:hover small {
+    opacity: 0.19;
+  }
+}
+
+h2.author {
+  span {
+    opacity: 0;
+    transition: opacity 0.24s ease-out;
+  }
+
+  &:hover span {
+    opacity: 1;
+  }
+}
+
 .no-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -407,7 +528,55 @@ export default {
   overflow: hidden;
   background-repeat: no-repeat;
   background-position: center;
+  transition: background-size 0.3s 0.15s cubic-bezier(0.2, 0, 0.1, 1);
   background-size: 115%;
+}
+
+$fontsize: 14px;
+.progress {
+  height: 1.9vh;
+  background-color: var(--bs-gray-400);
+  z-index: 9;
+
+  .bar {
+    position: relative;
+    width: 0;
+    transition: width 0.8s ease-out;
+    will-change: width;
+    overflow: hidden;
+
+    .label {
+      position: absolute;
+      font-size: $fontsize;
+      line-height: 1;
+      width: 100%;
+      left: 0;
+      right: 0;
+      top: calc(50% - 7px);
+      height: 100%;
+      text-align: right;
+      word-wrap: none;
+    }
+  }
+}
+
+@keyframes short {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.error {
+  font-size: $fontsize;
+  line-height: 1;
+  opacity: 0.9;
+  background-color: var(--bs-gray-400);
 }
 
 .accordion-button {

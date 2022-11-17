@@ -20,9 +20,9 @@
     </div>
     <span
       class="badge bg-secondary position-absolute m-1 m-lg-2 top-0 end-0 lh-1 fs-6"
-      v-if="progress"
+      v-if="progress && !mine"
     >
-      <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
+      <i v-if="progress === 100" class="bi bi-check-lg"></i>
       <span v-else>{{ progress }}%</span>
     </span>
     <span
@@ -62,10 +62,7 @@ export default {
     mine() {
       if (!this.$store.state.user) return false;
       // post is written by the user himself
-      return (
-        this.$store.state.user.id === this.author.id ||
-        this.$store.state.user.id === this.author.address
-      );
+      return this.$store.state.user.id === this.post.author;
     },
   },
 };

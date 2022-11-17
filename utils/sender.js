@@ -1,7 +1,4 @@
-import * as nearAPI from "near-api-js";
-const { utils } = nearAPI;
-
-let contractId = "dev-1668429151999-78994884464435"; //"dev-1668434647614-42036922570353" = docs
+let contractId = "dev-1668683282310-63076526738395"; //"dev-1668429151999-78994884464435";
 
 export async function connectSender() {
   if (!window.near.isSignedIn()) {
@@ -28,7 +25,7 @@ export async function connectSender() {
   return false;
 }
 
-export async function payAuthor(deposit, author) {
+export async function payAuthor(deposit, author, title) {
   const tx = {
     receiverId: contractId,
     actions: [
@@ -36,11 +33,9 @@ export async function payAuthor(deposit, author) {
         methodName: "payAuthor",
         args: {
           author: author,
+          title: title, // for reference only
         },
-        // gas: 0.003 * 1e24,
-        // deposit: deposit * 1e24,
-        gas: utils.format.parseNearAmount(String(0.00003)),
-        deposit: utils.format.parseNearAmount(String(deposit)),
+        deposit: parseNearAmount(String(deposit)),
       },
     ],
   };
@@ -51,21 +46,19 @@ export async function payAuthor(deposit, author) {
   return result;
 }
 
-export async function payAuthorDocs(deposit, author) {
-  const tx = {
-    receiverId: contractId,
-    actions: [
-      {
-        methodName: "payAuthorDocs",
-        args: {
-          author: author,
-        },
-        gas: utils.format.parseNearAmount(String(0.00003)),
-        deposit: utils.format.parseNearAmount(String(deposit)),
-      },
-    ],
-  };
+function parseNearAmount(amt) {
+  if (!amt) return null;
 
-  const result = await window.near.signAndSendTransaction(tx);
-  return result;
+  amt = amt.replace(/,/g, "").trim();
+  const split = amt.split(".");
+  const wholePart = split[0];
+  const fracPart = split[1] || "";
+  if (split.length > 2 || fracPart.length > 24) {
+    throw new Error(`Cannot parse '${amt}' as NEAR amount`);
+  }
+
+  let padded = wholePart + fracPart.padEnd(24, "0");
+  let trimmed = padded.replace(/^0+/, "");
+  if (trimmed === "") return 0;
+  return trimmed;
 }

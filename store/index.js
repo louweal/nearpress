@@ -1,5 +1,6 @@
 export const state = () => ({
   showModal: false,
+  showOverlay: false, // overlay to avoid clicking when payment is required
   posts: [],
   categories: [],
   writers: [],
@@ -9,6 +10,9 @@ export const state = () => ({
 export const mutations = {
   toggleModal(state) {
     state.showModal = !state.showModal;
+  },
+  toggleOverlay(state) {
+    state.showOverlay = !state.showOverlay;
   },
 
   SET_POSTS(state, payload) {
@@ -126,6 +130,16 @@ export const mutations = {
 
   removeUserWriter(state, payload) {
     state.user.writers = state.user.writers.filter((c) => c !== payload);
+    updateLocalStorageUser(state.user);
+  },
+
+  // updateDebt(state, payload) {
+  //   state.debt = payload;
+  // },
+
+  updateUserDebt(state, payload) {
+    // { title, author, amount }
+    state.user.debt = payload;
     updateLocalStorageUser(state.user);
   },
 };

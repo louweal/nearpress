@@ -1,3 +1,5 @@
 # nearpress
 
-todo
+env file!
+
+IPFS_API_TOKEN=

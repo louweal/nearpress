@@ -2,7 +2,7 @@
   <div class="my-3 my-xl-4">
     <div class="hstack gap-3">
       <span class="align-middle me-1">Share:</span>
-      <div @click="showCid = !showCid" class="cursor-pointer">
+      <div @click="showCid = !showCid" class="cursor-pointer" v-if="cid">
         <i class="bi bi-box-fill fs-5 color-secondary"></i>
       </div>
 
@@ -34,11 +34,11 @@
         target="_blank"
         class="align-middle"
         >{{ cid }}</a
-      >&nbsp;
+      >
 
-      <span class="btn btn-sm btn-secondary" @click="copyCid()" ref="copyBtn">
+      <!-- <span class="btn btn-sm btn-secondary" @click="copyCid()" ref="copyBtn">
         Copy &nbsp;<i class="bi bi-clipboard"></i>
-      </span>
+      </span> -->
     </div>
   </div>
 </template>
@@ -58,8 +58,8 @@ export default {
       required: true,
     },
     cid: {
-      type: String,
-      default: "",
+      type: [String, Boolean],
+      default: false,
     },
   },
 
@@ -69,12 +69,12 @@ export default {
     },
   },
 
-  methods: {
-    copyCid() {
-      navigator.clipboard.writeText(this.cid);
-      this.$refs["copyBtn"].innerText = "Copied!";
-    },
-  },
+  // methods: {
+  //   copyCid() {
+  //     navigator.clipboard.writeText(this.cid);
+  //     this.$refs["copyBtn"].innerText = "Copied!";
+  //   },
+  // },
 };
 </script>
 

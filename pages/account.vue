@@ -6,6 +6,7 @@
           <nuxt-link :to="'/w/' + me.slug">
             <h1>{{ me.name }}</h1>
           </nuxt-link>
+          Current debt: {{ me.debt }}
 
           <div class="hstack gap-2">
             <span
@@ -118,8 +119,6 @@ export default {
       }
     },
   },
-
-  async fetch() {},
 
   async mounted() {
     await this.validateAccess();

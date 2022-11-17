@@ -25,9 +25,9 @@
 
           <span
             class="badge bg-secondary position-absolute m-1 m-lg-2 top-0 end-0"
-            v-if="progress"
+            v-if="progress && !mine"
           >
-            <i v-if="progress === 100 && !mine" class="bi bi-check-lg"></i>
+            <i v-if="progress === 100" class="bi bi-check-lg"></i>
 
             <span v-else>{{ progress }}%</span>
           </span>
@@ -94,19 +94,9 @@ export default {
   },
 
   computed: {
-    author() {
-      let author = this.$store.state.writers.find(
-        (w) => w.id === this.post.author
-      );
-      return author ? author : { name: "Unknown author" };
-    },
-
     mine() {
       // post is written by the user himself
-      return (
-        this.$store.state.user.id === this.author.id ||
-        this.$store.state.user.id === this.author.address
-      );
+      return this.$store.state.user.id === this.post.author;
     },
   },
 };

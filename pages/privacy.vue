@@ -17,7 +17,6 @@
 
 <script>
 // import { fakeNews } from "@/utils/fakeNewsGenerator";
-// import { Web3Storage } from "web3.storage/dist/bundle.esm.min.js";
 
 export default {
   async created() {

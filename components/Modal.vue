@@ -50,8 +50,8 @@
                   >Sender
                   <i class="bi bi-box-arrow-up-right"></i>
                 </a>
-                browser extension, connect your wallet and click the button
-                above again.
+                browser extension, connect your wallet, select the NEAR testnet
+                and click the button above again.
               </p>
             </div>
           </div>
