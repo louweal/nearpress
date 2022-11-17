@@ -1,11 +1,5 @@
 <template>
-  <nuxt-link
-    :to="{
-      path: '/a/' + post.slug,
-      hash: progress !== 0 && progress !== 100 ? '#c' + progress : false,
-    }"
-    class="card"
-  >
+  <nuxt-link :to="'/a/' + post.slug" class="card">
     <div v-if="borderTop" class="w-100 border-top d-md-none"></div>
     <div
       class="row g-0 w-100 my-md-0"

@@ -1,11 +1,5 @@
 <template>
-  <nuxt-link
-    :to="{
-      path: '/a/' + post.slug,
-      hash: progress !== 0 && progress !== 100 ? '#c' + progress : false,
-    }"
-    class="card position-relative"
-  >
+  <nuxt-link :to="'/a/' + post.slug" class="card position-relative">
     <div class="ratio ratio-4x3">
       <div
         class="card-img position-absolute rounded bg-light"
