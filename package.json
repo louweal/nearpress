@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nuxt --port 3001",
+    "dev": "nuxt --port 8004",
     "build": "nuxt build",
     "start": "nuxt start --port 8001",
     "generate": "nuxt generate"

@@ -7,7 +7,7 @@
 
       <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5">
         <div class="col-12 col-md-9">
-          <div v-if="feed.length === 0 && signedIn" class="text-center">
+          <div v-if="feed.length === 0 && signedIn" xxxclass="text-center">
             <h1 class="fs-3">
               Welcome,
               <nuxt-link to="/account" class="text-secondary">{{
@@ -16,12 +16,12 @@
               >!
             </h1>
             <p>
-              This is your feed. Please start following your favorite writers.
+              You're not subscribed to any channels. Discover channels below:
             </p>
 
-            <nuxt-link to="/search" class="btn btn-secondary">
+            <!-- <nuxt-link to="/search" class="btn btn-secondary">
               Discover writers <i class="bi bi-arrow-right"></i>
-            </nuxt-link>
+            </nuxt-link> -->
           </div>
 
           <post-grid
@@ -30,7 +30,10 @@
           />
         </div>
 
-        <div class="col-md-3 d-none d-md-block">
+        <div
+          class="col-md-3 d-none d-md-block"
+          v-if="!(feed.length === 0 && signedIn)"
+        >
           <sidebar
             title="Recent articles"
             :posts="
@@ -56,24 +59,26 @@
         </div>
       </div>
 
-      <template v-for="(c, i) in userCategories">
+      <template v-for="(w, i) in userWriters">
         <div
           class="mt-3"
-          v-if="posts.filter((a) => a.category === c.slug).length > 0"
+          xxxv-if="posts.filter((a) => a.category === c.slug).length > 0"
           :key="i"
         >
           <h2 class="fs-5">
-            <nuxt-link :to="'/c/' + c.slug">
-              {{ c.title }}
+            <nuxt-link :to="'/w/' + w.slug">
+              {{ w.name }}
               <i class="bi bi-arrow-right"></i>
             </nuxt-link>
           </h2>
 
-          <div class="row gy-0 gx-3 pt-1">
+          <div
+            class="row gy-0 gx-3 pt-1"
+            :set="(f = [...posts].filter((a) => a.author === w.id))"
+          >
             <div
               class="col-12 col-md"
-              v-for="(post, i) in [...posts]
-                .filter((a) => a.category === c.slug)
+              v-for="(post, i) in f
                 .sort((a, b) => (a.date > b.date ? -1 : 1))
                 .slice(0, 5)"
               :key="i"
@@ -85,13 +90,23 @@
                 :blurb="false"
               />
             </div>
+            <div class="col-12 col-md" v-if="f.length < 5">
+              <!-- dummy -->
+            </div>
+            <div class="col-12 col-md" v-if="f.length < 4">
+              <!-- dummy -->
+            </div>
+            <div class="col-12 col-md" v-if="f.length < 3">
+              <!-- dummy -->
+            </div>
+            <div class="col-12 col-md" v-if="f.length < 2">
+              <!-- dummy -->
+            </div>
           </div>
         </div>
       </template>
 
       <div v-if="userCategories.length === 0" class="mb-2 mt-3 mt-lg-5">
-        <p v-if="signedIn">You can also subscribe to your favorite channels.</p>
-
         <div class="row g-0 g-lg-5">
           <hr class="mb-0 d-md-none" />
 
@@ -174,12 +189,12 @@ export default {
     },
 
     feed() {
-      if (this.$store.state.user && this.userWriters.length === 0) {
+      if (this.$store.state.user && this.userCategories.length === 0) {
         return [];
       }
-      if (this.$store.state.user && this.userWriters.length > 0) {
+      if (this.$store.state.user && this.userCategories.length > 0) {
         return [...this.posts]
-          .filter((a) => this.$store.state.user.writers.includes(a.author))
+          .filter((a) => this.$store.state.user.categories.includes(a.category))
           .sort((a, b) => (a.date > b.date ? -1 : 1));
       }
       return [...this.posts].sort((a, b) => (a.date > b.date ? -1 : 1));

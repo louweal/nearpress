@@ -99,6 +99,8 @@
 </template>
 
 <script>
+import { disconnectSender } from "@/utils/sender.js";
+
 export default {
   data() {
     return {
@@ -169,8 +171,8 @@ export default {
       }
     },
 
-    disconnect() {
-      window.near.signOut();
+    async disconnect() {
+      await disconnectSender();
       this.$store.commit("setUser", undefined);
     },
 

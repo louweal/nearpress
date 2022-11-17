@@ -45,7 +45,7 @@
 
             <div class="text-center mt-2" v-if="error">
               <p class="text-danger">
-                Sender is not installed. Install the
+                Unable to connect to Sender. Install the
                 <a href="https://sender.org" target="_blank"
                   >Sender
                   <i class="bi bi-box-arrow-up-right"></i>
@@ -94,10 +94,12 @@ export default {
       if (typeof window.near !== "undefined" && window.near.isSender) {
         console.log("Sender is installed!");
 
-        let connected = connectSender();
-        if (!connected) {
-          return;
-        }
+        let connected = await connectSender();
+        console.log("connected :>> ", connected);
+        // if (!connected) {
+        //   this.error = true;
+        //   return;
+        // }
       } else {
         this.error = true;
         return;

@@ -2,17 +2,19 @@ let contractId = "dev-1668683282310-63076526738395"; //"dev-1668429151999-789948
 
 export async function connectSender() {
   if (!window.near.isSignedIn()) {
-    await window.near.requestSignIn({
-      contractId: contractId,
-    });
-  }
-
-  if (window.near.isSignedIn()) {
-    console.log("Succesfully connected Sender");
+    await window.near.requestSignIn({ contractId });
+    await connectSender(); // recursive
+  } else {
+    console.log("Connected to Sender");
     console.log("Account ID: " + window.near.getAccountId());
     return true;
   }
-  return false;
+}
+
+export async function disconnectSender() {
+  if (window.near.isSignedIn()) {
+    await window.near.signOut();
+  }
 }
 
 export async function payAuthor(deposit, author, title) {

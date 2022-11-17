@@ -84,7 +84,11 @@
 
       <div class="row no-select">
         <div class="col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2">
-          <div v-if="!mine" data-action="connect" data-aos="70">
+          <div
+            v-if="!mine && post.price > 0"
+            data-action="connect"
+            data-aos="70"
+          >
             <!-- triggers connect wallet modal -->
           </div>
           <template v-for="(p, i) in content">
@@ -97,7 +101,7 @@
             </p>
           </template>
 
-          <div v-if="!mine" data-action="pay" data-aos="90">
+          <div v-if="!mine && post.price > 0" data-action="pay" data-aos="90">
             <!-- triggers payment prompt -->
           </div>
 

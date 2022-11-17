@@ -35,7 +35,7 @@
             class="border bg-white shadow-sm rounded py-3 px-3"
             v-if="writers.length > 0"
           >
-            <h2 class="fs-5">Writers</h2>
+            <h2 class="fs-5">Authors</h2>
 
             <div
               class="py-2"
