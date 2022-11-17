@@ -22,11 +22,6 @@
 
           <div class="my-4"></div>
 
-          <template v-if="reading.length > 0">
-            <h2 class="fs-3 mb-3">Continue reading</h2>
-            <post-grid :posts="reading" />
-          </template>
-
           <template v-if="read.length > 0">
             <h2 class="fs-3 mt-4 mb-3">Read again</h2>
             <post-grid :posts="read" />
@@ -144,14 +139,6 @@ export default {
       return [...writers.filter((w) => w.numPosts > 0)].sort((a, b) =>
         a.numPosts > b.numPosts ? -1 : 1
       );
-    },
-
-    reading() {
-      //posts the user is currently reading
-      let ids = this.$store.state.user.history
-        .filter((h) => h.progress < 100 && h.progress > 0)
-        .map((h) => h.id);
-      return this.$store.state.posts.filter((p) => ids.includes(p.id));
     },
 
     read() {
