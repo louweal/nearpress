@@ -332,8 +332,6 @@ export default {
         if (top < window.innerHeight * (+target.dataset.aos / 100) && top > 0) {
           if (!target.classList.contains("start-animation")) {
             if (target.dataset.action === "connect") {
-              delete target.dataset.aos;
-
               // trigger wallet connector
               if (!window.near || !this.$store.state.user) {
                 this.$store.commit("toggleModal");
