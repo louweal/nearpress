@@ -33,6 +33,7 @@
         <div class="col-md-3 d-none d-md-block" v-if="similarPosts.length > 0">
           <sidebar
             title="Discover also"
+            meta="author"
             :posts="
               [...similarPosts]
                 .sort((a, b) => (a.views > b.views ? -1 : 1))

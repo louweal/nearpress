@@ -18,21 +18,21 @@
             <p>
               You're not subscribed to any channels. Discover channels below:
             </p>
-
-            <!-- <nuxt-link to="/search" class="btn btn-secondary">
-              Discover writers <i class="bi bi-arrow-right"></i>
-            </nuxt-link> -->
           </div>
 
           <post-grid
-            :posts="feed.length > 3 ? feed.slice(2, 11) : feed.slice(0, 10)"
+            :posts="
+              feed.length > 3
+                ? feed.slice(2, feedMax + 1)
+                : feed.slice(0, feedMax)
+            "
             :hide-first-post="feed.length > 3 ? 'mobile' : false"
           />
         </div>
 
         <div
           class="col-md-3 d-none d-md-block"
-          v-if="!(feed.length === 0 && signedIn)"
+          xxxv-if="!(feed.length === 0 && signedIn)"
         >
           <sidebar
             title="Recent articles"
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="d-md-none">
+      <!-- <div class="d-md-none">
         <h2 class="fs-5">Most read</h2>
 
         <div class="row gy-0 gx-3 pt-1">
@@ -57,9 +57,9 @@
             <card :post="post" :showIntro="false" :borderTop="i !== 0" />
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <template v-for="(w, i) in userWriters">
+      <!-- <template v-for="(w, i) in userWriters">
         <div
           class="mt-3"
           xxxv-if="posts.filter((a) => a.category === c.slug).length > 0"
@@ -91,22 +91,18 @@
               />
             </div>
             <div class="col-12 col-md" v-if="f.length < 5">
-              <!-- dummy -->
             </div>
             <div class="col-12 col-md" v-if="f.length < 4">
-              <!-- dummy -->
             </div>
             <div class="col-12 col-md" v-if="f.length < 3">
-              <!-- dummy -->
             </div>
             <div class="col-12 col-md" v-if="f.length < 2">
-              <!-- dummy -->
             </div>
           </div>
         </div>
-      </template>
+      </template> -->
 
-      <div v-if="userCategories.length === 0" class="mb-2 mt-3 mt-lg-5">
+      <!-- <div v-if="userCategories.length === 0" class="mb-2 mt-3 mt-lg-5">
         <div class="row g-0 g-lg-5">
           <hr class="mb-0 d-md-none" />
 
@@ -119,9 +115,9 @@
           </div>
           <hr class="mb-0 d-md-none" />
         </div>
-      </div>
+      </div> -->
 
-      <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5" v-if="feed.length >= 11">
+      <!-- <div class="row gx-3 gx-lg-5 mt-sm-3 mt-lg-5" v-if="feed.length >= 11">
         <div class="col-12 col-md-9">
           <post-grid
             :posts="feed.slice(11, 11 + feedMax)"
@@ -144,7 +140,41 @@
             "
           />
         </div>
-      </div>
+      </div> -->
+
+      <template v-if="highlightedPosts.length > 0">
+        <h2 class="fs-5 mt-3 mt-4">
+          <nuxt-link :to="'/c/' + highlightedCategory.slug">
+            {{ highlightedCategory.title }}
+            <i class="bi bi-arrow-right"></i>
+          </nuxt-link>
+        </h2>
+
+        <div class="row gy-0 gx-3 pt-md-1 mb-lg-4">
+          <div
+            class="col-12 col-md"
+            v-for="(post, i) in highlightedPosts"
+            :key="i"
+          >
+            <card
+              :post="post"
+              :showIntro="false"
+              :borderTop="i !== 0"
+              :blurb="false"
+            />
+          </div>
+          <template v-for="i in [1, 2, 3, 4]">
+            <div
+              class="col-12 col-md"
+              v-if="highlightedPosts.length <= i"
+              :key="i"
+            ></div>
+          </template>
+          <!-- <div class="col-12 col-md" v-if="highlightedPosts.length < 4"></div>
+          <div class="col-12 col-md" v-if="highlightedPosts.length < 3"></div>
+          <div class="col-12 col-md" v-if="highlightedPosts.length < 2"></div> -->
+        </div>
+      </template>
 
       <template v-if="freePosts.length > 0">
         <h2 class="fs-5 mt-3 mt-4">Read for free</h2>
@@ -158,6 +188,13 @@
               :blurb="false"
             />
           </div>
+          <template v-for="i in [1, 2, 3, 4]">
+            <div
+              class="col-12 col-md"
+              v-if="highlightedPosts.length <= i"
+              :key="i"
+            ></div>
+          </template>
         </div>
       </template>
     </div>
@@ -168,7 +205,7 @@
 export default {
   data() {
     return {
-      feedMax: 9,
+      feedMax: 19,
     };
   },
 
@@ -184,38 +221,25 @@ export default {
         .slice(0, 5);
     },
 
+    highlightedCategory() {
+      return this.categories[
+        Math.floor(Math.random() * this.categories.length)
+      ];
+    },
+
+    highlightedPosts() {
+      return [...this.posts]
+        .filter((a) => a.category === this.highlightedCategory.slug)
+        .sort((a, b) => (a.date > b.date ? -1 : 1))
+        .slice(0, 5);
+    },
+
     categories() {
       return this.$store.state.categories;
     },
 
     feed() {
-      if (this.$store.state.user && this.userCategories.length === 0) {
-        return [];
-      }
-      if (this.$store.state.user && this.userCategories.length > 0) {
-        return [...this.posts]
-          .filter((a) => this.$store.state.user.categories.includes(a.category))
-          .sort((a, b) => (a.date > b.date ? -1 : 1));
-      }
-      return [...this.posts].sort((a, b) => (a.date > b.date ? -1 : 1));
-    },
-
-    userWriters() {
-      if (this.$store.state.user) {
-        return this.$store.state.writers.filter((w) =>
-          this.$store.state.user.writers.includes(w.id)
-        );
-      }
-      return [];
-    },
-
-    userCategories() {
-      if (this.$store.state.user) {
-        return this.$store.state.categories.filter((c) =>
-          this.$store.state.user.categories.includes(c.slug)
-        );
-      }
-      return [];
+      return [...this.posts].sort((a, b) => (a.views > b.views ? -1 : 1));
     },
 
     signedIn() {

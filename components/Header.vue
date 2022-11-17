@@ -8,10 +8,7 @@
       <nuxt-link
         to="/"
         event=""
-        @click.native="
-          hideDropdown();
-          scrollToTop($route.path);
-        "
+        @click.native="scrollToTop($route.path)"
         class="me-4"
         aria-label="to homepage"
       >
@@ -19,26 +16,16 @@
       </nuxt-link>
 
       <div class="dropdown d-none d-sm-inline cursor-pointer">
-        <div class="dropdown-toggle pe-3" @click="toggleDropdown">Discover</div>
-        <div class="dropdown-menu" ref="dropdown-menu" v-if="showDropdown">
+        <div class="dropdown-toggle pe-3">News</div>
+        <div class="dropdown-menu" ref="dropdown-menu">
           <nuxt-link
             to="/search"
-            event=""
-            @click.native="
-              toggleDropdown();
-              $router.push('/search');
-            "
             class="dropdown-item fw-bold bg-secondary mb-1 py-2 text-white d-flex justify-content-between"
           >
-            Search ... <i class="bi bi-search"></i>
+            Find ... <i class="bi bi-search"></i>
           </nuxt-link>
           <nuxt-link
             :to="'/c/' + c.slug"
-            event=""
-            @click.native="
-              toggleDropdown();
-              $router.push('/c/' + c.slug);
-            "
             v-for="(c, i) in categories"
             :key="i"
             class="dropdown-item"
@@ -51,12 +38,7 @@
       <div class="ms-auto d-flex align-items-center gap-2 gap-md-4">
         <nuxt-link
           to="/account"
-          event=""
           v-if="$store.state.user"
-          @click.native="
-            hideDropdown();
-            $router.push('/account');
-          "
           class="cursor-pointer"
         >
           Account
@@ -64,10 +46,7 @@
 
         <div
           class="btn btn-secondary"
-          @click="
-            hideDropdown();
-            toggleModal();
-          "
+          @click="toggleModal()"
           v-if="!$store.state.user"
         >
           Connect<span class="d-none d-md-inline"> wallet</span>
@@ -99,23 +78,10 @@ export default {
   },
 
   computed: {
-    userCategories() {
-      if (this.$store.state.user) {
-        return this.categories.filter((c) =>
-          this.$store.state.user.categories.includes(c.slug)
-        );
-      }
-      return [];
-    },
-
     categories() {
       return [...this.$store.state.categories].sort((a, b) =>
         a.title > b.title ? 1 : -1
       );
-    },
-
-    hasCategories() {
-      return this.userCategories.length > 0;
     },
   },
 
@@ -163,14 +129,6 @@ export default {
       }
     },
 
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
-    },
-
-    hideDropdown() {
-      this.showDropdown = false;
-    },
-
     toggleModal() {
       this.$store.commit("toggleModal");
       document.getElementById("page").classList.toggle("is-blurred");
@@ -187,16 +145,28 @@ export default {
   transform: translateY(0);
 }
 
-.dropdown-menu {
-  display: block;
-}
-
 .header {
   transition: transform 0.4s ease-in-out;
   will-change: transform;
 
   img {
     max-width: 44vw !important;
+  }
+}
+
+.dropdown {
+  .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    display: block;
+    transition: opacity 0.35s 0.1s cubic-bezier(0.2, 0, 0.1, 1);
+  }
+
+  &:hover {
+    .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }
 </style>

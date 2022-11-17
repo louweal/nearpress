@@ -1,7 +1,10 @@
 <template>
-  <div class="w-100 m-1 py-2">
-    <nuxt-link :to="'/w/' + author.slug" rel="author">
-      <small class="text-secondary fw-bold mb-1">
+  <div class="w-100 m-1 py-2" v-if="post">
+    <small v-if="meta === 'date'" class="fw-bold text-secondary">
+      {{ date }}
+    </small>
+    <nuxt-link :to="'/w/' + author.slug" rel="author" v-else>
+      <small class="text-secondary fw-bold">
         {{ author.name }}
       </small>
     </nuxt-link>
@@ -36,6 +39,10 @@ export default {
       type: [Array, Object],
       default: () => [],
     },
+    meta: {
+      type: String,
+      default: "date",
+    },
   },
 
   computed: {
@@ -48,6 +55,13 @@ export default {
         this.$store.state.user.id === this.author.id ||
         this.$store.state.user.id === this.author.address
       );
+    },
+    date() {
+      return new Date(this.post.date * 1000).toLocaleDateString("us-EN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
     },
   },
 
