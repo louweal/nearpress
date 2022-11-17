@@ -6,7 +6,6 @@
           <nuxt-link :to="'/w/' + me.slug">
             <h1>{{ me.name }}</h1>
           </nuxt-link>
-          Current debt: {{ me.debt }}
 
           <div class="hstack gap-2">
             <span
@@ -49,7 +48,7 @@
               <nuxt-link :to="'/w/' + w.slug" class="">
                 <h3 class="fw-bold fs-6 mb-0 text-secondary">{{ w.name }}</h3>
                 <span
-                  >{{ w.numBooks }} article<span v-if="w.numBooks > 1"
+                  >{{ w.numPosts }} article<span v-if="w.numPosts > 1"
                     >s</span
                   ></span
                 >
@@ -137,13 +136,13 @@ export default {
 
       writers.forEach(
         (w) =>
-          (w["numBooks"] = this.$store.state.posts.filter(
+          (w["numPosts"] = this.$store.state.posts.filter(
             (p) => p.author === w.id
           ).length)
       );
 
-      return [...writers.filter((w) => w.numBooks > 0)].sort((a, b) =>
-        a.numBooks > b.numBooks ? -1 : 1
+      return [...writers.filter((w) => w.numPosts > 0)].sort((a, b) =>
+        a.numPosts > b.numPosts ? -1 : 1
       );
     },
 

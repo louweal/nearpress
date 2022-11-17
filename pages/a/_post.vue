@@ -295,10 +295,7 @@ export default {
     },
     checkDebt() {
       if (!this.$store.state.user) return;
-      if (
-        this.$store.state.user.debt &&
-        this.$store.state.user.debt.amount > 0
-      ) {
+      if (this.$store.state.user.debt) {
         return this.$nuxt.error({
           statusCode: 402,
           from: this.$route.path,
@@ -356,7 +353,7 @@ export default {
                 this.post.title
               );
 
-              console.log(result);
+              // console.log(result);
 
               if (result.error && result.error === "User reject") {
                 this.unfreezeWindow();
@@ -364,10 +361,15 @@ export default {
                 this.$store.commit("updateUserDebt", {
                   id: this.post.id,
                   title: this.post.title,
-                  author: this.post.author,
+                  author: this.author.address,
                   amount: this.post.price,
                 });
-                // console.log(this.$store.state.debt);
+
+                return this.$nuxt.error({
+                  statusCode: 402,
+                  from: this.$route.path,
+                  message: `Payment required: ${this.$store.state.user.debt.amount} NEAR`,
+                });
               } else {
                 this.progress = 100;
 

@@ -2,18 +2,9 @@ let contractId = "dev-1668683282310-63076526738395"; //"dev-1668429151999-789948
 
 export async function connectSender() {
   if (!window.near.isSignedIn()) {
-    try {
-      await window.near
-        .requestSignIn({
-          contractId: contractId,
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log("Failed to connect Sender");
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    await window.near.requestSignIn({
+      contractId: contractId,
+    });
   }
 
   if (window.near.isSignedIn()) {
@@ -21,7 +12,6 @@ export async function connectSender() {
     console.log("Account ID: " + window.near.getAccountId());
     return true;
   }
-  console.log("Unknown error");
   return false;
 }
 

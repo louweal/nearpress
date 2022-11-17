@@ -37,6 +37,9 @@ export default {
       if (this.$store.state.user && this.error.statusCode === 403) {
         this.$router.push({ path: this.$route.path, hash: "#auth" });
       }
+      if (!this.$store.state.user.debt && this.error.statusCode === 402) {
+        this.$router.push({ path: this.$route.path, hash: "#paid" });
+      }
     },
   },
 
@@ -55,7 +58,6 @@ export default {
       }
 
       this.$store.state.user.debt.amount;
-      console.log("Thank you!");
       this.$store.commit("setProgress", {
         id: this.$store.state.user.debt.id,
         progress: 100,
@@ -64,8 +66,13 @@ export default {
       this.$store.commit("updateUserDebt", undefined);
 
       this.$store.commit("toggleOverlay");
-      // console.log(this.error.from);
-      this.$router.push(this.error.from);
+
+      if (this.error.from === this.$route.path) {
+        // force the router to push to the same route as current
+        this.$router.push({ path: this.$route.path, hash: "#paid" });
+      } else {
+        this.$router.push(this.error.from);
+      }
     }
   },
 };
