@@ -49,7 +49,7 @@
                 >
                   <option selected value="select">
                     Select
-                    {{ $options.type === "article" ? "channel" : "genre" }}
+                    {{ $options.type === "article" ? "topic" : "genre" }}
                   </option>
                   <option
                     :value="c.slug"
