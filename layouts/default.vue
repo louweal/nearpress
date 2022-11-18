@@ -19,6 +19,7 @@ import categories from "@/data/channels.json";
 import posts from "@/data/posts.json";
 import writers from "@/data/writers.json";
 // import { fakeNews } from "@/utils/fakeNewsGenerator.js";
+import { disconnectSender } from "@/utils/sender.js";
 
 export default {
   categories,
@@ -47,6 +48,10 @@ export default {
     let headerHeight = document.querySelector("#header").offsetHeight; //refs ?
     let pushdown = document.querySelector("#pushdown"); // refs?
     pushdown.style.height = headerHeight + "px";
+  },
+
+  async beforeDestroy() {
+    await disconnectSender();
   },
 
   watch: {

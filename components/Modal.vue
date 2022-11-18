@@ -27,7 +27,7 @@
             </p>
             <div class="d-grid gap-2 mb-1">
               <div
-                class="btn btn-secondary cursor-pointer xxxd-none d-md-block"
+                class="btn btn-secondary cursor-pointer d-md-block"
                 @click="signIn"
               >
                 Connect Sender Wallet
@@ -96,10 +96,9 @@ export default {
 
         let connected = await connectSender();
         console.log("connected :>> ", connected);
-        // if (!connected) {
-        //   this.error = true;
-        //   return;
-        // }
+        if (connected === false) {
+          return;
+        }
       } else {
         this.error = true;
         return;

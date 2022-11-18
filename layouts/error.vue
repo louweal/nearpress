@@ -7,7 +7,7 @@
         </h1>
 
         <p v-if="this.error.statusCode === 402">
-          Please go the Sender wallet window to proceed.
+          Please go the Sender window to proceed.
         </p>
 
         <nuxt-link
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { payAuthor } from "@/utils/sender.js";
+import { pay } from "@/utils/sender.js";
 
 export default {
   props: {
@@ -50,7 +50,7 @@ export default {
 
       let result = { error: "User reject" };
       while (result.error && result.error === "User reject") {
-        result = await payAuthor(
+        result = await pay(
           this.$store.state.user.debt.amount,
           this.$store.state.user.debt.author,
           this.$store.state.user.debt.title

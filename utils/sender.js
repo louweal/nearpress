@@ -1,8 +1,13 @@
-let contractId = "dev-1668683282310-63076526738395"; //"dev-1668429151999-78994884464435";
+let contractId = "dev-1668761291081-76196698897457";
 
 export async function connectSender() {
   if (!window.near.isSignedIn()) {
-    await window.near.requestSignIn({ contractId });
+    let result = await window.near.requestSignIn({ contractId });
+    if (result.error && result.error === "User reject") {
+      console.log("Connection rejected");
+      return false;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1 sec
     await connectSender(); // recursive
   } else {
     console.log("Connected to Sender");
@@ -17,16 +22,14 @@ export async function disconnectSender() {
   }
 }
 
-export async function payAuthor(deposit, author, title) {
+export async function pay(deposit, to, title) {
+  // title is for reference only
   const tx = {
     receiverId: contractId,
     actions: [
       {
-        methodName: "payAuthor",
-        args: {
-          author: author,
-          title: title, // for reference only
-        },
+        methodName: "pay",
+        args: { to, title },
         deposit: parseNearAmount(String(deposit)),
       },
     ],

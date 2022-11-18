@@ -22,7 +22,7 @@
           :class="
             $options.type === 'article'
               ? 'col-12 col-sm-10 col-lg-8 offset-sm-1 offset-lg-2'
-              : 'col-12 col-sm-8 col-lg-6 xxxmb-5 align-self-center'
+              : 'col-12 col-sm-8 col-lg-6 align-self-center'
           "
         >
           <nuxt-link :to="'/c/' + post.category" class="badge bg-secondary">
@@ -146,7 +146,7 @@
 
 <script>
 import getUSD from "@/utils/getUSD.js";
-import { payAuthor } from "@/utils/sender.js";
+import { pay } from "@/utils/sender.js";
 
 export default {
   type: "article",
@@ -348,7 +348,7 @@ export default {
             if (target.dataset.action === "pay" && this.progress !== 100) {
               this.freezeWindow();
 
-              const result = await payAuthor(
+              const result = await pay(
                 this.post.price,
                 this.author.address,
                 this.post.title

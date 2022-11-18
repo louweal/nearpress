@@ -162,12 +162,14 @@
           </div>
 
           <div
-            class="btn btn-secondary mt-1"
+            class="btn btn-secondary my-1"
             @click="validFields ? publishPost() : false"
             :class="validFields ? 'opacity-100' : 'opacity-50'"
           >
             Publish
           </div>
+
+          <p>Publishing an article costs 1 NEAR</p>
         </div>
       </div>
     </div>
@@ -220,6 +222,7 @@
 <script>
 import Vue from "vue";
 import getUSD from "@/utils/getUSD.js";
+import { pay } from "@/utils/sender.js";
 
 export default {
   type: "article",
@@ -370,7 +373,24 @@ export default {
       }
     },
 
-    publishPost() {
+    async publishPost() {
+      const result = await pay(1, "nearpress.testnet", "Publish article fee");
+
+      if (result.error && result.error === "User reject") {
+        this.$store.commit("updateUserDebt", {
+          id: -1,
+          title: "Publish article fee",
+          author: "nearpress.testnet",
+          amount: 1,
+        });
+
+        return this.$nuxt.error({
+          statusCode: 402,
+          from: this.$route.path,
+          message: `Payment required: ${this.$store.state.user.debt.amount} NEAR`,
+        });
+      }
+
       Vue.set(this.post, "id", this.$store.state.posts.length + 1);
       Vue.set(this.post, "date", new Date().getTime() / 1000);
       Vue.set(this.post, "views", 0);
